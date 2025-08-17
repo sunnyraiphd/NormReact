@@ -1,0 +1,40 @@
+stimuli,actor,gender,actor_emotions,actor_emotion_strength,friends_emotions,friends_emotion_strength,friends_reaction,friends_reaction_strength,friends_reaction_should,friends_reaction_should_strength,acquaintances_emotions,acquaintances_emotion_strength,acquaintances_reaction,acquaintances_reaction_strength,acquaintances_reaction_should,acquaintances_reaction_should_strength,strangers_emotions,strangers_emotion_strength,strangers_reaction,strangers_reaction_strength,strangers_reaction_should,strangers_reaction_should_strength,norm_inappropriateness,norm_wrongness
+William did not tell someone's girlfriend that he cheated on her.,William,male,"Guilt, Fear","Guilt: Moderate  
+Fear: Moderate","Disgust, Contempt, Anger","Disgust: Moderate  
+Contempt: Moderate  
+Anger: Moderate",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,Moderate,"Disgust, Contempt, Anger","Disgust: A little  
+Contempt: A little  
+Anger: A little",Gossip about / discuss with / complain to others informally,A little,Gossip about / discuss with / complain to others informally,A little,"Disgust, Contempt, Anger","Disgust: A little  
+Contempt: A little  
+Anger: A little",Do nothing,N/A,Do nothing,N/A,Inappropriate,Wrong
+Maria did not tell someone's girlfriend that he cheated on her.,Maria,female,"Guilt, Fear, Compassion","Guilt: Moderate  
+Fear: A little  
+Compassion: Moderate","Anger, Disgust, Compassion, Contempt","Anger: Moderate  
+Disgust: Moderate  
+Compassion: A little  
+Contempt: Moderate",Gossip about / discuss with / complain to others informally,Moderate,Gossip about / discuss with / complain to others informally,A little,"Disgust, Contempt, Compassion","Disgust: A little  
+Contempt: A little  
+Compassion: A little",Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+John rarely talks to his elderly roommates and does not make efforts to create a friendly atmosphere in the house.,John,male,None apply,N/A,"Disgust, Embarrassment, Compassion","Disgust: A little  
+Embarrassment: A little  
+Compassion: Moderate",Gossip about / discuss with / complain to others informally,A little,Verbal reprimand / verbal confrontation,A little,"Disgust, Embarrassment, Compassion","Disgust: A little  
+Embarrassment: A little  
+Compassion: A little",Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Mary rarely talks to her elderly roommates and does not make efforts to create a friendly atmosphere in the house.,Mary,female,None apply,N/A,"Disgust, Embarrassment, Compassion","Disgust: Moderate  
+Embarrassment: Moderate  
+Compassion: Moderate",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,"Disgust, Embarrassment, Compassion, Contempt","Disgust: A little  
+Embarrassment: A little  
+Compassion: A little  
+Contempt: A little",Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Robert stayed up until 5 am because he assumed that his girlfriend was not trying to sleep.,Robert,male,None apply,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Not at all inappropriate,Not at all wrong
+Barbara stayed up until 5 am because she assumed that her boyfriend was not trying to sleep.,Barbara,female,None apply,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Not at all inappropriate,Not at all wrong
+"David does not listen to his girlfriend about his health, so he is not taking care of his health.",David,male,None apply,N/A,Compassion,Moderate,Verbal reprimand / verbal confrontation,Moderate,Verbal reprimand / verbal confrontation,Moderate,Compassion,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+"Jennifer does not listen to her boyfriend about her health, so she is not taking care of her health.",Jennifer,female,None apply,N/A,Compassion,Moderate,Support the actor,Moderate,Support the actor,Moderate,Compassion,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Thomas did not grieve his dead dog before getting a new one.,Thomas,male,None apply,N/A,Compassion,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Not at all inappropriate,Not at all wrong
+Mary did not grieve her dead dog before getting a new one.,Mary,female,None apply,N/A,"Disgust, Contempt, Compassion","Disgust: A little  
+Contempt: A little  
+Compassion: Moderate",Gossip about / discuss with / complain to others informally,A little,Do nothing,N/A,"Disgust, Contempt, Compassion","Disgust: A little  
+Contempt: A little  
+Compassion: A little",Gossip about / discuss with / complain to others informally,A little,Do nothing,N/A,"Disgust, Contempt, Compassion","Disgust: A little  
+Contempt: A little  
+Compassion: A little",Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Not at all wrong

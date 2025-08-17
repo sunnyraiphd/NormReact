@@ -1,0 +1,42 @@
+stimuli,actor,gender,actor_emotions,actor_emotion_strength,friends_emotions,friends_emotion_strength,friends_reaction,friends_reaction_strength,friends_reaction_should,friends_reaction_should_strength,acquaintances_emotions,acquaintances_emotion_strength,acquaintances_reaction,acquaintances_reaction_strength,acquaintances_reaction_should,acquaintances_reaction_should_strength,strangers_emotions,strangers_emotion_strength,strangers_reaction,strangers_reaction_strength,strangers_reaction_should,strangers_reaction_should_strength,norm_inappropriateness,norm_wrongness
+William did not tell someone's girlfriend that he cheated on her.,William,male,"Guilt, Fear, Shame","Guilt: Moderate
+Fear: A little
+Shame: Moderate","Anger, Disgust, Contempt","Anger: Moderate
+Disgust: A lot
+Contempt: Moderate",Verbal reprimand / verbal confrontation,Moderate,Verbal reprimand / verbal confrontation,Moderate,"Anger, Disgust, Contempt","Anger: A little
+Disgust: Moderate
+Contempt: A little",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,"Anger, Disgust, Contempt","Anger: A little
+Disgust: A little
+Contempt: A little",Do nothing,N/A,Do nothing,N/A,Very inappropriate,Very wrong
+Maria did not tell someone's girlfriend that he cheated on her.,Maria,female,"Guilt, Compassion","Guilt: Moderate
+Compassion: A little","Compassion, Contempt","Compassion: Moderate
+Contempt: A little",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,"Contempt, Resentment","Contempt: A little
+Resentment: A little",Gossip about / discuss with / complain to others informally,A little,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+John rarely talks to his elderly roommates and does not make efforts to create a friendly atmosphere in the house.,John,male,None apply,N/A,Disappointment,"I need to select from the provided list exactly. Since ""Disappointment"" was not in the original list of emotions provided, I must select from the given options.
+
+Anger",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,Contempt,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Mary rarely talks to her elderly roommates and does not make efforts to create a friendly atmosphere in the house.,Mary,female,None apply,N/A,Disappointment,"I need to select from the provided list exactly. Since ""Disappointment"" was not in the original list of emotions provided, I must select from the given options.
+
+Anger",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,Contempt,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Robert stayed up until 5 am because he assumed that his girlfriend was not trying to sleep.,Robert,male,Guilt,Moderate,Anger,Moderate,Verbal reprimand / verbal confrontation,Moderate,Verbal reprimand / verbal confrontation,A little,None apply,N/A,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Barbara stayed up until 5 am because she assumed that her boyfriend was not trying to sleep.,Barbara,female,"Guilt, Anger, Resentment","Guilt: Moderate
+Anger: A lot
+Resentment: Moderate","Compassion, Anger","Compassion: Moderate
+Anger: A little",Gossip about / discuss with / complain to others informally,A little,Support the actor,Moderate,Compassion,A little,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+"David does not listen to his girlfriend about his health, so he is not taking care of his health.",David,male,"Shame, Guilt, Fear","Shame: Moderate
+Guilt: A little
+Fear: A little","Anger, Compassion, Resentment","Anger: Moderate
+Compassion: A lot
+Resentment: A little",Verbal reprimand / verbal confrontation,Moderate,Verbal reprimand / verbal confrontation,Moderate,"Compassion, Contempt","Compassion: A little
+Contempt: A little",Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Inappropriate,Somewhat wrong
+"Jennifer does not listen to her boyfriend about her health, so she is not taking care of her health.",Jennifer,female,"Anger, Resentment","Anger: Moderate
+Resentment: Moderate","Anger, Compassion","Anger: Moderate
+Compassion: A lot",Verbal reprimand / verbal confrontation,Moderate,Support the actor,A lot,Compassion,Moderate,Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Thomas did not grieve his dead dog before getting a new one.,Thomas,male,Guilt,Moderate,"Disgust, Contempt","Disgust: Moderate
+Contempt: Moderate",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,"Disgust, Contempt","Disgust: A little
+Contempt: A little",Gossip about / discuss with / complain to others informally,A little,Do nothing,N/A,Disgust,A little,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
+Mary did not grieve her dead dog before getting a new one.,Mary,female,"Shame, Guilt","Shame: Moderate
+Guilt: A lot","Anger, Disgust, Contempt","Anger: Moderate
+Disgust: A lot
+Contempt: Moderate",Gossip about / discuss with / complain to others informally,Moderate,Verbal reprimand / verbal confrontation,A little,"Disgust, Contempt","Disgust: A little
+Contempt: A little",Do nothing,N/A,Do nothing,N/A,None apply,N/A,Do nothing,N/A,Do nothing,N/A,Somewhat inappropriate,Somewhat wrong
