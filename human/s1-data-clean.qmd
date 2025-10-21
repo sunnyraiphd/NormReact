@@ -181,6 +181,5 @@ df <- strength_long %>%
 ```{r}
 write.csv(wide, "data/human-wide.csv")
 write.csv(df, "data/human-long.csv")
-write.csv(all, "data/human-long-all-emotion.csv")
 ```
 

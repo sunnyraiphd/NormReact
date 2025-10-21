@@ -28,7 +28,9 @@ mycolor=c("gray","#756bb1", "#fdae6b")
 
 ```{r}
 wide<-read.csv( "data/human-wide.csv")
-df<-read.csv( "data/human-long.csv")
+long<-read.csv( "data/human-long.csv")
+df<-long %>% filter(strength_value>0)
+
 ```
 
 # descriptive table
@@ -48,7 +50,7 @@ table1(~ gender + as.numeric(age)+race,data=distinct(df,id,.keep_all = TRUE))
 
 # Descriptive plots & analysis 
 
-## GENDER
+## Gender
 ### Mean Emotion Strength by Emotion Type
 
 ```{r,fig.height=6,fig.width=8}
@@ -96,7 +98,6 @@ ggplot(emotion_count, aes(x = reorder(emotion, -count), y = count, fill = actor_
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_brewer(palette = "Pastel1")+
  coord_cartesian(ylim = c(0, 650))   # consistent y-axis
-
 
 ```
 
@@ -524,6 +525,190 @@ ggplot(counts, aes(x = emotion, y = n, fill = tie_type)) +
 
 ```
 
+# IRR
+
+## emotion
+```{r,eval=F}
+# Krippendorff’s α requires that pairs of raters share overlapping items so that you can estimate their pairwise agreement structure. Every “pair of raters” contributes disagreement terms based on how similarly they rate the same items. If each rater only overlaps with one or two others on a few items, you don’t have enough pairwise co-ratings to estimate (observed disagreement) reliably. In the extreme case (each rater rates unique items), pairwise matrix is undefined.
+
+# Function to compute Krippendorff's alpha for one emotion
+compute_alpha_emotion <- function(df, emotion_name,emo_type_name) {
+  tmp <- df %>%
+    filter(emo_type == emo_type_name) %>% 
+    filter(emotion == emotion_name) %>%
+    select(behavior, id, strength_value) %>%
+  #  mutate(strength_value = ifelse(strength_value == 0, NA, strength_value)) %>% 
+    group_by(behavior) %>%
+    summarise(ratings = list(strength_value), .groups = "drop")
+  
+  # Combine all item ratings into a matrix: rows = items, columns = ratings for that item
+  max_raters <- max(sapply(tmp$ratings, length))
+  
+  mat <- t(sapply(tmp$ratings, function(x) {
+    # pad with NA if fewer ratings
+    c(x, rep(NA, max_raters - length(x)))
+  }))
+  
+  # compute Krippendorff's alpha
+  kripp.alpha(mat, method = "ordinal")$value
+}
+
+# Loop over all emo_types and emotions
+emo_types <- unique(long$emo_type)
+emotions <- unique(long$emotion)
+
+results_df <- expand.grid(emotion = emotions, emo_type = emo_types)
+
+# Use pmap to pass each row as scalar arguments
+results_df$alpha <- pmap_dbl(
+  list(results_df$emotion, results_df$emo_type),
+  function(e, etype) compute_alpha_emotion(long, e, etype)
+)
+
+# Pivot to wide: rows = norm violator type, columns = emotions
+results_wide <- results_df %>%
+  pivot_wider(names_from = emotion, values_from = alpha) %>%
+  arrange(factor(emo_type, levels = emo_types))
+
+results_wide
+```
+
+```{r}
+# Compute standard deviation per emotion × behavior
+item_emotion_strength<-long %>%
+  group_by(emo_type,emotion, behavior) %>%
+  summarise(item_mean=mean(strength_value,na.rm=TRUE),
+    item_sd = sd(strength_value, na.rm = TRUE)) 
+```
+
+```{r}
+#ICC = 0.05 → Only 5% of rating variance is due to systematic differences between behaviors; raters largely disagree or interpret scales differently.
+icc_emotion <- long %>%
+  group_by(emotion, emo_type) %>%
+  group_modify(~{
+    data_sub <- .x
+    # Fit random-effects model
+    m <- tryCatch(
+      lmer(strength_value ~ 1 + (1 | behavior) + (1 | id), data = data_sub),
+      error = function(e) NULL
+    )
+
+    # Extract variance components
+    v <- as.data.frame(VarCorr(m))
+    sigma_b <- v[v$grp == "behavior", "vcov"]
+    sigma_r <- v[v$grp == "id", "vcov"]
+    sigma_e <- attr(VarCorr(m), "sc")^2
+
+    # Compute ICC for "behavior"
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+icc_emotion %>% 
+  pivot_wider(names_from = emotion, values_from = ICC) %>%
+  nice_table(.)
+
+# plot 
+ggplot(icc_emotion, aes(x = emotion, y = ICC, fill = emo_type)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_hline(yintercept = c(0.2, 0.5, 0.75), 
+             linetype = "dashed", color = "gray50") +
+  annotate("text", x = Inf, y = 0.2, label = "Fair", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.5, label = "Good", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.75, label = "Excellent", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Inter-rater Reliability by Emotion and Agent Type",
+       x = "Emotion",
+       y = "Intra-class Correlation (ICC)",
+       fill = "Agent Type") +
+  theme_classic(base_size = 14)+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+
+## action - would/should
+
+```{r}
+action_vars <- c("stran_act", "acq_act", "friend_act")
+action_vars <- c("stran_act_should", "acq_act_should", "friend_act_should")
+
+# Reshape to long and create binary columns
+act_long <- wide %>%
+  select(id, behavior, all_of(action_vars)) %>%  # keep necessary columns
+  pivot_longer(cols = all_of(action_vars), 
+               names_to = "actor_type", 
+               values_to = "action") %>% 
+  # create 0/1 for each category
+  mutate(action_value = 1) %>% 
+  pivot_wider(names_from = action, 
+              values_from = action_value, 
+              values_fill = 0) 
+
+# ICC
+icc_act <- act_long %>%
+  pivot_longer(cols = -c(id, behavior, actor_type),
+               names_to = "category",
+               values_to = "value") %>%
+  group_by(actor_type, category) %>%
+  group_modify(~{
+    data_sub <- .x
+    # Fit random-effects model
+    m <- tryCatch(
+      glmer(value ~ 1 + (1|behavior) + (1|id), data = data_sub, family = binomial),
+      error = function(e) NULL
+    )
+
+    # Extract variance components
+    v <- as.data.frame(VarCorr(m))
+    sigma_b <- v[v$grp == "behavior", "vcov"]
+    sigma_r <- v[v$grp == "id", "vcov"]
+    # For binary outcomes, residual variance on logit scale is pi^2 / 3
+    sigma_e <- (pi^2)/3
+
+    # Compute ICC for "behavior"
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+icc_act %>% 
+  pivot_wider(names_from = category, values_from = ICC) %>%
+  nice_table(.)
+```
+
+```{r}
+# plot 
+ggplot(icc_act, aes(x = category, y = ICC, fill = actor_type)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_hline(yintercept = c(0.2, 0.5, 0.75), 
+             linetype = "dashed", color = "gray50") +
+  annotate("text", x = Inf, y = 0.2, label = "Fair", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.5, label = "Good", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.75, label = "Excellent", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Inter-rater Reliability by Action and Observer",
+       x = "Action",
+       y = "Intra-class Correlation (ICC)",
+       fill = "Observer") +
+  theme_classic(base_size = 14)+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+
+
+# alignment analysis 
+
+## correlation by category - does LLM predicted human emotional and behavioral responses to norm violation?
+
+### by gender
+### by tie strength
+### by moral foundation
+
+## difference in alignment by categories
+
 
 
 # item wise analysis
@@ -545,22 +730,6 @@ ggplot(counts, aes(x = emotion, y = n, fill = tie_type)) +
 
 
 ```
-
-
-# analysis (alignment)
-
-## correlation by category - does LLM predicted human emotional and behavioral responses to norm violation?
-
-### by gender
-### by tie strength
-### by moral foundation
-
-## difference in alignment by categories
-
-
-
-
-
 
 
 
