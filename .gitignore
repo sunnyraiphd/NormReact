@@ -1,3 +1,4 @@
 normgrading/
 deepseek_key.env
 openai_key.env
+.DS_Store
