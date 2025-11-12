@@ -1,0 +1,531 @@
+---
+title: "humanxllm-analysis"
+format:
+    html:
+      toc-title: Table of contents
+      toc: true
+      toc-depth: 2
+      code-fold: true # allow code folding
+      number-sections: true
+      highlight-style: github
+      toc-location: body
+      cap-location: top
+      page-layout: full
+      embed-resources: true
+      self-contained-math: true
+      toc-expand: true
+      theme: cosmo
+execute:
+  echo: false        # show R code
+  warning: false    # hide warnings
+  message: false    # hide messages
+  eval: true        # run the code
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning=F,message = F)
+options(download.file.method = "libcurl")
+
+if (!require("groundhog")) install.packages("groundhog")
+library("groundhog")
+pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr","RColorBrewer")
+groundhog.library(pkgs, "2025-08-11")
+
+options(scipen = 999, digits = 3)
+set.seed(111)
+```
+
+```{r}
+df<-read.csv( "data/df_all_long_updated.csv") %>% 
+  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
+  mutate(unique_id=paste0(label_type,"_",human_id))
+```
+
+```{r}
+# --- compute pairwise similarities
+df_wide <- df %>%
+  #filter(emotion_type == "emotion_friend") %>% 
+  #filter(emotion_type == "emotion_acquaintance") %>% 
+  #filter(emotion_type == "emotion_stranger") %>% 
+  filter(emotion_type == "emotion_actor") %>% 
+  select(id=ID, rater, unique_id,stimuli, emotion, strength_value,emotion_type) %>% 
+  pivot_wider(id_cols = c(unique_id,stimuli,rater),
+    names_from = emotion, values_from = strength_value) %>% 
+  arrange(stimuli, unique_id) %>% 
+  mutate(across(Pride:Compassion, as.numeric))
+```
+
+# correlation of rating for each emotion 
+```{r}
+human_df <- df %>%
+  filter(startsWith(unique_id, "human")) %>% 
+  group_by(stimuli, emotion,emotion_type) %>%
+  summarise(strength_value = median(strength_value, na.rm = TRUE), .groups = "drop") %>% 
+  mutate(unique_id="human")
+
+llm_df <- df %>%
+  filter(!startsWith(unique_id, "human")) %>%
+  select(stimuli, emotion,emotion_type,strength_value,unique_id)
+
+combined_df <- bind_rows(human_df, llm_df) %>% 
+  pivot_wider(
+    names_from = unique_id,
+    values_from = strength_value
+  ) %>%
+  ungroup()
+
+cor_list <- combined_df %>%
+  group_by(emotion, emotion_type) %>%
+  group_modify(~ {
+    # Keep only numeric columns for correlation
+    num_df <- .x %>%
+      select(where(is.numeric))
+    
+    mat <- as.matrix(num_df)
+    
+    # Correlation using pairwise complete observations
+    cor_mat <- cor(mat, use = "pairwise.complete.obs")
+    
+    # Convert to tidy long format
+    cor_melt <- as.data.frame(as.table(cor_mat), stringsAsFactors = FALSE) %>%
+      rename(unique_id_1 = Var1, unique_id_2 = Var2, Correlation = Freq)
+    
+    cor_melt
+  }) %>%
+  ungroup()
+
+
+
+```
+
+```{r,fig.width=10,fig.height=5}
+# Keep only pairs where one ID is "human" and the other is not
+human_cor_list <- cor_list %>%
+  filter(
+    (unique_id_1 == "human" & unique_id_2 != "human") |
+    (unique_id_2 == "human" & unique_id_1 != "human")
+  ) %>%
+  mutate(unique_id_1=as.character(unique_id_1),
+         unique_id_2=as.character(unique_id_2)) %>% 
+  mutate(LLM = ifelse(unique_id_1 == "human", unique_id_2, unique_id_1)
+  )
+
+# Plot: only human vs. each LLM
+ggplot(human_cor_list, aes(x = LLM, y = emotion_type, fill = Correlation)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(Correlation, 2)), size = 3) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) +
+  facet_wrap(~ emotion,ncol=4) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.y = element_blank()
+  ) +
+  labs(
+    title = "Correlation Between Human and LLMs Across Stimuli",
+    x = "LLM Model",
+    fill = "Correlation"
+  )
+
+```
+
+
+# cosine similarity measure 
+```{r}
+# for each stimuli across emotions, compute cosine similarity
+pairwise_cos <- df_wide %>%
+  group_by(stimuli) %>%
+  do({
+    mat <- as.matrix(select(., -unique_id, -stimuli))
+    rownames(mat) <- .$unique_id
+    cos_sim <- as.matrix(proxy::simil(mat, method = "cosine"))
+    as.data.frame(as.table(cos_sim)) %>%
+      rename(unique_id_1 = Var1, unique_id_2 = Var2, cosine_similarity = Freq) %>%
+      filter(unique_id_1 != unique_id_2)  # remove self-comparison
+  }) %>%
+  ungroup() %>% 
+  rowwise() %>%
+  mutate(pair = paste(sort(c(unique_id_1, unique_id_2)), collapse = "_")) %>%
+  distinct(pair, .keep_all = TRUE) %>%
+  select(-pair) %>% 
+   mutate(
+    unique_id_1_std = ifelse(startsWith(as.character(unique_id_1), "human"), "human", as.character(unique_id_1)),
+    unique_id_2_std = ifelse(startsWith(as.character(unique_id_2), "human"), "human", as.character(unique_id_2))
+  )
+
+pairwise_cos
+```
+
+```{r}
+# Compute average cosine similarity of each non-human ID to humans
+avg_cosine_to_human <- pairwise_cos %>%
+  # Keep only pairs where one side is human and the other is non-human
+  filter(
+    (unique_id_1_std == "human" & unique_id_2_std != "human") |
+    (unique_id_2_std == "human" & unique_id_1_std != "human")
+  ) %>%
+  # Identify which is the non-human ID in the pair
+  mutate(non_human_id = ifelse(unique_id_1_std == "human", unique_id_2_std, unique_id_1_std)) %>%
+  # Group by non-human ID and compute mean cosine similarity
+  group_by(non_human_id) %>%
+  summarise(avg_cosine_similarity_to_human = mean(cosine_similarity, na.rm = TRUE)) %>%
+  ungroup()
+
+avg_cosine_to_human
+```
+
+```{r}
+# Step 1: Non-human → human average per stimuli × non-human
+nonhuman_to_human_avg <- pairwise_cos %>%
+  filter((unique_id_1_std == "human" & unique_id_2_std != "human") |
+         (unique_id_2_std == "human" & unique_id_1_std != "human")) %>%
+  mutate(non_human_id = ifelse(unique_id_1_std == "human", unique_id_2_std, unique_id_1_std)) %>%
+  group_by(stimuli, non_human_id) %>%
+  summarise(
+    unique_id_1 = first(unique_id_1_std),
+    unique_id_2 = first(unique_id_2_std),
+    cosine_similarity = mean(cosine_similarity, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  select(stimuli, unique_id_1, unique_id_2, cosine_similarity)
+
+# Step 2: Human → human average per stimuli
+human_to_human_avg <- pairwise_cos %>%
+  filter(unique_id_1_std == "human" & unique_id_2_std == "human") %>%
+  group_by(stimuli) %>%
+  summarise(
+    unique_id_1 = first(unique_id_1_std),
+    unique_id_2 = first(unique_id_2_std),
+    cosine_similarity = mean(cosine_similarity, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  select(stimuli, unique_id_1, unique_id_2, cosine_similarity)
+
+# Step 3: Non-human → non-human (keep original)
+nonhuman_to_nonhuman <- pairwise_cos %>%
+  filter(unique_id_1_std != "human" & unique_id_2_std != "human") %>%
+  select(stimuli, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, cosine_similarity)
+
+# Step 4: Combine all into a single table
+final_pairwise_cos <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhuman_to_nonhuman)
+
+# Optional: remove duplicates in case any exist (e.g., A–B vs B–A)
+final_pairwise_cos <- final_pairwise_cos %>%
+  mutate(pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")) %>%
+  distinct(stimuli, pair_id, .keep_all = TRUE) %>%
+  select(-pair_id)
+```
+
+### average plot
+```{r}
+#Compute average
+avg_pairwise_cos <- final_pairwise_cos %>%
+  mutate(
+    # Put the smaller ID in unique_id_1, larger in unique_id_2
+    u1 = pmin(unique_id_1, unique_id_2),
+    u2 = pmax(unique_id_1, unique_id_2)
+  ) %>%
+  # Compute average cosine similarity across stimuli
+  group_by(u1, u2) %>%
+  summarise(avg_cosine_similarity = mean(cosine_similarity, na.rm = TRUE),
+            .groups = "drop") %>% 
+  # Reorder u2 so that "human" is last (at the bottom)
+  mutate(u2 = factor(u2, levels = c(sort(setdiff(unique(u2), "human")), "human")))
+
+avg_pairwise_cos
+
+# Plot heatmap with human at top
+ggplot(avg_pairwise_cos, aes(x = u1, y = u2, fill = avg_cosine_similarity)) +
+  geom_tile(color = "white") +
+  scale_fill_distiller(palette = "Gn", direction = 1) +
+  geom_text(aes(label = round(avg_cosine_similarity, 2)), color = "black", size = 4) +
+
+  labs(
+    title = "Average Cosine Similarity Across Stimuli",
+    x = "Unique ID 1",
+    y = "Unique ID 2",
+    fill = "Avg Cosine"
+  ) +
+  scale_y_discrete(limits = rev(levels(avg_pairwise_cos$u2))) +  # reverse to put top at top
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### linear model
+```{r}
+df_analysis <- final_pairwise_cos %>%
+  # ensure character (important if columns are factors)
+  mutate(
+    u1 = as.character(unique_id_1),
+    u2 = as.character(unique_id_2)
+  ) %>%
+  # create order-invariant pair id (vectorized)
+  mutate(
+    pair_model = paste(pmin(u1, u2), pmax(u1, u2), sep = "_"),
+    pair_type = case_when(
+      u1 == "human" & u2 == "human" ~ "human_human",
+      u1 == "human" | u2 == "human" ~ "LLM_human",
+      TRUE ~ "LLM_LLM"
+    )
+  ) %>%
+  # optional: keep only human-containing pairs
+  filter(pair_type != "LLM_LLM") %>%
+  select(-u1, -u2)  %>% 
+  mutate(
+    # Make "human_human" the reference level for both
+    pair_type = factor(pair_type, levels = c("human_human", "LLM_human")),
+    pair_model = factor(pair_model, levels = c("human_human", setdiff(unique(pair_model), "human_human")))
+  )
+
+# overall
+model<-lmer(cosine_similarity~pair_type + (1|stimuli), df_analysis)
+# each model
+model2<-lmer(cosine_similarity~pair_model + (1|stimuli), df_analysis)
+tab_model(model,model2)
+```
+
+# similarity for each emotions
+
+```{r}
+# Compute pairwise differences using only the 'Disgust' column
+pairwise_dist <- df_wide %>%
+  group_by(stimuli) %>%
+  do({
+    ids <- .$unique_id
+    values <- .$Disgust  # numeric column
+
+    # Compute pairwise differences (not absolute)
+    dist_mat <- outer(values, values, FUN = "-")
+
+    # Convert to long format
+    dist_df <- as.data.frame(as.table(dist_mat))
+    dist_df <- dist_df %>%
+      rename(unique_id_1 = Var1, unique_id_2 = Var2, distance = Freq) %>%
+      filter(unique_id_1 != unique_id_2)
+
+    # Restore proper unique_id labels
+    dist_df$unique_id_1 <- ids[as.numeric(dist_df$unique_id_1)]
+    dist_df$unique_id_2 <- ids[as.numeric(dist_df$unique_id_2)]
+
+    dist_df
+  }) %>%
+  ungroup() %>%
+  rowwise() %>%
+  mutate(pair = paste(sort(c(unique_id_1, unique_id_2)), collapse = "_")) %>%
+  distinct(pair, .keep_all = TRUE) %>%
+  select(-pair) %>%
+  mutate(
+    unique_id_1_std = ifelse(startsWith(unique_id_1, "human"), "human", unique_id_1),
+    unique_id_2_std = ifelse(startsWith(unique_id_2, "human"), "human", unique_id_2)
+  )
+
+pairwise_dist
+```
+
+```{r}
+# List of emotion columns
+emotions <- c("Pride","Anger","Guilt","Shame","Embarrassment","Disgust","Contempt","Compassion")
+
+# Initialize empty tables to store results
+all_pairwise <- list()
+all_avg <- list()
+all_models <- list()
+
+for(em in emotions){
+  
+  # Step 1: Pairwise differences=============================================
+  pairwise_dist <- df_wide %>%
+    group_by(stimuli) %>%
+    do({
+      ids <- .$unique_id
+      values <- .[[em]]  
+      # Compute absolute pairwise differences
+      dist_mat <- outer(values, values, FUN = function(x, y) abs(x - y))
+    
+      dist_df <- as.data.frame(as.table(dist_mat)) %>%
+        rename(unique_id_1 = Var1, unique_id_2 = Var2, distance = Freq) %>%
+        filter(unique_id_1 != unique_id_2)
+      
+      dist_df$unique_id_1 <- ids[as.numeric(dist_df$unique_id_1)]
+      dist_df$unique_id_2 <- ids[as.numeric(dist_df$unique_id_2)]
+      dist_df
+    }) %>%
+    ungroup() %>%
+    rowwise() %>%
+    mutate(pair = paste(sort(c(unique_id_1, unique_id_2)), collapse = "_")) %>%
+    distinct(pair, .keep_all = TRUE) %>%
+    select(-pair) %>%
+    mutate(
+      unique_id_1_std = ifelse(startsWith(unique_id_1, "human"), "human", unique_id_1),
+      unique_id_2_std = ifelse(startsWith(unique_id_2, "human"), "human", unique_id_2),
+      emotion = em
+    )
+  
+  # Step 2: Aggregate by type=============================================
+  nonhuman_to_human_avg <- pairwise_dist %>%
+    filter((unique_id_1_std == "human" & unique_id_2_std != "human") |
+           (unique_id_2_std == "human" & unique_id_1_std != "human")) %>%
+    mutate(non_human_id = ifelse(unique_id_1_std == "human", unique_id_2_std, unique_id_1_std)) %>%
+    group_by(stimuli, non_human_id) %>%
+    summarise(
+      unique_id_1 = first(unique_id_1_std),
+      unique_id_2 = first(unique_id_2_std),
+      distance = mean(distance, na.rm = TRUE),
+      emotion = first(emotion),
+      .groups = "drop"
+    ) %>%
+    select(stimuli, unique_id_1, unique_id_2, distance, emotion)
+  
+  human_to_human_avg <- pairwise_dist %>%
+    filter(unique_id_1_std == "human" & unique_id_2_std == "human") %>%
+    group_by(stimuli) %>%
+    summarise(
+      unique_id_1 = first(unique_id_1_std),
+      unique_id_2 = first(unique_id_2_std),
+      distance = mean(distance, na.rm = TRUE),
+      emotion = first(emotion),
+      .groups = "drop"
+    )
+  
+  nonhuman_to_nonhuman <- pairwise_dist %>%
+    filter(unique_id_1_std != "human" & unique_id_2_std != "human") %>%
+    select(stimuli, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, distance) %>%
+    mutate(emotion = em)
+  
+  final_pairwise_dist <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhuman_to_nonhuman) %>%
+    mutate(pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")) %>%
+    distinct(stimuli, pair_id, .keep_all = TRUE) %>%
+    select(-pair_id)
+  
+  # Store results
+  all_pairwise[[em]] <- final_pairwise_dist
+  
+  # Step 3: Linear model for human vs non-human=============================================
+  df_analysis <- final_pairwise_dist %>%
+    mutate(u1 = as.character(unique_id_1),
+           u2 = as.character(unique_id_2),
+           pair_model = paste(pmin(u1, u2), pmax(u1, u2), sep = "_"),
+           pair_type = case_when(
+             u1 == "human" & u2 == "human" ~ "human_human",
+             u1 == "human" | u2 == "human" ~ "LLM_human",
+             TRUE ~ "LLM_LLM"
+           )) %>%
+    filter(pair_type != "LLM_LLM") %>%
+    mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")),
+           pair_model = factor(pair_model))
+  
+  model <- lmer(distance ~ pair_type + (1|stimuli), df_analysis)
+  model2 <- lmer(distance ~ pair_model + (1|stimuli), df_analysis)
+  
+  all_models[[em]] <- list(model=model, model2=model2)
+  # Extract coefficients with broom.mixed::tidy()
+    coefs1 <- tidy(model) %>% mutate(emotion = em, model_type = "pair_type")
+    coefs2 <- tidy(model2) %>% mutate(emotion = em, model_type = "pair_model")
+    all_coefs <- bind_rows(all_coefs, coefs1, coefs2)
+    
+  # Step 4: Average across stimuli=============================================
+  avg_pairwise_dist <- final_pairwise_dist %>%
+    mutate(u1 = pmin(unique_id_1, unique_id_2),
+           u2 = pmax(unique_id_1, unique_id_2)) %>%
+    group_by(u1, u2, emotion) %>%
+    summarise(avg_distance = mean(distance, na.rm = TRUE), .groups = "drop") %>%
+    mutate(u2 = factor(u2, levels = c(sort(setdiff(unique(u2), "human")), "human")))
+  
+  # Store results
+  all_avg[[em]] <- avg_pairwise_dist
+}
+
+# Select relevant columns for a clean table =============================================
+all_coefs %>%
+  mutate(p.value = 2 * (1 - pnorm(abs(statistic)))) %>%
+  select(emotion, model_type, term, estimate, std.error, statistic, p.value)%>% 
+  nice_table(.)
+```
+
+```{r,fig.height=6,fig.width=8}
+# Combine all emotions into single long tables
+combined_pairwise <- bind_rows(all_pairwise)
+combined_avg <- bind_rows(all_avg)
+  
+
+ggplot(combined_avg, aes(x = u1, y = u2, fill = avg_distance)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(avg_distance, 2)), size = 3) +
+  scale_fill_distiller(palette = "Gn", direction = 1) +
+  scale_y_discrete(limits = levels(combined_avg$u2)) +  # DO NOT reverse, keep human first
+  labs(
+    title = "Average Emotion Differences Across Stimuli",
+    x = "", y = "", fill = "Avg Distance"
+  ) +
+  facet_wrap(~emotion) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+```{r}
+# correlation across stimuli 
+combined_pairwise <- bind_rows(all_pairwise)
+# Pivot to wide format: each row = stimulus, columns = pairs
+pair_matrix <- combined_pairwise %>%
+  mutate(pair = paste(id_1, id_2, sep = "_")) %>%
+  select(stimuli, pair, sim) %>%
+  pivot_wider(names_from = pair, values_from = sim, values_fill = list(sim = NA))
+
+# Convert to numeric matrix
+stim_matrix <- as.matrix(pair_matrix[,-1])
+rownames(stim_matrix) <- pair_matrix$stimuli
+# Correlation between rows (stimuli) based on all pairs
+cor_matrix <- cor(t(stim_matrix), use = "pairwise.complete.obs")
+
+cor_melt <- melt(cor_matrix)
+colnames(cor_melt) <- c("Stimulus1", "Stimulus2", "Correlation")
+
+ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Correlation Across Stimuli (All Pairs)",
+       x = "Stimulus",
+       y = "Stimulus")
+
+
+```
+
+
+# alignment analysis 
+
+## correlation by category - does LLM predicted human emotional and behavioral responses to norm violation?
+
+### by gender
+### by tie strength
+### by moral foundation
+
+## difference in alignment by categories
+
+
+
+# item wise analysis
+
+### gender difference (is there a sig difference for female vs. male for each measure (i.e., emotion, action, wrongness, app) - anova)
+```{r}
+
+```
+
+
+### strong vs. weak tie (is there a sig difference for sanction severeness and emotion intensity for strong tie vs. weak tie - anova)
+
+```{r}
+
+```
+
+### if main effect, interactions?
+```{r}
+
+
+```
+
+
+
+

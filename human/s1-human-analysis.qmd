@@ -1,0 +1,717 @@
+---
+title: "human-analysis"
+format:
+    html:
+      toc-title: Table of contents
+      toc: true
+      toc-depth: 2
+      code-fold: true # allow code folding
+      number-sections: true
+      highlight-style: github
+      toc-location: body
+      cap-location: top
+      page-layout: full
+      embed-resources: true
+      self-contained-math: true
+      toc-expand: true
+      theme: cosmo
+execute:
+  echo: false        # show R code
+  warning: false    # hide warnings
+  message: false    # hide messages
+  eval: true        # run the code
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning=F,message = F)
+options(download.file.method = "libcurl")
+
+if (!require("groundhog")) install.packages("groundhog")
+library("groundhog")
+pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr")
+groundhog.library(pkgs, "2025-08-11")
+
+options(scipen = 999, digits = 3)
+set.seed(111)
+mycolor=c("gray","#756bb1", "#fdae6b")
+```
+
+```{r}
+wide<-read.csv( "data/human-wide.csv")
+long<-read.csv( "data/human-long.csv")
+df<-long %>% filter(strength_value>0)
+
+```
+
+# descriptive table
+
+## demographics
+
+```{r}
+table1(~ gender + as.numeric(age)+race,data=distinct(df,id,.keep_all = TRUE))
+```
+
+## Descriptive stat table (TBD)
+
+```{r}
+#table1(~ emotion | actor_gender+emo_type,df)
+#table1(~ strength_value |emotion+actor_gender,filter(df, emo_type == "emotion_actor"))
+```
+
+# Descriptive plots & analysis 
+
+## Gender
+### Mean Emotion Strength by Emotion Type
+
+```{r,fig.height=6,fig.width=8}
+# Count number of occurrences of each emotion
+emotion_count <- df %>%
+  group_by(emo_type, emotion, actor_gender) %>%
+  summarise(count = n(), .groups = "drop")
+
+# Compute chi-square test for each emo_type
+gender_stats <- df %>%
+  group_by(emo_type) %>%
+  summarise(
+    test = list(chisq.test(table(emotion, actor_gender))),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label = map_chr(test, ~{
+      res <- .
+      paste0("χ²(", res$parameter, ") = ", round(res$statistic,2),
+             ", p = ", signif(res$p.value,3))
+    })
+  )
+
+# Determine y position for labels (above bars)
+label_positions <- emotion_count %>%
+  group_by(emo_type) %>%
+  summarise(y_pos = max(count) + 1, .groups = "drop") %>%
+  left_join(gender_stats %>% select(emo_type, label), by = "emo_type") %>%
+  mutate(x = 4,y=620)  # approximate center above bars
+
+# Bar plot with male/female side by side
+ggplot(emotion_count, aes(x = reorder(emotion, -count), y = count, fill = actor_gender)) +
+  geom_col(position = position_dodge(width = 0.7)) +
+  facet_wrap(~emo_type, scales = "free_y") +
+  geom_text(data = label_positions,
+            aes(x = x, y = y, label = label),
+            inherit.aes = FALSE,
+            vjust = 0.5, hjust = 0.5) +
+  labs(
+    x = "Emotion",
+    y = "Count",
+    title = "Count of Each Emotion by Emotion Type and Actor Gender"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Pastel1")+
+ coord_cartesian(ylim = c(0, 650))   # consistent y-axis
+
+```
+
+
+```{r}
+emotion_summary <- df %>%
+  group_by(emo_type, emotion, actor_gender) %>%
+  summarise(
+    mean_strength = mean(strength_value, na.rm = TRUE),
+    se_strength = sd(strength_value, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+# t-tests for strength_value by gender for each emotion × emo_type
+t_results <- df %>%
+  group_by(emo_type, emotion) %>%
+  summarise(
+    p_value = tryCatch(t.test(strength_value ~ actor_gender)$p.value,
+                       error = function(e) NA_real_),
+    .groups = "drop"
+  ) %>%
+  mutate(sig = case_when(
+    p_value < 0.001 ~ "***",
+    p_value < 0.01  ~ "**",
+    p_value < 0.05  ~ "*",
+    TRUE            ~ ""
+  )) 
+
+# Position for stars
+# Compute label positions for significance stars
+label_positions <- emotion_summary %>%
+  left_join(t_results %>%
+  filter(sig != "") %>% 
+  select(emo_type, emotion, sig), by = c("emo_type", "emotion")) %>%
+  filter(!is.na(sig)) %>%                       # keep only significant tests
+  group_by(emo_type, emotion) %>%
+  summarise(
+    y_pos = max(mean_strength + se_strength) + 0.2,  # place above the tallest bar
+    sig = first(sig),                                # take the sig for this group
+    .groups = "drop"
+  )
+
+
+# Plot
+ggplot(emotion_summary, aes(x = emotion, y = mean_strength, fill = actor_gender)) +
+  geom_col(position = position_dodge(width = 0.7)) +
+  geom_errorbar(aes(ymin = mean_strength - se_strength,
+                    ymax = mean_strength + se_strength),
+                width = 0.2, position = position_dodge(width = 0.7)) +
+  geom_text(data = label_positions,
+            aes(x = emotion, y = y_pos, label = sig),
+            inherit.aes = FALSE, vjust = 0, hjust = 0.5, size = 5) +
+  facet_wrap(~emo_type, scales = "free_y") +
+  labs(
+    x = "Emotion",
+    y = "Mean Strength",
+    title = "Mean Emotion Strength by Emotion Type and Actor Gender"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Pastel1") +
+  coord_cartesian(ylim = c(0,5))
+
+t_results
+```
+
+### Action by Actor Gender
+
+```{r, echo=F,include=F}
+wide %>%
+  select(
+    id,
+    actor_gender,
+    stranger_action = stran_act,
+    stranger_action_should = stran_act_should,
+    acquaintance_action = acq_act,
+    acquaintance_action_should = acq_act_should,
+    friend_action = friend_act,
+    friend_action_should = friend_act_should
+  ) %>%
+  pivot_longer(
+    cols = stranger_action:friend_action_should,
+    names_to = "variable",
+    values_to = "value"
+  ) %>% 
+  distinct(id, actor_gender, variable, value) %>% 
+  mutate(value = factor(value)) %>%
+  # reorder by count within each facet
+  group_by(variable, actor_gender) %>%
+  mutate(value = fct_infreq(value)) %>%  # orders factor by descending frequency
+  ungroup() %>%
+  ggplot(aes(x = value,fill=value)) +
+  geom_bar() +
+  facet_grid(variable ~ actor_gender, scales = "free_y") +
+  labs(title = "Distribution of Actions and Shoulds",
+       x = "",
+       y = "Count") +
+  theme_classic()+
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())+
+  scale_fill_brewer(palette = "Pastel1")
+```
+
+
+```{r,fig.height=5,fig.width=8}
+library(tidyverse)
+library(forcats)
+
+# Prepare plot data
+plot_data <- wide %>%
+  select(
+    id,
+    actor_gender,
+    would_stranger = stran_act,
+    should_stranger = stran_act_should,
+    would_acquaintance = acq_act,
+    should_acquaintance = acq_act_should,
+    would_friend = friend_act,
+    should_friend = friend_act_should
+  ) %>%
+  pivot_longer(
+    cols = would_stranger:should_friend,
+    names_to = "variable",
+    values_to = "value"
+  )%>% 
+  distinct(id, actor_gender, variable, value) %>% 
+  mutate(value = factor(value)) %>%
+  group_by(variable, actor_gender) %>%
+  mutate(value = fct_infreq(value)) %>%
+  ungroup()
+
+# Chi-square test results
+test_results <- plot_data %>%
+  group_by(variable) %>%
+  summarise(
+    test = list(chisq.test(table(value, actor_gender))),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label = map_chr(test, ~{
+      res <- .
+      paste0("χ²(", res$parameter, ") = ", round(res$statistic,2),
+             ", p = ", signif(res$p.value,3))
+    })
+  )
+
+
+# Add y-position for label (centered above each facet)
+label_positions <- plot_data %>%
+  group_by(variable) %>%
+  summarise(y_pos = max(table(value)) + 1, .groups = "drop") %>%  # or a fixed number
+  left_join(test_results %>% select(variable, label), by = "variable") %>%
+  mutate(x = 4.5,y=650)  # center x (approximate middle of the categories)
+
+# Plot
+ggplot(plot_data, aes(x = value, fill = actor_gender)) +
+  geom_bar(position = position_dodge(width = 0.7)) +
+  facet_wrap(~variable, scales = "free_y") +
+  geom_text(data = label_positions,
+            aes(x = x, y = y, label = label),
+            inherit.aes = FALSE,
+            vjust = 0.5, hjust = 0.5) +
+  labs(title = "Distribution of Actions and Shoulds by Gender",
+       x = NULL,
+       y = "Count") +
+  theme_classic() +
+  scale_fill_brewer(palette = "Pastel1")+
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # rotate 45 degrees
+    axis.ticks.x = element_blank()
+  )+
+   coord_cartesian(ylim = c(0, 700))   # consistent y-axis
+```
+
+### Wrongness vs. Appropriateness Ratings by Actor Gender
+
+```{r}
+# Summarize mean and SE
+summary_stats <- wide %>%
+  pivot_longer(cols = c(appropriate, wrong),
+               names_to = "judgment", values_to = "rating") %>%
+  group_by(actor_gender, judgment) %>%
+  summarise(
+    mean_rating = mean(rating, na.rm = TRUE),
+    se_rating = sd(rating, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  )
+
+# Compute t-test results for each judgment
+test_results <- wide %>%
+  pivot_longer(cols = c(appropriate, wrong),
+               names_to = "judgment", values_to = "rating") %>%
+  group_by(judgment) %>%
+  summarise(
+    t_test = list(t.test(rating ~ actor_gender)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label = map_chr(t_test, ~{
+      res <- .
+      paste0("t(", round(res$parameter,1), ") = ", round(res$statistic,2),
+             ", p = ", signif(res$p.value,3))
+    })
+  )
+
+# Determine y position for the label (above bars)
+label_positions <- summary_stats %>%
+  group_by(judgment) %>%
+  summarise(y_pos = max(mean_rating + se_rating) + 0.2, .groups = "drop") %>%
+  left_join(test_results %>% select(judgment, label), by = "judgment")
+
+# Bar plot with error bars and test results
+ggplot(summary_stats, aes(x = judgment, y = mean_rating, fill = actor_gender)) +
+  geom_col(position = position_dodge(width = 0.9)) +
+  geom_errorbar(aes(ymin = mean_rating - se_rating,
+                    ymax = mean_rating + se_rating),
+                width = 0.1,
+                position = position_dodge(width = 0.9)) +
+  geom_text(data = label_positions,
+            aes(x = judgment, y = y_pos, label = label),
+            inherit.aes = FALSE,
+            vjust = 0) +
+  labs(
+    x = "Judgment",
+    y = "Mean Rating",
+    title = "Mean Ratings of Wrongness and Appropriateness by Actor Gender"
+  ) +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, 4))+
+  scale_fill_brewer(palette = "Pastel1")
+```
+
+## Social distance
+
+### emotion
+
+### action
+```{r,fig.height=5,fig.width=8}
+library(tidyverse)
+
+# 1 Prepare plot data: merge gender
+plot_data <- wide %>%
+  select(
+    id = ResponseId,
+    would_stranger = stran_act,
+    should_stranger = stran_act_should,
+    would_acquaintance = acq_act,
+    should_acquaintance = acq_act_should,
+    would_friend = friend_act,
+    should_friend = friend_act_should
+  ) %>%
+  pivot_longer(
+    cols = -id,
+    names_to = "variable",
+    values_to = "value"
+  ) %>%
+  distinct(id, variable, value) %>%
+  mutate(
+    value = factor(value),
+    measure = if_else(str_detect(variable, "would"), "would", "should"),
+    tie_type = case_when(
+      str_detect(variable, "friend") ~ "friend",
+      str_detect(variable, "acquaintance") ~ "acquaintance",
+      str_detect(variable, "stranger") ~ "stranger"
+    ),
+    tie_type = factor(tie_type, levels = c("friend", "acquaintance", "stranger"))
+  )
+
+# 2 Count occurrences for plotting
+counts <- plot_data %>%
+  group_by(measure, tie_type, value) %>%
+  summarise(n = n(), .groups = "drop")
+
+# Global chi-square tests (one per measure)
+global_chi <- plot_data %>%
+  group_by(measure) %>%
+  summarise(
+    test = list({
+      tbl <- table(value, tie_type)
+      if (all(rowSums(tbl) > 0) && all(colSums(tbl) > 0)) chisq.test(tbl) else NULL
+    }),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label = map_chr(test, ~{
+      if (is.null(.x)) return("Insufficient data")
+      paste0("χ²(", .x$parameter, ") = ",
+             round(.x$statistic, 2),
+             ", p < .001")
+    })
+  )
+
+# Show results
+global_chi 
+
+# 3 Pairwise chi-square comparisons among tie types (within each measure)
+pairwise_tests0 <- map_dfr(unique(plot_data$measure), function(m) {
+  data_m <- filter(plot_data, measure == m)
+
+  # Only use tie types that actually appear in this measure
+  tie_types_m <- unique(data_m$tie_type)
+
+  # Generate all pairwise combinations
+  pairs <- combn(tie_types_m, 2, simplify = FALSE)
+
+  map_dfr(pairs, function(pair) {
+    sub <- filter(data_m, tie_type %in% pair)
+    tbl <- table(sub$value, sub$tie_type)
+
+    # remove rows or columns that are entirely zero
+    tbl2 <- tbl[rowSums(tbl) > 0, colSums(tbl) > 0, drop = FALSE]
+
+    if (nrow(tbl2) < 2 || ncol(tbl2) < 2) {
+      # skip invalid comparisons
+      return(tibble(
+        measure = m,
+        tie1 = pair[1],
+        tie2 = pair[2],
+        p_value = NA_real_,
+        sig = ""
+      ))
+    }
+
+    # Run test (safe)
+    p <- tryCatch({
+      suppressWarnings(chisq.test(tbl2))$p.value
+    }, error = function(e) {
+      tryCatch({
+        fisher.test(tbl2, simulate.p.value = TRUE)$p.value
+      }, error = function(e2) NA_real_)
+    })
+
+    tibble(
+      measure = m,
+      tie1 = pair[1],
+      tie2 = pair[2],
+      p_value = p,
+      sig = case_when(
+        !is.na(p) & p < 0.001 ~ "***",
+        !is.na(p) & p < 0.01  ~ "**",
+        !is.na(p) & p < 0.05  ~ "*",
+        TRUE ~ ""
+      )
+    )
+  })
+})
+
+pairwise_tests0
+
+# 4️⃣ Determine x-positions for significance stars
+label_positions <- plot_data %>%
+  group_by(measure) %>%
+  summarise(y_pos = max(table(value)) + 1, .groups = "drop") %>%  # or a fixed number
+  left_join(global_chi %>% select(measure, label), by = "measure") %>%
+  mutate(x = 4.5,y=650)  # center x (approximate middle of the categories)
+
+# 5️⃣ Plot
+ggplot(counts, aes(x = value, y = n, fill = tie_type)) +
+  geom_col(position = position_dodge(width = 0.8)) +
+   geom_text(data = label_positions,
+            aes(x = x, y = y, label = label),
+            inherit.aes = FALSE,
+            vjust = 0) +
+  facet_wrap(~measure) +
+  labs(
+    title = "Distribution of Actions by Social Distance",
+    x = "Social Distance (Tie Type)",
+    y = "Count"
+  ) +
+  theme_classic() +
+  scale_fill_brewer(palette = "Pastel1") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_cartesian(ylim = c(0, 750))
+```
+
+### emotion 
+```{r}
+library(tidyverse)
+
+# --- Prepare plot data: count of each emotion by tie type ---
+plot_data <- df %>%
+  filter(emo_type!="emotion_actor") %>% 
+  select(
+    id,
+    actor_gender,  # optional, can ignore
+    emo_type,
+    emotion
+  )  %>%
+  mutate(
+    tie_type = case_when(
+      emo_type == "emotion_friend" ~ "Friend",
+      emo_type == "emotion_acquaintance" ~ "Acquaintance",
+      emo_type == "emotion_stranger" ~ "Stranger"
+    ),
+    tie_type = factor(tie_type, levels = c("Friend", "Acquaintance", "Stranger")),
+    emotion = factor(emotion)
+  )
+
+# --- Global chi-square test: emotion counts by tie type ---
+chi_test <- chisq.test(table(plot_data$emotion, plot_data$tie_type))
+
+chi_label <- paste0(
+  "χ²(", chi_test$parameter, ") = ", round(chi_test$statistic, 2),
+  ", p < .001"
+)
+
+# --- Count occurrences for plotting ---
+counts <- plot_data %>%
+  group_by(tie_type, emotion) %>%
+  summarise(n = n(), .groups = "drop")
+
+# --- Plot ---
+ggplot(counts, aes(x = emotion, y = n, fill = tie_type)) +
+  geom_col(position = position_dodge(width = 0.8)) +
+  labs(
+    title = "Distribution of Emotions by Tie Type",
+    subtitle = chi_label,
+    x = NULL,
+    y = "Count"
+  ) +
+  theme_classic() +
+  scale_fill_brewer(palette = "Pastel1") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_cartesian(ylim = c(0, max(counts$n) + 50))
+
+```
+
+# IRR
+
+## emotion
+```{r,eval=F}
+# Krippendorff’s α requires that pairs of raters share overlapping items so that you can estimate their pairwise agreement structure. Every “pair of raters” contributes disagreement terms based on how similarly they rate the same items. If each rater only overlaps with one or two others on a few items, you don’t have enough pairwise co-ratings to estimate (observed disagreement) reliably. In the extreme case (each rater rates unique items), pairwise matrix is undefined.
+
+# Function to compute Krippendorff's alpha for one emotion
+compute_alpha_emotion <- function(df, emotion_name,emo_type_name) {
+  tmp <- df %>%
+    filter(emo_type == emo_type_name) %>% 
+    filter(emotion == emotion_name) %>%
+    select(behavior, id, strength_value) %>%
+  #  mutate(strength_value = ifelse(strength_value == 0, NA, strength_value)) %>% 
+    group_by(behavior) %>%
+    summarise(ratings = list(strength_value), .groups = "drop")
+  
+  # Combine all item ratings into a matrix: rows = items, columns = ratings for that item
+  max_raters <- max(sapply(tmp$ratings, length))
+  
+  mat <- t(sapply(tmp$ratings, function(x) {
+    # pad with NA if fewer ratings
+    c(x, rep(NA, max_raters - length(x)))
+  }))
+  
+  # compute Krippendorff's alpha
+  kripp.alpha(mat, method = "ordinal")$value
+}
+
+# Loop over all emo_types and emotions
+emo_types <- unique(long$emo_type)
+emotions <- unique(long$emotion)
+
+results_df <- expand.grid(emotion = emotions, emo_type = emo_types)
+
+# Use pmap to pass each row as scalar arguments
+results_df$alpha <- pmap_dbl(
+  list(results_df$emotion, results_df$emo_type),
+  function(e, etype) compute_alpha_emotion(long, e, etype)
+)
+
+# Pivot to wide: rows = norm violator type, columns = emotions
+results_wide <- results_df %>%
+  pivot_wider(names_from = emotion, values_from = alpha) %>%
+  arrange(factor(emo_type, levels = emo_types))
+
+results_wide
+```
+
+```{r}
+# Compute standard deviation per emotion × behavior
+item_emotion_strength<-long %>%
+  group_by(emo_type,emotion, behavior) %>%
+  summarise(item_mean=mean(strength_value,na.rm=TRUE),
+    item_sd = sd(strength_value, na.rm = TRUE)) 
+
+item_emotion_strength
+```
+
+# ICC
+```{r}
+#ICC = 0.05 → Only 5% of rating variance is due to systematic differences between behaviors; raters largely disagree or interpret scales differently.
+icc_emotion <- long %>%
+  group_by(emotion, emo_type) %>%
+  group_modify(~{
+    data_sub <- .x
+    # Fit random-effects model
+    m <- tryCatch(
+      lmer(strength_value ~ 1 + (1 | behavior) + (1 | id), data = data_sub),
+      error = function(e) NULL
+    )
+
+    # Extract variance components
+    v <- as.data.frame(VarCorr(m))
+    sigma_b <- v[v$grp == "behavior", "vcov"]
+    sigma_r <- v[v$grp == "id", "vcov"]
+    sigma_e <- attr(VarCorr(m), "sc")^2
+
+    # Compute ICC for "behavior"
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+icc_emotion %>% 
+  pivot_wider(names_from = emotion, values_from = ICC) %>%
+  nice_table(.)
+
+# plot 
+ggplot(icc_emotion, aes(x = emotion, y = ICC, fill = emo_type)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_hline(yintercept = c(0.2, 0.5, 0.75), 
+             linetype = "dashed", color = "gray50") +
+  annotate("text", x = Inf, y = 0.2, label = "Fair", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.5, label = "Good", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.75, label = "Excellent", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Inter-rater Reliability by Emotion and Agent Type",
+       x = "Emotion",
+       y = "Intra-class Correlation (ICC)",
+       fill = "Agent Type") +
+  theme_classic(base_size = 14)+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+
+## action - would/should
+
+```{r}
+action_vars <- c("stran_act", "acq_act", "friend_act")
+action_vars <- c("stran_act_should", "acq_act_should", "friend_act_should")
+
+# Reshape to long and create binary columns
+act_long <- wide %>%
+  select(id, behavior, all_of(action_vars)) %>%  # keep necessary columns
+  pivot_longer(cols = all_of(action_vars), 
+               names_to = "actor_type", 
+               values_to = "action") %>% 
+  # create 0/1 for each category
+  mutate(action_value = 1) %>% 
+  pivot_wider(names_from = action, 
+              values_from = action_value, 
+              values_fill = 0) 
+
+# ICC
+icc_act <- act_long %>%
+  pivot_longer(cols = -c(id, behavior, actor_type),
+               names_to = "category",
+               values_to = "value") %>%
+  group_by(actor_type, category) %>%
+  group_modify(~{
+    data_sub <- .x
+    # Fit random-effects model
+    m <- tryCatch(
+      glmer(value ~ 1 + (1|behavior) + (1|id), data = data_sub, family = binomial),
+      error = function(e) NULL
+    )
+
+    # Extract variance components
+    v <- as.data.frame(VarCorr(m))
+    sigma_b <- v[v$grp == "behavior", "vcov"]
+    sigma_r <- v[v$grp == "id", "vcov"]
+    # For binary outcomes, residual variance on logit scale is pi^2 / 3
+    sigma_e <- (pi^2)/3
+
+    # Compute ICC for "behavior"
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+icc_act %>% 
+  pivot_wider(names_from = category, values_from = ICC) %>%
+  nice_table(.)
+```
+
+```{r}
+# plot 
+ggplot(icc_act, aes(x = category, y = ICC, fill = actor_type)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_hline(yintercept = c(0.2, 0.5, 0.75), 
+             linetype = "dashed", color = "gray50") +
+  annotate("text", x = Inf, y = 0.2, label = "Fair", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.5, label = "Good", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.75, label = "Excellent", hjust = 1.1, vjust = -0.2, color = "gray50") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Inter-rater Reliability by Action and Observer",
+       x = "Action",
+       y = "Intra-class Correlation (ICC)",
+       fill = "Observer") +
+  theme_classic(base_size = 14)+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+
+
+
+
+
