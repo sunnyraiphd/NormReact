@@ -40,7 +40,6 @@ mycolor=c("gray","#756bb1", "#fdae6b")
 wide<-read.csv( "data/human-wide.csv")
 long<-read.csv( "data/human-long.csv")
 df<-long %>% filter(strength_value>0)
-
 ```
 
 # descriptive table
@@ -346,8 +345,6 @@ ggplot(summary_stats, aes(x = judgment, y = mean_rating, fill = actor_gender)) +
 
 ### action
 ```{r,fig.height=5,fig.width=8}
-library(tidyverse)
-
 # 1 Prepare plot data: merge gender
 plot_data <- wide %>%
   select(
@@ -457,14 +454,14 @@ pairwise_tests0 <- map_dfr(unique(plot_data$measure), function(m) {
 
 pairwise_tests0
 
-# 4️⃣ Determine x-positions for significance stars
+# Determine x-positions for significance stars
 label_positions <- plot_data %>%
   group_by(measure) %>%
   summarise(y_pos = max(table(value)) + 1, .groups = "drop") %>%  # or a fixed number
   left_join(global_chi %>% select(measure, label), by = "measure") %>%
   mutate(x = 4.5,y=650)  # center x (approximate middle of the categories)
 
-# 5️⃣ Plot
+# Plot
 ggplot(counts, aes(x = value, y = n, fill = tie_type)) +
   geom_col(position = position_dodge(width = 0.8)) +
    geom_text(data = label_positions,
