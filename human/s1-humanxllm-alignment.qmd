@@ -41,12 +41,46 @@ df<-read.csv( "data/df_all_long_updated.csv") %>%
   mutate(unique_id=paste0(label_type,"_",human_id))
 ```
 
+# violin plot with individual response jitter for llm and human
+```{r,fig.width=12,fig.height=6}
+# Get unique emotion types
+emotion_types <- unique(df$emotion_type)
+
+# Create a list of plots, one for each emotion_type
+plots <- lapply(emotion_types, function(e_type) {
+  df %>%
+    filter(emotion_type == e_type) %>%
+    ggplot(aes(x = label_type, y = strength_value, fill = rater)) +
+    geom_violin(alpha = 0.3, width = 1) +
+    geom_jitter(width = 0.2, alpha = 0.1, size = 0.05) +
+    facet_wrap(~ emotion, nrow = 2) +
+    scale_fill_manual(values = c("lightblue", "salmon")) +
+    labs(
+      x = "",
+      y = "Response Strength",
+      title = paste("Human vs LLM Responses:", e_type)
+    ) +
+    theme_minimal() +
+    theme(
+      legend.position = "none",
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+})
+
+# Example: display the first plot
+plots[[1]]
+```
+
+
 # correlation of rating for each emotion 
+
 ```{r}
 human_df <- df %>%
   filter(startsWith(unique_id, "human")) %>% 
   group_by(stimuli, emotion,emotion_type) %>%
-  summarise(strength_value = median(strength_value, na.rm = TRUE), .groups = "drop") %>% 
+  #summarise(strength_value = median(strength_value, na.rm = TRUE), .groups = "drop") %>%
+  # sensitivity check for human mean rating
+  summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop") %>% 
   mutate(unique_id="human")
 
 llm_df <- df %>%
@@ -87,8 +121,6 @@ cor_list <- combined_df %>%
     cor_melt
   }) %>%
   ungroup()
-
-
 
 ```
 
