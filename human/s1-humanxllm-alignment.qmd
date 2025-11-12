@@ -38,7 +38,7 @@ set.seed(111)
 ```{r}
 df<-read.csv( "data/df_all_long_updated.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
-  mutate(unique_id=paste0(label_type,"_",human_id))
+  mutate(unique_id=paste0(label_type,"_",human_id)) 
 ```
 
 # violin plot with individual response jitter for llm and human
@@ -556,6 +556,92 @@ ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
 
 ```
 
+# Do emotion predict enforcement?
+
+```{r}
+approach <- c("Inform authority", "Inform the authorities, such as the police",
+                      "Physical confrontation", "Verbal confrontation", 
+                      "Verbal reprimand / verbal confrontation")
+avoidance <- c("Gossip", "Gossip about / discuss with / complain to others informally",
+                      "Stay away","Do nothing" ,"Stay away or keep a distance from the actor","Celebrate / praise", "Praise", "Support", "Support the actor")
+
+df <- df %>%
+  mutate(across(c(friends_reaction, strangers_reaction, acquaintances_reaction),
+                ~ case_when(
+                  .x %in% approach ~ "approach",
+                  .x %in% avoidance ~ "avoidance",
+                  TRUE ~ NA_character_
+                ),
+                .names = "{.col}_category")) %>% 
+  mutate(across(c(friends_reaction, strangers_reaction, acquaintances_reaction),
+                ~ ifelse(.x %in% approach, 1, 0),
+                .names = "{.col}_binary"))
+```
+
+```{r}
+models<- list(friends_approach_reaction=df %>% 
+  filter(emotion == "Anger",
+         emotion_type == "emotion_friend") %>%
+  glm(friends_reaction_binary ~ strength_value*rater,
+        data = ., family = binomial),
+ acquaintances_approach_reactio=df %>% 
+  filter(emotion == "Anger",
+         emotion_type == "emotion_acquaintance") %>%
+  glm(acquaintances_reaction_binary ~ strength_value*rater,
+        data = ., family = binomial),
+ strangers_approach_reactio=df %>% 
+  filter(emotion == "Anger",
+         emotion_type == "emotion_stranger") %>%
+  glm(strangers_reaction_binary ~ strength_value*rater,
+        data = ., family = binomial))
+
+# Define a function to convert logit coefficients to probabilities
+logit_to_prob <- function(x) {
+  plogis(x)  # plogis() is the inverse logit function
+}
+
+sjPlot::tab_model(
+  models$friends_approach_reactio,
+  models$acquaintances_approach_reactio,
+  models$strangers_approach_reactio,
+  show.se = FALSE,
+ # transform = NULL,
+  dv.labels = names(models)
+)
+
+#Plot all models dynamically
+plot_summs(models,
+           legend.title = "Dependent variables",
+           model.names = names(models)
+           )
+
+# Generate predicted values for the interaction
+# Create a list to store predicted data for each model
+pred_list <- lapply(names(models), function(name) {
+  plot_data <- ggeffects::ggpredict(models[[name]], terms = c("strength_value", "rater"))
+  plot_data <- plot_data %>%
+    mutate(outcome = name)  # Add a column for the outcome/model
+  return(plot_data)
+})
+
+# Combine into one data frame
+pred_combined <- bind_rows(pred_list)
+
+# Plot all models in one figure
+ggplot(pred_combined, aes(x = x, y = predicted, color = group, fill = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
+  facet_wrap(~ outcome) +
+  scale_fill_manual(values = c("orange","skyblue"))+
+  scale_color_manual(values = c("orange","skyblue"))+
+  labs(x = "Anger Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
+  theme_bw()
+
+```
+
+```{r}
+
+```
 
 # alignment analysis 
 
@@ -567,27 +653,13 @@ ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
 
 ## difference in alignment by categories
 
-
-
 # item wise analysis
 
 ### gender difference (is there a sig difference for female vs. male for each measure (i.e., emotion, action, wrongness, app) - anova)
-```{r}
-
-```
-
 
 ### strong vs. weak tie (is there a sig difference for sanction severeness and emotion intensity for strong tie vs. weak tie - anova)
 
-```{r}
-
-```
-
 ### if main effect, interactions?
-```{r}
-
-
-```
 
 
 

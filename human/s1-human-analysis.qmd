@@ -482,8 +482,6 @@ ggplot(counts, aes(x = value, y = n, fill = tie_type)) +
 
 ### emotion 
 ```{r}
-library(tidyverse)
-
 # --- Prepare plot data: count of each emotion by tie type ---
 plot_data <- df %>%
   filter(emo_type!="emotion_actor") %>% 
@@ -591,27 +589,46 @@ item_emotion_strength
 ```
 
 # ICC
+
+For continuous behavior follow linear distribution
+
+$$
+ICC_{\text{behavior}} = \frac{\sigma^2_{\text{behavior}}}{\sigma^2_{\text{behavior}} + \sigma^2_{\text{rater}} + \sigma^2_{\text{residual}}}
+$$
+
+For binary behavior follow binomial distribution
+
+$$
+ICC_{\text{behavior}} = \frac{\sigma^2_{\text{behavior}}}{\sigma^2_{\text{behavior}} + \sigma^2_{\text{rater}} + \pi^2/3}
+$$
+
 ```{r}
 #ICC = 0.05 → Only 5% of rating variance is due to systematic differences between behaviors; raters largely disagree or interpret scales differently.
 icc_emotion <- long %>%
+  # sensitivity test for binary coding
+  mutate(strength_value_bi=ifelse(strength_value==0,0,1)) %>% 
   group_by(emotion, emo_type) %>%
   group_modify(~{
     data_sub <- .x
-    # Fit random-effects model
+    # Fit random-effects modelß
     m <- tryCatch(
-      lmer(strength_value ~ 1 + (1 | behavior) + (1 | id), data = data_sub),
+      #lmer(strength_value ~ 1 + (1 | behavior) + (1 | id), data = data_sub),
+      # binary outcome
+      glmer(strength_value_bi ~ 1 + (1|behavior) + (1|id), data = data_sub, family = binomial),
       error = function(e) NULL
     )
 
-    # Extract variance components
+    # Extract variance components for linear model
     v <- as.data.frame(VarCorr(m))
     sigma_b <- v[v$grp == "behavior", "vcov"]
     sigma_r <- v[v$grp == "id", "vcov"]
-    sigma_e <- attr(VarCorr(m), "sc")^2
+    # linear residual variance
+    #sigma_e <- attr(VarCorr(m), "sc")^2
+    # logistic residual variance
+    sigma_e <- (pi^2) / 3  
 
-    # Compute ICC for "behavior"
+    # Compute ICC for behavior
     ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
-
     tibble(ICC = ICC)
   }) %>%
   ungroup()
@@ -706,8 +723,6 @@ ggplot(icc_act, aes(x = category, y = ICC, fill = actor_type)) +
   theme_classic(base_size = 14)+
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
-
-
 
 
 
