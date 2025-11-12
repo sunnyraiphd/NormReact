@@ -580,30 +580,25 @@ df <- df %>%
 
 ```{r}
 models<- list(friends_approach_reaction=df %>% 
-  filter(emotion == "Anger",
+  filter(emotion == "Disgust",
          emotion_type == "emotion_friend") %>%
   glm(friends_reaction_binary ~ strength_value*rater,
         data = ., family = binomial),
- acquaintances_approach_reactio=df %>% 
-  filter(emotion == "Anger",
+ acquaintances_approach_reaction=df %>% 
+  filter(emotion == "Disgust",
          emotion_type == "emotion_acquaintance") %>%
   glm(acquaintances_reaction_binary ~ strength_value*rater,
         data = ., family = binomial),
- strangers_approach_reactio=df %>% 
-  filter(emotion == "Anger",
+ strangers_approach_reaction=df %>% 
+  filter(emotion == "Disgust",
          emotion_type == "emotion_stranger") %>%
   glm(strangers_reaction_binary ~ strength_value*rater,
         data = ., family = binomial))
 
-# Define a function to convert logit coefficients to probabilities
-logit_to_prob <- function(x) {
-  plogis(x)  # plogis() is the inverse logit function
-}
-
 sjPlot::tab_model(
-  models$friends_approach_reactio,
-  models$acquaintances_approach_reactio,
-  models$strangers_approach_reactio,
+  models$friends_approach_reaction,
+  models$acquaintances_approach_reaction,
+  models$strangers_approach_reaction,
   show.se = FALSE,
  # transform = NULL,
   dv.labels = names(models)
@@ -616,30 +611,40 @@ plot_summs(models,
            )
 
 # Generate predicted values for the interaction
-# Create a list to store predicted data for each model
 pred_list <- lapply(names(models), function(name) {
-  plot_data <- ggeffects::ggpredict(models[[name]], terms = c("strength_value", "rater"))
-  plot_data <- plot_data %>%
-    mutate(outcome = name)  # Add a column for the outcome/model
-  return(plot_data)
+  model <- models[[name]]
+  
+  # Create all combinations
+  newdata <- expand.grid(
+    strength_value = 0:4,
+    rater = unique(model$data$rater)
+  )
+  
+  # Get predicted probabilities
+  newdata$predicted <- predict(model, newdata, type = "response")
+  
+  # Get confidence intervals
+  pred_link <- predict(model, newdata, type = "link", se.fit = TRUE)
+  newdata$conf.low <- plogis(pred_link$fit - 1.96 * pred_link$se.fit)
+  newdata$conf.high <- plogis(pred_link$fit + 1.96 * pred_link$se.fit)
+  
+  newdata$outcome <- name
+  return(newdata)
 })
 
-# Combine into one data frame
+# Combine
 pred_combined <- bind_rows(pred_list)
 
-# Plot all models in one figure
-ggplot(pred_combined, aes(x = x, y = predicted, color = group, fill = group)) +
+# Plot
+ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill = rater)) +
   geom_line(size = 1.2) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
   facet_wrap(~ outcome) +
-  scale_fill_manual(values = c("orange","skyblue"))+
-  scale_color_manual(values = c("orange","skyblue"))+
-  labs(x = "Anger Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
-  theme_bw()
+  scale_fill_manual(values = c("orange","skyblue")) +
+  scale_color_manual(values = c("orange","skyblue")) +
+  labs(x = "Disgust Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
+  theme_classic()
 
-```
-
-```{r}
 
 ```
 
