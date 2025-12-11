@@ -40,6 +40,10 @@ mycolor=c("gray","#756bb1", "#fdae6b")
 wide<-read.csv( "data/human-wide.csv")
 long<-read.csv( "data/human-long.csv")
 df<-long %>% filter(strength_value>0)
+all<-read.csv( "data/df_all_long_updated.csv") %>% 
+  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
+  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
+  mutate(ID=as.factor(ID))
 ```
 
 # descriptive table

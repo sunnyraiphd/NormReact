@@ -38,7 +38,8 @@ set.seed(111)
 ```{r}
 df<-read.csv( "data/df_all_long_updated.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
-  mutate(unique_id=paste0(label_type,"_",human_id)) 
+  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
+  mutate(ID=as.factor(ID))
 ```
 
 # violin plot with individual response jitter for llm and human
@@ -75,17 +76,23 @@ plots[[1]]
 # correlation of rating for each emotion 
 
 ```{r}
+# using stimuli as grouping variable if distinct actor gender
+# using ID as grouping variable if not distinct actor gender
 human_df <- df %>%
   filter(startsWith(unique_id, "human")) %>% 
-  group_by(stimuli, emotion,emotion_type) %>%
+  group_by(ID, emotion,emotion_type) %>%
+  #human median
   #summarise(strength_value = median(strength_value, na.rm = TRUE), .groups = "drop") %>%
-  # sensitivity check for human mean rating
+  # human mean
   summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop") %>% 
   mutate(unique_id="human")
 
 llm_df <- df %>%
   filter(!startsWith(unique_id, "human")) %>%
-  select(stimuli, emotion,emotion_type,strength_value,unique_id)
+  select(ID, emotion,emotion_type,strength_value,unique_id) %>% 
+  group_by(ID,emotion,emotion_type,unique_id) %>% 
+  summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop")
+  
 
 combined_df <- bind_rows(human_df, llm_df) %>% 
   pivot_wider(
@@ -99,6 +106,7 @@ combined_df <- bind_rows(human_df, llm_df) %>%
 ss<-combined_df %>%
   group_by(emotion, emotion_type) %>%
   summarise(across(where(is.numeric), ~sd(., na.rm = TRUE)))
+
 # when LLM show no variance (perhaps this emotion was not selected) correlation is undefined because the cor equation is cov(X,Y)/sd(Y)sd(Y)
 
 cor_list <- combined_df %>%
@@ -163,21 +171,23 @@ ggplot(human_cor_list, aes(x = LLM, y = emotion_type, fill = Correlation)) +
 df_wide <- df %>%
   #filter(emotion_type == "emotion_friend") %>% 
   #filter(emotion_type == "emotion_acquaintance") %>% 
-  filter(emotion_type == "emotion_stranger") %>% 
-  #filter(emotion_type == "emotion_actor") %>% 
-  select(id=ID, rater, unique_id,stimuli, emotion, strength_value,emotion_type) %>% 
-  pivot_wider(id_cols = c(unique_id,stimuli,rater),
+  #filter(emotion_type == "emotion_stranger") %>% 
+  filter(emotion_type == "emotion_actor") %>% 
+  select(ID, rater, unique_id, emotion, strength_value,emotion_type) %>% 
+  group_by(ID, rater, unique_id, emotion,emotion_type) %>% 
+  summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop") %>% 
+  pivot_wider(id_cols = c(unique_id,ID,rater),
     names_from = emotion, values_from = strength_value) %>% 
-  arrange(stimuli, unique_id) %>% 
+  arrange(ID, unique_id) %>% 
   mutate(across(Pride:Compassion, as.numeric))
 ```
 
 ```{r}
 # for each stimuli across emotions, compute cosine similarity
 pairwise_sim <- df_wide %>%
-  group_by(stimuli) %>%
+  group_by(ID) %>%
   do({
-    mat <- as.matrix(select(., -rater, -stimuli,-unique_id))
+    mat <- as.matrix(select(., -rater, -ID,-unique_id))
     rownames(mat) <- .$unique_id
     # compute cosine similarity
     #sim <- as.matrix(proxy::simil(mat, method = "cosine"))
@@ -224,31 +234,31 @@ nonhuman_to_human_avg <- pairwise_sim %>%
   filter((unique_id_1_std == "human" & unique_id_2_std != "human") |
          (unique_id_2_std == "human" & unique_id_1_std != "human")) %>%
   mutate(non_human_id = ifelse(unique_id_1_std == "human", unique_id_2_std, unique_id_1_std)) %>%
-  group_by(stimuli, non_human_id) %>%
+  group_by(ID, non_human_id) %>%
   summarise(
     unique_id_1 = first(unique_id_1_std),
     unique_id_2 = first(unique_id_2_std),
     similarity = mean(similarity, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  select(stimuli, unique_id_1, unique_id_2, similarity)
+  select(ID, unique_id_1, unique_id_2, similarity)
 
 # Step 2: Human → human average per stimuli
 human_to_human_avg <- pairwise_sim %>%
   filter(unique_id_1_std == "human" & unique_id_2_std == "human") %>%
-  group_by(stimuli) %>%
+  group_by(ID) %>%
   summarise(
     unique_id_1 = first(unique_id_1_std),
     unique_id_2 = first(unique_id_2_std),
     similarity = mean(similarity, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  select(stimuli, unique_id_1, unique_id_2, similarity)
+  select(ID, unique_id_1, unique_id_2, similarity)
 
 # Step 3: Non-human → non-human (keep original)
 nonhuman_to_nonhuman <- pairwise_sim %>%
   filter(unique_id_1_std != "human" & unique_id_2_std != "human") %>%
-  select(stimuli, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, similarity)
+  select(ID, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, similarity)
 
 # Step 4: Combine all into a single table
 final_pairwise_sim <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhuman_to_nonhuman)
@@ -256,7 +266,7 @@ final_pairwise_sim <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhu
 # Optional: remove duplicates in case any exist (e.g., A–B vs B–A)
 final_pairwise_sim <- final_pairwise_sim %>%
   mutate(pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")) %>%
-  distinct(stimuli, pair_id, .keep_all = TRUE) %>%
+  distinct(ID, pair_id, .keep_all = TRUE) %>%
   select(-pair_id)
 ```
 
@@ -276,7 +286,6 @@ avg_pairwise_sim <- final_pairwise_sim %>%
   # Reorder u2 so that "human" is last (at the bottom)
   mutate(u2 = factor(u2, levels = c(sort(setdiff(unique(u2), "human")), "human")))
 
-avg_pairwise_cos
 
 # Plot heatmap with human at top
 ggplot(avg_pairwise_sim, aes(x = u1, y = u2, fill = avg_similarity)) +
@@ -323,9 +332,9 @@ df_analysis <- final_pairwise_sim %>%
   )
 
 # overall
-model<-lmer(similarity~pair_type + (1|stimuli), df_analysis)
+model<-lmer(similarity~pair_type + (1|ID), df_analysis)
 # each model
-model2<-lmer(similarity~pair_model + (1|stimuli), df_analysis)
+model2<-lmer(similarity~pair_model + (1|ID), df_analysis)
 tab_model(model,model2)
 ```
 
@@ -334,7 +343,7 @@ tab_model(model,model2)
 ```{r}
 # Compute pairwise differences using only the 'Disgust' column
 pairwise_dist <- df_wide %>%
-  group_by(stimuli) %>%
+  group_by(ID) %>%
   do({
     ids <- .$unique_id
     values <- .$Disgust  # numeric column
@@ -381,7 +390,7 @@ for(em in emotions){
   
   # Step 1: Pairwise differences=============================================
   pairwise_dist <- df_wide %>%
-    group_by(stimuli) %>%
+    group_by(ID) %>%
     do({
       ids <- .$unique_id
       values <- .[[em]]  
@@ -412,7 +421,7 @@ for(em in emotions){
     filter((unique_id_1_std == "human" & unique_id_2_std != "human") |
            (unique_id_2_std == "human" & unique_id_1_std != "human")) %>%
     mutate(non_human_id = ifelse(unique_id_1_std == "human", unique_id_2_std, unique_id_1_std)) %>%
-    group_by(stimuli, non_human_id) %>%
+    group_by(ID, non_human_id) %>%
     summarise(
       unique_id_1 = first(unique_id_1_std),
       unique_id_2 = first(unique_id_2_std),
@@ -420,11 +429,11 @@ for(em in emotions){
       emotion = first(emotion),
       .groups = "drop"
     ) %>%
-    select(stimuli, unique_id_1, unique_id_2, distance, emotion)
+    select(ID, unique_id_1, unique_id_2, distance, emotion)
   
   human_to_human_avg <- pairwise_dist %>%
     filter(unique_id_1_std == "human" & unique_id_2_std == "human") %>%
-    group_by(stimuli) %>%
+    group_by(ID) %>%
     summarise(
       unique_id_1 = first(unique_id_1_std),
       unique_id_2 = first(unique_id_2_std),
@@ -435,12 +444,12 @@ for(em in emotions){
   
   nonhuman_to_nonhuman <- pairwise_dist %>%
     filter(unique_id_1_std != "human" & unique_id_2_std != "human") %>%
-    select(stimuli, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, distance) %>%
+    select(ID, unique_id_1 = unique_id_1_std, unique_id_2 = unique_id_2_std, distance) %>%
     mutate(emotion = em)
   
   final_pairwise_dist <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhuman_to_nonhuman) %>%
     mutate(pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")) %>%
-    distinct(stimuli, pair_id, .keep_all = TRUE) %>%
+    distinct(ID, pair_id, .keep_all = TRUE) %>%
     select(-pair_id)
   
   # Store results
@@ -460,8 +469,8 @@ for(em in emotions){
     mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")),
            pair_model = factor(pair_model))
   
-  model <- lmer(distance ~ pair_type + (1|stimuli), df_analysis)
-  model2 <- lmer(distance ~ pair_model + (1|stimuli), df_analysis)
+  model <- lmer(distance ~ pair_type + (1|ID), df_analysis)
+  model2 <- lmer(distance ~ pair_model + (1|ID), df_analysis)
   
   all_models[[em]] <- list(model=model, model2=model2)
   # Extract coefficients with broom.mixed::tidy()
@@ -526,18 +535,21 @@ ggplot(combined_avg, aes(x = u1, y = u2, fill = avg_distance)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
-```{r}
+```{r,eval=F}
 # correlation across stimuli 
 combined_pairwise <- bind_rows(all_pairwise)
+
 # Pivot to wide format: each row = stimulus, columns = pairs
 pair_matrix <- combined_pairwise %>%
-  mutate(pair = paste(id_1, id_2, sep = "_")) %>%
-  select(stimuli, pair, sim) %>%
-  pivot_wider(names_from = pair, values_from = sim, values_fill = list(sim = NA))
+  mutate(pair = paste(unique_id_1, unique_id_2, sep = "_")) %>%
+  select(ID, pair, distance,emotion) %>%
+  group_by(ID, pair,emotion) %>% 
+  summarise(distance = mean(distance),.groups = "drop") %>% 
+  pivot_wider(names_from = pair, values_from = distance, values_fill = list(distance = NA))
 
 # Convert to numeric matrix
 stim_matrix <- as.matrix(pair_matrix[,-1])
-rownames(stim_matrix) <- pair_matrix$stimuli
+rownames(stim_matrix) <- pair_matrix$ID
 # Correlation between rows (stimuli) based on all pairs
 cor_matrix <- cor(t(stim_matrix), use = "pairwise.complete.obs")
 
@@ -552,8 +564,6 @@ ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
   labs(title = "Correlation Across Stimuli (All Pairs)",
        x = "Stimulus",
        y = "Stimulus")
-
-
 ```
 
 # Do emotion predict enforcement?
@@ -562,10 +572,10 @@ ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
 approach <- c("Inform authority", "Inform the authorities, such as the police",
                       "Physical confrontation", "Verbal confrontation", 
                       "Verbal reprimand / verbal confrontation")
-avoidance <- c("Gossip", "Gossip about / discuss with / complain to others informally",
-                      "Stay away","Do nothing" ,"Stay away or keep a distance from the actor","Celebrate / praise", "Praise", "Support", "Support the actor")
+avoidance <- c("Gossip", "Gossip about / discuss with / complain to others informally","Stay away","Do nothing" ,"Stay away or keep a distance from the actor","Celebrate / praise", "Praise", "Support", "Support the actor")
 
-df <- df %>%
+
+df_action <- df %>%
   mutate(across(c(friends_reaction, strangers_reaction, acquaintances_reaction),
                 ~ case_when(
                   .x %in% approach ~ "approach",
@@ -579,18 +589,18 @@ df <- df %>%
 ```
 
 ```{r}
-models<- list(friends_approach_reaction=df %>% 
-  filter(emotion == "Disgust",
+models<- list(friends_approach_reaction=df_action %>% 
+  filter(emotion == "Contempt",
          emotion_type == "emotion_friend") %>%
   glm(friends_reaction_binary ~ strength_value*rater,
         data = ., family = binomial),
- acquaintances_approach_reaction=df %>% 
-  filter(emotion == "Disgust",
+ acquaintances_approach_reaction=df_action %>% 
+  filter(emotion == "Contempt",
          emotion_type == "emotion_acquaintance") %>%
   glm(acquaintances_reaction_binary ~ strength_value*rater,
         data = ., family = binomial),
- strangers_approach_reaction=df %>% 
-  filter(emotion == "Disgust",
+ strangers_approach_reaction=df_action %>% 
+  filter(emotion == "Contempt",
          emotion_type == "emotion_stranger") %>%
   glm(strangers_reaction_binary ~ strength_value*rater,
         data = ., family = binomial))
@@ -642,7 +652,7 @@ ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill
   facet_wrap(~ outcome) +
   scale_fill_manual(values = c("orange","skyblue")) +
   scale_color_manual(values = c("orange","skyblue")) +
-  labs(x = "Disgust Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
+  labs(x = "Contempt Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
   theme_classic()
 
 
