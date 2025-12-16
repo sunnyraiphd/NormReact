@@ -1,3 +1,10 @@
 normgrading/
 deepseek_key.env
 openai_key.env
+.DS_Store
+.DS_Store
+human/.DS_Store
+human/.Rhistory
+human/.DS_Store
+human/data/df_all_long.csv
+human/data/df_all_long_updated.csv
