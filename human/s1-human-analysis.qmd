@@ -53,8 +53,8 @@ table1(~ gender + as.numeric(age)+race,data=distinct(df,id,.keep_all = TRUE))
 ## Descriptive stat table (TBD)
 
 ```{r}
-#table1(~ emotion | actor_gender+emo_type,df)
-#table1(~ strength_value |emotion+actor_gender,filter(df, emo_type == "emotion_actor"))
+table1(~ emotion | emo_type,df)
+table1(~ emotion |actor_gender,filter(df, emo_type == "emotion_actor"))
 ```
 
 # Descriptive plots & analysis 
