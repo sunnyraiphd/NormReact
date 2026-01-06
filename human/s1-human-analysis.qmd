@@ -40,10 +40,6 @@ mycolor=c("gray","#756bb1", "#fdae6b")
 wide<-read.csv( "data/human-wide.csv")
 long<-read.csv( "data/human-long.csv")
 df<-long %>% filter(strength_value>0)
-all<-read.csv( "data/df_all_long_updated.csv") %>% 
-  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
-  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
-  mutate(ID=as.factor(ID))
 ```
 
 # descriptive table
@@ -594,6 +590,14 @@ item_emotion_strength
 
 # ICC
 
+```{r}
+df_all<-read.csv( "data/df_all_long_updated.csv") %>% 
+  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
+  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
+  mutate(ID=as.factor(ID)) %>% 
+  filter(rater == "human")
+```
+
 For continuous behavior follow linear distribution
 
 $$
@@ -606,7 +610,7 @@ $$
 ICC_{\text{behavior}} = \frac{\sigma^2_{\text{behavior}}}{\sigma^2_{\text{behavior}} + \sigma^2_{\text{rater}} + \pi^2/3}
 $$
 
-```{r}
+```{r,eval=F}
 #ICC = 0.05 → Only 5% of rating variance is due to systematic differences between behaviors; raters largely disagree or interpret scales differently.
 icc_emotion <- long %>%
   # sensitivity test for binary coding
@@ -658,10 +662,72 @@ ggplot(icc_emotion, aes(x = emotion, y = ICC, fill = emo_type)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
+```{r using all}
+#ICC = 0.05 → Only 5% of rating variance is due to systematic differences between behaviors; raters largely disagree or interpret scales differently.
+icc_emotion <- df_all %>%
+  # binary sensitivity coding
+  mutate(strength_value_bi = ifelse(strength_value == 0, 0, 1)) %>%
+  group_by(emotion, emotion_type) %>%
+  group_modify(~ {
+    data_sub <- .x
 
+    m <- tryCatch(
+      glmer(
+        strength_value_bi ~ 1 +
+          (1 | ID) +            # behavior-level variance (vignette ID)
+          (1 | unique_id),      # rater-level variance
+        data = data_sub,
+        family = binomial
+      ),
+      error = function(e) NULL
+    )
+
+    if (is.null(m)) {
+      return(tibble(ICC = NA_real_))
+    }
+
+    v <- as.data.frame(VarCorr(m))
+
+    sigma_b <- v[v$grp == "ID", "vcov"]
+    sigma_r <- v[v$grp == "unique_id", "vcov"]
+
+    # logistic residual variance
+    sigma_e <- (pi^2) / 3
+
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+icc_emotion %>%
+  pivot_wider(names_from = emotion, values_from = ICC) %>%
+  nice_table(.)
+
+ggplot(icc_emotion, aes(x = emotion, y = ICC, fill = emotion_type)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_hline(yintercept = c(0.2, 0.5, 0.75),
+             linetype = "dashed", color = "gray50") +
+  annotate("text", x = Inf, y = 0.2, label = "Fair",
+           hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.5, label = "Good",
+           hjust = 1.1, vjust = -0.2, color = "gray50") +
+  annotate("text", x = Inf, y = 0.75, label = "Excellent",
+           hjust = 1.1, vjust = -0.2, color = "gray50") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Inter-rater Reliability by Emotion and Agent Type",
+    x = "Emotion",
+    y = "Intra-class Correlation (ICC)",
+    fill = "Emotion Type"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
 ## action - would/should
 
-```{r}
+```{r, eval=f}
 action_vars <- c("stran_act", "acq_act", "friend_act")
 action_vars <- c("stran_act_should", "acq_act_should", "friend_act_should")
 
@@ -708,9 +774,88 @@ icc_act <- act_long %>%
 icc_act %>% 
   pivot_wider(names_from = category, values_from = ICC) %>%
   nice_table(.)
+
 ```
 
 ```{r}
+action_vars <- c(
+  "strangers_reaction",
+  "acquaintances_reaction",
+  "friends_reaction"
+)
+
+
+library(dplyr)
+library(tidyr)
+
+act_long <- all %>%
+  select(unique_id, ID, all_of(action_vars)) %>%
+  
+  pivot_longer(
+    cols = all_of(action_vars),
+    names_to = "actor_type_raw",
+    values_to = "action"
+  ) %>%
+  distinct() %>% 
+  mutate(
+    actor_type = case_when(
+      actor_type_raw == "strangers_reaction"     ~ "stranger",
+      actor_type_raw == "acquaintances_reaction" ~ "acquaintance",
+      actor_type_raw == "friends_reaction"       ~ "friend"
+    ),
+    action_value = 1
+  ) %>%
+  select(-actor_type_raw) %>%
+  pivot_wider(
+    names_from = action,
+    values_from = action_value,
+    values_fill = 0
+  )
+
+icc_act <- act_long %>%
+  pivot_longer(
+    cols = -c(unique_id, ID, actor_type),
+    names_to = "category",
+    values_to = "value"
+  ) %>%
+  group_by(actor_type, category) %>%
+  group_modify(~ {
+    data_sub <- .x
+
+    m <- tryCatch(
+      glmer(
+        value ~ 1 +
+          (1 | ID) +            # vignette-level variance
+          (1 | unique_id),      # rater-level variance
+        data = data_sub,
+        family = binomial
+      ),
+      error = function(e) NULL
+    )
+
+    if (is.null(m)) {
+      return(tibble(ICC = NA_real_))
+    }
+
+    v <- as.data.frame(VarCorr(m))
+
+    sigma_b <- v[v$grp == "ID", "vcov"]
+    sigma_r <- v[v$grp == "unique_id", "vcov"]
+
+    # residual variance for logit link
+    sigma_e <- (pi^2) / 3
+
+    ICC <- sigma_b / (sigma_b + sigma_r + sigma_e)
+
+    tibble(ICC = ICC)
+  }) %>%
+  ungroup()
+
+
+icc_act %>%
+  pivot_wider(names_from = category, values_from = ICC) %>%
+  nice_table(.)
+
 # plot 
 ggplot(icc_act, aes(x = category, y = ICC, fill = actor_type)) +
   geom_bar(stat = "identity", position = position_dodge()) +
@@ -728,6 +873,21 @@ ggplot(icc_act, aes(x = category, y = ICC, fill = actor_type)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
+```{r}
+# actor types OK?
+count(act_long, actor_type)
+
+# base rates per category (detect degenerate ICCs)
+act_long %>%
+  pivot_longer(
+    cols = -c(unique_id, ID, actor_type),
+    names_to = "category",
+    values_to = "value"
+  ) %>%
+  group_by(actor_type, category) %>%
+  summarise(p = mean(value), .groups = "drop")
+
+```
 
 
 
