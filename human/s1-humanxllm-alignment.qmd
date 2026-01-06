@@ -164,8 +164,8 @@ ggplot(human_cor_list, aes(x = LLM, y = emotion_type, fill = Correlation)) +
 
 ```
 
-
-#  similarity measure  - euclidean distance
+# emotion alignment
+##  pairwise comparison- emotion  - euclidean distance
 ```{r}
 # --- compute pairwise similarities
 df_wide <- df %>%
@@ -173,12 +173,13 @@ df_wide <- df %>%
   #filter(emotion_type == "emotion_acquaintance") %>% 
   #filter(emotion_type == "emotion_stranger") %>% 
   filter(emotion_type == "emotion_actor") %>% 
-  select(ID, rater, unique_id, emotion, strength_value,emotion_type) %>% 
-  group_by(ID, rater, unique_id, emotion,emotion_type) %>% 
+  select(ID, stimuli,rater, unique_id, emotion, strength_value,emotion_type) %>% 
+  group_by(ID,stimuli,rater, unique_id, emotion,emotion_type) %>% 
   summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop") %>% 
-  pivot_wider(id_cols = c(unique_id,ID,rater),
+  pivot_wider(id_cols = c(unique_id,ID,rater,stimuli),
     names_from = emotion, values_from = strength_value) %>% 
   arrange(ID, unique_id) %>% 
+  select(-stimuli) %>% 
   mutate(across(Pride:Compassion, as.numeric))
 ```
 
@@ -211,7 +212,7 @@ pairwise_sim
 ```
 
 ```{r}
-# Compute average cosine similarity of each non-human ID to humans
+# Compute average  similarity of each non-human ID to humans
 avg_sim_to_human <- pairwise_sim %>%
   # Keep only pairs where one side is human and the other is non-human
   filter(
@@ -263,7 +264,7 @@ nonhuman_to_nonhuman <- pairwise_sim %>%
 # Step 4: Combine all into a single table
 final_pairwise_sim <- bind_rows(nonhuman_to_human_avg, human_to_human_avg, nonhuman_to_nonhuman)
 
-# Optional: remove duplicates in case any exist (e.g., A–B vs B–A)
+# remove duplicates in case any exist (e.g., A–B vs B–A)
 final_pairwise_sim <- final_pairwise_sim %>%
   mutate(pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")) %>%
   distinct(ID, pair_id, .keep_all = TRUE) %>%
@@ -338,7 +339,7 @@ model2<-lmer(similarity~pair_model + (1|ID), df_analysis)
 tab_model(model,model2)
 ```
 
-# similarity for each emotions
+## similarity for each emotions
 
 ```{r}
 # Compute pairwise differences using only the 'Disgust' column
@@ -566,6 +567,186 @@ ggplot(cor_melt, aes(x = Stimulus1, y = Stimulus2, fill = Correlation)) +
        y = "Stimulus")
 ```
 
+
+# action alignment
+
+## pariwise comparison
+```{r}
+# -----------------------------
+# 1. Select relevant action variables
+# -----------------------------
+action_vars <- c(
+  "strangers_reaction",
+  "acquaintances_reaction",
+  "friends_reaction",
+  "strangers_reaction_should",
+  "acquaintances_reaction_should",
+  "friends_reaction_should"
+)
+
+df_action <- df %>%
+  select(unique_id, ID, all_of(action_vars)) %>%
+  distinct()
+
+# -----------------------------
+# 2. Reshape into long format
+# -----------------------------
+df_action_long <- df_action %>%
+  pivot_longer(
+    cols = -c(unique_id, ID),
+    names_to = "action_var",
+    values_to = "choice"
+  ) %>%
+  mutate(
+    # identify social distance
+    social_distance = case_when(
+      grepl("strangers", action_var) ~ "stranger",
+      grepl("acquaintances", action_var) ~ "acquaintance",
+      grepl("friends", action_var) ~ "friend"
+    ),
+    # identify action type
+    action_type = ifelse(
+      grepl("_should$", action_var),
+      "should",
+      "would"
+    )
+  ) %>%
+  select(unique_id, ID, social_distance, action_type, choice) %>% 
+  #recode
+   mutate(
+    choice = case_when(
+      choice %in% c("Celebrate / praise","Praise") ~ "Praise",
+      choice %in% c("Do nothing") ~ "Do nothing",
+      choice %in% c("Gossip", "Gossip about / discuss with / complain to others informally") ~ "Gossip",
+      choice %in% c("Inform authority", "Inform the authorities, such as the police") ~ "Inform authority",
+      choice %in% c("Physical confrontation") ~ "Physical confrontation",
+      choice %in% c("Stay away", "Stay away or keep a distance from the actor") ~ "Stay away",
+      choice %in% c("Support", "Support the actor") ~ "Support",
+      choice %in% c("Verbal confrontation", "Verbal reprimand / verbal confrontation") ~ "Verbal confrontation",
+      TRUE ~ choice  # leave any others unchanged
+    )
+  ) %>% 
+  # drop 18 missing 
+  filter(!is.na(choice))
+
+# -----------------------------
+# 3. Compute pairwise choice agreement (0/1)
+# -----------------------------
+pairwise_action_sim <- df_action_long %>%
+  group_by(ID, social_distance, action_type) %>%
+  group_modify(~{
+    dat <- .x
+    # all unique pairs of agents
+    pairs <- combn(seq_len(nrow(dat)), 2, simplify = FALSE)
+    map_dfr(pairs, function(idx) {
+      a <- dat[idx[1], ]
+      b <- dat[idx[2], ]
+      tibble(
+        unique_id_1 = a$unique_id,
+        unique_id_2 = b$unique_id,
+        agreement = as.integer(a$choice == b$choice)
+      )
+    })
+  }) %>%
+  ungroup() %>%
+  mutate(
+    # standardize human IDs
+    unique_id_1_std = ifelse(startsWith(unique_id_1, "human"), "human", unique_id_1),
+    unique_id_2_std = ifelse(startsWith(unique_id_2, "human"), "human", unique_id_2),
+    # classify pair type
+    pair_type = case_when(
+      unique_id_1_std == "human" & unique_id_2_std == "human" ~ "human_human",
+      unique_id_1_std == "human" | unique_id_2_std == "human" ~ "LLM_human",
+      TRUE ~ "LLM_LLM"
+    ),
+    # order-invariant pair ID
+    pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")
+  ) %>%
+  distinct(ID, social_distance, action_type, pair_id, .keep_all = TRUE)
+
+# -----------------------------
+# 4. Function to fit logistic mixed-effects model per condition
+# -----------------------------
+fit_action_model <- function(data, distance, action) {
+  dat <- data %>%
+    filter(
+      social_distance == distance,
+      action_type == action,
+      pair_type != "LLM_LLM" # exclude LLM–LLM
+    ) %>%
+    mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")))
+  
+  glmer(
+    agreement ~ pair_type + (1 | ID),
+    data = dat,
+    family = binomial
+  )
+}
+
+# -----------------------------
+# 5. Fit models for each social distance × action type
+# -----------------------------
+models_action <- list(
+  stranger_would = fit_action_model(pairwise_action_sim, "stranger", "would"),
+  stranger_should = fit_action_model(pairwise_action_sim, "stranger", "should"),
+  acquaintance_would = fit_action_model(pairwise_action_sim, "acquaintance", "would"),
+  acquaintance_should = fit_action_model(pairwise_action_sim, "acquaintance", "should"),
+  friend_would = fit_action_model(pairwise_action_sim, "friend", "would"),
+  friend_should = fit_action_model(pairwise_action_sim, "friend", "should")
+)
+
+# -----------------------------
+# 6. Extract results in tidy format
+# -----------------------------
+action_results <- purrr::imap_dfr(
+  models_action,
+  ~ tidy(.x, effects = "fixed") %>%
+      filter(term == "pair_typeLLM_human") %>%
+      mutate(
+        condition = .y,
+        odds_ratio = exp(estimate)
+      )
+)
+
+action_results
+
+# -----------------------------
+# 7. Optional: Descriptive agreement rates
+# -----------------------------
+agreement_rates <- pairwise_action_sim %>%
+  filter(pair_type != "LLM_LLM") %>%
+  group_by(social_distance, action_type, pair_type) %>%
+  summarise(
+    agreement_rate = mean(agreement),
+    .groups = "drop"
+  )
+
+agreement_rates
+```
+```{r}
+# Reorder factors for nicer plotting
+df_agreement <- agreement_rates %>%
+  mutate(
+    social_distance = factor(social_distance, levels = c("stranger", "acquaintance", "friend")),
+    action_type = factor(action_type, levels = c("would", "should")),
+    pair_type = factor(pair_type, levels = c("human_human", "LLM_human"))
+  )
+
+library(RColorBrewer)
+
+ggplot(df_agreement, aes(x = pair_type, y = social_distance, fill = agreement_rate)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = scales::percent(agreement_rate, accuracy = 1)), color = "black") +
+  facet_wrap(~action_type) +
+  scale_fill_distiller(palette = "Blues", direction = 1, name = "Agreement Rate") +
+  labs(
+    title = "",
+    x = "Pair Type",
+    y = "Social Distance"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
 # Do emotion predict enforcement?
 
 ```{r}
@@ -588,73 +769,161 @@ df_action <- df %>%
                 .names = "{.col}_binary"))
 ```
 
-```{r}
-models<- list(friends_approach_reaction=df_action %>% 
-  filter(emotion == "Contempt",
-         emotion_type == "emotion_friend") %>%
-  glm(friends_reaction_binary ~ strength_value*rater,
-        data = ., family = binomial),
- acquaintances_approach_reaction=df_action %>% 
-  filter(emotion == "Contempt",
-         emotion_type == "emotion_acquaintance") %>%
-  glm(acquaintances_reaction_binary ~ strength_value*rater,
-        data = ., family = binomial),
- strangers_approach_reaction=df_action %>% 
-  filter(emotion == "Contempt",
-         emotion_type == "emotion_stranger") %>%
-  glm(strangers_reaction_binary ~ strength_value*rater,
-        data = ., family = binomial))
 
-sjPlot::tab_model(
-  models$friends_approach_reaction,
-  models$acquaintances_approach_reaction,
-  models$strangers_approach_reaction,
-  show.se = FALSE,
- # transform = NULL,
-  dv.labels = names(models)
+```{r}
+# -----------------------------
+# 2. Function to fit model safely
+# -----------------------------
+fit_model_safe <- function(df, outcome_col) {
+  # Check if outcome has both 0 and 1
+  if(length(unique(na.omit(df[[outcome_col]]))) < 2) return(NULL)
+  glm(as.formula(paste0(outcome_col, " ~ strength_value * rater")), 
+      data = df, family = binomial)
+}
+
+# -----------------------------
+# 3. Fit models for all emotion x emotion_type x social distance
+# -----------------------------
+# Define combinations
+combinations <- expand.grid(
+  emotion = unique(df_action$emotion),
+  emotion_type = unique(df_action$emotion_type),
+  stringsAsFactors = FALSE
 )
 
-#Plot all models dynamically
-plot_summs(models,
-           legend.title = "Dependent variables",
-           model.names = names(models)
-           )
+# Fit models dynamically
+models <- pmap(
+  combinations,
+  function(emotion, emotion_type) {
+    # Determine which column to model based on emotion_type
+    outcome_col <- case_when(
+      emotion_type == "emotion_friend" ~ "friends_reaction_binary",
+      emotion_type == "emotion_acquaintance" ~ "acquaintances_reaction_binary",
+      emotion_type == "emotion_stranger" ~ "strangers_reaction_binary"
+    )
+    
+    df_sub <- df_action %>%
+      filter(emotion == !!emotion, emotion_type == !!emotion_type)
+    
+    model <- fit_model_safe(df_sub, outcome_col)
+    
+    list(emotion = emotion,
+         emotion_type = emotion_type,
+         model = model)
+  }
+)
 
-# Generate predicted values for the interaction
-pred_list <- lapply(names(models), function(name) {
-  model <- models[[name]]
+# Remove NULLs (cases with only 0 or 1)
+models <- keep(models, ~ !is.null(.x$model))
+```
+
+```{r}
+library(dplyr)
+library(broom)
+library(purrr)
+
+# Extract glm objects if nested
+models_clean <- map(models, ~ if(is.list(.x) && "model" %in% names(.x)) .x$model else .x)
+
+# Remove NULLs
+models_clean <- keep(models_clean, ~ !is.null(.x))
+
+# Extract tidy results
+model_results <- imap_dfr(models_clean, ~ {
+  tidy(.x) %>%
+    mutate(
+      model_name = .y,
+      odds_ratio = exp(estimate)
+    )
+})
+
+# Round numbers for readability
+model_results <- model_results %>%
+  select(model_name, term, estimate, std.error, statistic, p.value, odds_ratio) %>%
+  mutate(
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 2),
+    p.value = signif(p.value, 3),
+    odds_ratio = round(odds_ratio, 2)
+  )
+
+# Generate LaTeX table using knitr
+#knitr::kable(
+#  model_results,
+#  format = "latex",
+#  booktabs = TRUE,
+#  caption = "GLM model results for approach/avoidance reactions by emotion and social distance",
+#  col.names = c("Model", "Term", "Estimate", "SE", "Z", "p", "Odds Ratio")
+#)
+```
+
+
+
+```{r}
+# -----------------------------
+# 4. Generate predicted probabilities
+# -----------------------------
+pred_list <- lapply(models, function(x) {
+  model <- x$model
+  if(is.null(model)) return(NULL)
   
-  # Create all combinations
   newdata <- expand.grid(
     strength_value = 0:4,
     rater = unique(model$data$rater)
   )
   
-  # Get predicted probabilities
   newdata$predicted <- predict(model, newdata, type = "response")
-  
-  # Get confidence intervals
   pred_link <- predict(model, newdata, type = "link", se.fit = TRUE)
   newdata$conf.low <- plogis(pred_link$fit - 1.96 * pred_link$se.fit)
   newdata$conf.high <- plogis(pred_link$fit + 1.96 * pred_link$se.fit)
-  
-  newdata$outcome <- name
+  newdata$emotion <- x$emotion
+  newdata$emotion_type <- x$emotion_type
   return(newdata)
 })
 
-# Combine
 pred_combined <- bind_rows(pred_list)
 
-# Plot
-ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill = rater)) +
-  geom_line(size = 1.2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
-  facet_wrap(~ outcome) +
-  scale_fill_manual(values = c("orange","skyblue")) +
-  scale_color_manual(values = c("orange","skyblue")) +
-  labs(x = "Contempt Strength", y = "Predicted Probability of Approach Reaction", color = "Rater", fill = "Rater") +
-  theme_classic()
+# -----------------------------
+# 5. Plot predicted probabilities dynamically
+# -----------------------------
+library(grid)
+# Optional: abbreviate emotion names to save space
+pred_combined <- pred_combined %>%
+  mutate(emotion_type= abbreviate(sub(".*_", "", emotion_type),minlength = 4),
+    emotion_short = abbreviate(emotion, minlength = 4))
 
+ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill = rater)) +
+  geom_line(size = 1.5) +                       # thicker lines
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.25, color = NA) +
+  facet_grid(emotion_type ~ emotion_short, scales = "free_y", switch = "y") + # emotions in columns, types in rows
+  scale_fill_manual(values = c("orange", "skyblue")) +
+  scale_color_manual(values = c("orange", "skyblue")) +
+  labs(
+    x = "Emotion Strength",
+    y = "Predicted Probability of Approach",
+    color = "Rater",
+    fill = "Rater"
+  ) +
+  theme_classic(base_size = 14) +               # much bigger text
+  theme(
+    strip.text = element_text(size = 12, face = "bold"),  # facet labels
+    axis.text.x = element_text(size = 12, angle = 30, hjust = 1),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.position = "bottom",
+    legend.key.width = unit(1.5, "cm"),
+    legend.key.height = unit(0.8, "cm"),
+    panel.spacing = unit(0.2, "lines"),        # less empty space between facets
+    strip.background = element_rect(fill = "gray95"),
+    plot.margin = margin(5, 5, 5, 5)           # minimize outer margins
+  ) +
+  guides(
+    color = guide_legend(nrow = 1, byrow = TRUE),
+    fill = guide_legend(nrow = 1, byrow = TRUE)
+  )
 
 ```
 

@@ -725,9 +725,10 @@ ggplot(icc_emotion, aes(x = emotion, y = ICC, fill = emotion_type)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+
 ## action - would/should
 
-```{r, eval=f}
+```{r, eval=F}
 action_vars <- c("stran_act", "acq_act", "friend_act")
 action_vars <- c("stran_act_should", "acq_act_should", "friend_act_should")
 
@@ -777,16 +778,12 @@ icc_act %>%
 
 ```
 
-```{r}
+```{r use all data}
 action_vars <- c(
   "strangers_reaction",
   "acquaintances_reaction",
   "friends_reaction"
 )
-
-
-library(dplyr)
-library(tidyr)
 
 act_long <- all %>%
   select(unique_id, ID, all_of(action_vars)) %>%
