@@ -39,7 +39,24 @@ set.seed(111)
 df<-read.csv( "data/df_all_long_updated.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
   mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
-  mutate(ID=as.factor(ID))
+  mutate(ID=as.factor(ID)) %>% 
+  mutate(
+  across(
+    ends_with(c("_reaction", "_reaction_should")),
+    ~ case_when(
+      .x %in% c("Celebrate / praise", "Praise") ~ "Praise",
+      .x %in% c("Do nothing") ~ "Do nothing",
+      .x %in% c("Gossip", "Gossip about / discuss with / complain to others informally") ~ "Gossip",
+      .x %in% c("Inform authority", "Inform the authorities, such as the police") ~ "Inform authority",
+      .x %in% c("Physical confrontation") ~ "Physical confrontation",
+      .x %in% c("Stay away", "Stay away or keep a distance from the actor") ~ "Stay away",
+      .x %in% c("Support", "Support the actor") ~ "Support",
+      .x %in% c("Verbal confrontation", "Verbal reprimand / verbal confrontation") ~ "Verbal confrontation",
+      TRUE ~ .x
+    )
+  )
+) 
+  
 ```
 
 # violin plot with individual response jitter for llm and human
@@ -612,20 +629,6 @@ df_action_long <- df_action %>%
     )
   ) %>%
   select(unique_id, ID, social_distance, action_type, choice) %>% 
-  #recode
-   mutate(
-    choice = case_when(
-      choice %in% c("Celebrate / praise","Praise") ~ "Praise",
-      choice %in% c("Do nothing") ~ "Do nothing",
-      choice %in% c("Gossip", "Gossip about / discuss with / complain to others informally") ~ "Gossip",
-      choice %in% c("Inform authority", "Inform the authorities, such as the police") ~ "Inform authority",
-      choice %in% c("Physical confrontation") ~ "Physical confrontation",
-      choice %in% c("Stay away", "Stay away or keep a distance from the actor") ~ "Stay away",
-      choice %in% c("Support", "Support the actor") ~ "Support",
-      choice %in% c("Verbal confrontation", "Verbal reprimand / verbal confrontation") ~ "Verbal confrontation",
-      TRUE ~ choice  # leave any others unchanged
-    )
-  ) %>% 
   # drop 18 missing 
   filter(!is.na(choice))
 
@@ -750,10 +753,248 @@ ggplot(df_agreement, aes(x = pair_type, y = social_distance, fill = agreement_ra
 # Do emotion predict enforcement?
 
 ```{r}
-approach <- c("Inform authority", "Inform the authorities, such as the police",
-                      "Physical confrontation", "Verbal confrontation", 
-                      "Verbal reprimand / verbal confrontation")
-avoidance <- c("Gossip", "Gossip about / discuss with / complain to others informally","Stay away","Do nothing" ,"Stay away or keep a distance from the actor","Celebrate / praise", "Praise", "Support", "Support the actor")
+actions <- c(
+  "do_nothing",
+  "physical_confrontation",
+  "verbal_confrontation",
+  "inform_authority",
+  "gossip",
+  "stay_away",
+  "praise",
+  "support"
+)
+
+# flat all action to binary
+df_action <- df %>%
+  mutate(
+    across(
+      c(friends_reaction, strangers_reaction, acquaintances_reaction),
+      .fns = setNames(
+        lapply(actions, function(a) {
+          function(x) as.integer(x == a)
+        }),
+        paste0("is_", gsub(" ", "_", tolower(actions)))
+      ),
+      .names = "{.col}_{.fn}"
+    )
+  ) %>% 
+  filter(emotion_type!="emotion_actor") %>% 
+  rename_with(
+    ~ gsub(" ", "_", tolower(.x)),
+    contains("_reaction_is_")
+  )
+
+action_map <- tibble::tibble(
+  action_label = c(
+    "Do nothing",
+    "Physical confrontation",
+    "Verbal confrontation",
+    "Inform authority",
+    "Gossip",
+    "Stay away",
+    "Praise",
+    "Support"
+  ),
+  action = gsub(" ", "_", tolower(action_label))
+)
+
+combinations <- tidyr::expand_grid(
+  emotion = unique(df_action$emotion),
+  emotion_type = unique(df_action$emotion_type),
+  action = action_map$action
+) %>% 
+  filter(emotion_type!="emotion_actor")
+```
+
+```{r}
+fit_model_safe <- function(df, outcome_col) {
+  # Check if outcome has both 0 and 1
+  if(length(unique(na.omit(df[[outcome_col]]))) < 2) return(NULL)
+  glm(as.formula(paste0(outcome_col, " ~ strength_value * rater")), 
+      data = df, family = binomial)
+}
+
+models <- pmap(
+  combinations,
+  function(emotion, emotion_type, action) {
+
+    outcome_col <- case_when(
+      emotion_type == "emotion_friend" ~
+        paste0("friends_reaction_is_", action),
+      emotion_type == "emotion_acquaintance" ~
+        paste0("acquaintances_reaction_is_", action),
+      emotion_type == "emotion_stranger" ~
+        paste0("strangers_reaction_is_", action)
+    )
+
+    df_sub <- df_action %>%
+      filter(emotion == !!emotion,
+             emotion_type == !!emotion_type)
+
+    model <- fit_model_safe(df_sub, outcome_col)
+
+    list(
+      emotion = emotion,
+      emotion_type = emotion_type,
+      action = action,
+      outcome = outcome_col,
+      model = model
+    )
+  }
+)
+
+# Remove NULL models
+models <- keep(models, ~ !is.null(.x$model))
+```
+
+```{r}
+library(broom)
+library(purrr)
+library(dplyr)
+
+models_clean <- map(models, "model")
+
+model_results <- map_dfr(models, function(x) {
+
+  tidy_df <- tidy(x$model)
+  if (nrow(tidy_df) == 0) return(NULL)
+
+  tidy_df %>%
+    mutate(
+      emotion = x$emotion,
+      emotion_type = x$emotion_type,
+      action = x$action,
+      odds_ratio = exp(estimate)
+    )
+})
+
+```
+
+```{r}
+# Extract glm objects if nested
+models_clean <- map(models, ~ if(is.list(.x) && "model" %in% names(.x)) .x$model else .x)
+
+# Remove NULLs
+models_clean <- keep(models_clean, ~ !is.null(.x))
+
+# Extract tidy results
+model_results <- imap_dfr(models_clean, ~ {
+  tidy(.x) %>%
+    mutate(
+      model_name = .y,
+      odds_ratio = exp(estimate)
+    )
+})
+
+# Round numbers for readability
+model_results <- model_results %>%
+  select(model_name, term, estimate, std.error, statistic, p.value, odds_ratio) %>%
+  mutate(
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 2),
+    p.value = signif(p.value, 3),
+    odds_ratio = round(odds_ratio, 2)
+  )
+
+# Generate LaTeX table using knitr
+#knitr::kable(
+#  model_results,
+#  format = "latex",
+#  booktabs = TRUE,
+#  caption = "GLM model results for approach/avoidance reactions by emotion and social distance",
+#  col.names = c("Model", "Term", "Estimate", "SE", "Z", "p", "Odds Ratio")
+#)
+```
+
+```{r}
+pred_list <- lapply(models, function(x) {
+
+  model <- x$model
+  if (is.null(model)) return(NULL)
+
+  newdata <- expand.grid(
+    strength_value = 0:4,
+    rater = unique(model$data$rater)
+  )
+
+  pred_link <- predict(model, newdata, type = "link", se.fit = TRUE)
+
+  newdata$predicted <- plogis(pred_link$fit)
+  newdata$conf.low  <- plogis(pred_link$fit - 1.96 * pred_link$se.fit)
+  newdata$conf.high <- plogis(pred_link$fit + 1.96 * pred_link$se.fit)
+
+  newdata$emotion <- x$emotion
+  newdata$emotion_type <- x$emotion_type
+  newdata$action <- x$action          
+  newdata$outcome <- x$outcome       
+
+  newdata
+})
+
+pred_combined <- bind_rows(pred_list)
+
+```
+
+```{r,fig.height=10,fig.width=10}
+# Optional: prettier labels for facets
+pred_combined <- pred_combined %>%
+  mutate(
+    action_label = gsub("_", " ", action),     
+    #emotion_short = abbreviate(emotion, minlength = 4)
+  )
+
+table(pred_combined$emotion_type)
+
+ggplot(
+  filter(pred_combined,emotion_type =="emotion_acquaintance"),
+  aes(
+    x = strength_value,
+    y = predicted,
+    color = rater,
+    fill = rater
+  )
+) +
+  geom_line(size = 1.2) +
+  geom_ribbon(
+    aes(ymin = conf.low, ymax = conf.high),
+    alpha = 0.25,
+    color = NA
+  ) +
+  facet_grid(
+    action ~ emotion,
+    scales = "free_y",
+    switch = "y"
+  ) +
+  labs(
+    x = "Emotion Strength",
+    y = "Predicted Probability of Action",
+    color = "Rater",
+    fill = "Rater",
+    title = "emotion_acquaintance"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    strip.text = element_text(size = 11, face = "bold"),
+    axis.text.x = element_text(size = 11, angle = 30, hjust = 1),
+    axis.text.y = element_text(size = 11),
+    axis.title = element_text(size = 14, face = "bold"),
+    legend.position = "bottom",
+    panel.spacing = unit(0.25, "lines"),
+    strip.background = element_rect(fill = "gray95")
+  ) +
+  guides(
+    color = guide_legend(nrow = 1),
+    fill = guide_legend(nrow = 1)
+  )
+
+```
+
+
+## old approach avoidance
+```{r, eval=F}
+approach <- c("Inform authority","Physical confrontation", "Verbal confrontation" )
+avoidance <- c("Gossip", "Stay away","Do nothing",  "Praise", "Support")
 
 
 df_action <- df %>%
@@ -767,10 +1008,7 @@ df_action <- df %>%
   mutate(across(c(friends_reaction, strangers_reaction, acquaintances_reaction),
                 ~ ifelse(.x %in% approach, 1, 0),
                 .names = "{.col}_binary"))
-```
 
-
-```{r}
 # -----------------------------
 # 2. Function to fit model safely
 # -----------------------------
@@ -815,52 +1053,12 @@ models <- pmap(
 
 # Remove NULLs (cases with only 0 or 1)
 models <- keep(models, ~ !is.null(.x$model))
-```
 
-```{r}
-library(dplyr)
 library(broom)
 library(purrr)
-
-# Extract glm objects if nested
-models_clean <- map(models, ~ if(is.list(.x) && "model" %in% names(.x)) .x$model else .x)
-
-# Remove NULLs
-models_clean <- keep(models_clean, ~ !is.null(.x))
-
-# Extract tidy results
-model_results <- imap_dfr(models_clean, ~ {
-  tidy(.x) %>%
-    mutate(
-      model_name = .y,
-      odds_ratio = exp(estimate)
-    )
-})
-
-# Round numbers for readability
-model_results <- model_results %>%
-  select(model_name, term, estimate, std.error, statistic, p.value, odds_ratio) %>%
-  mutate(
-    estimate = round(estimate, 3),
-    std.error = round(std.error, 3),
-    statistic = round(statistic, 2),
-    p.value = signif(p.value, 3),
-    odds_ratio = round(odds_ratio, 2)
-  )
-
-# Generate LaTeX table using knitr
-#knitr::kable(
-#  model_results,
-#  format = "latex",
-#  booktabs = TRUE,
-#  caption = "GLM model results for approach/avoidance reactions by emotion and social distance",
-#  col.names = c("Model", "Term", "Estimate", "SE", "Z", "p", "Odds Ratio")
-#)
 ```
 
-
-
-```{r}
+```{r,eval=F}
 # -----------------------------
 # 4. Generate predicted probabilities
 # -----------------------------
