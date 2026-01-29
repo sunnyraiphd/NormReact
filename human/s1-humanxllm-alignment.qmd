@@ -1142,7 +1142,3 @@ ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill
 ### strong vs. weak tie (is there a sig difference for sanction severeness and emotion intensity for strong tie vs. weak tie - anova)
 
 ### if main effect, interactions?
-
-
-
-
