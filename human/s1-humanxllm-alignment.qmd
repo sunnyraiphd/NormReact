@@ -29,6 +29,8 @@ options(download.file.method = "libcurl")
 if (!require("groundhog")) install.packages("groundhog")
 library("groundhog")
 pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr","RColorBrewer")
+
+
 groundhog.library(pkgs, "2025-08-11")
 
 options(scipen = 999, digits = 3)
@@ -36,6 +38,10 @@ set.seed(111)
 ```
 
 ```{r}
+moral<-read.csv( "data/stimuli.csv") %>% 
+  select(ID,rot.moral.foundations) %>% 
+    mutate(ID = as.factor(ID))
+
 df<-read.csv( "data/df_all_long_updated.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
   mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
@@ -55,8 +61,8 @@ df<-read.csv( "data/df_all_long_updated.csv") %>%
       TRUE ~ .x
     )
   )
-) 
-  
+)  %>% 
+  left_join(moral, by = "ID")
 ```
 
 # violin plot with individual response jitter for llm and human
@@ -182,10 +188,11 @@ ggplot(human_cor_list, aes(x = LLM, y = emotion_type, fill = Correlation)) +
 ```
 
 # emotion alignment
-##  pairwise comparison- emotion  - euclidean distance
+
 ```{r}
 # --- compute pairwise similarities
-df_wide <- df %>%
+# with strength
+df_wide_strength <- df %>%
   #filter(emotion_type == "emotion_friend") %>% 
   #filter(emotion_type == "emotion_acquaintance") %>% 
   #filter(emotion_type == "emotion_stranger") %>% 
@@ -198,10 +205,159 @@ df_wide <- df %>%
   arrange(ID, unique_id) %>% 
   select(-stimuli) %>% 
   mutate(across(Pride:Compassion, as.numeric))
+
+meta_cols <- c("unique_id", "ID", "rater")
+emo_cols  <- setdiff(names(df_wide_strength), meta_cols)
+
+############################convert to binary 
+df_wide <- df_wide_strength %>%
+  mutate(across(all_of(emo_cols),
+                ~ as.integer(tidyr::replace_na(.x, 0) > 0)))
+```
+
+## centroid 
+
+```{r}
+# --- emotion columns
+emo_cols <- setdiff(names(df_wide), c("unique_id","ID","rater"))
+
+# --- raw Euclidean distance
+euclid <- function(a, b) {
+  a <- as.numeric(a); b <- as.numeric(b)
+  sqrt(sum((a - b)^2))
+}
+
+# --- ensure emotion cols numeric 0/1
+df_wide <- df_wide %>%
+  mutate(across(all_of(emo_cols), ~ as.numeric(as.character(.))))
+
+# 1) D_CH_by_ID: centroid -> humans (centroid computed from humans directly)
+D_CH_by_ID <- df_wide %>%
+  filter(startsWith(as.character(unique_id), "human")) %>%
+  group_by(ID) %>%
+  group_modify(~ {
+    human_mat <- as.matrix(select(.x, all_of(emo_cols)))
+    if (is.null(dim(human_mat))) human_mat <- matrix(human_mat, nrow = 1)
+
+    if (nrow(human_mat) == 0) {
+      tibble(D_CH = NA_real_, n_humans = 0)
+    } else {
+      centroid <- if (nrow(human_mat) == 1) as.numeric(human_mat[1, ]) else colMeans(human_mat, na.rm = TRUE)
+      dists <- apply(human_mat, 1, function(r) euclid(r, centroid))
+      tibble(D_CH = mean(dists, na.rm = TRUE),
+             n_humans = nrow(human_mat))
+    }
+  }) %>%
+  ungroup()
+
+# 2) D_HH_by_ID: average pairwise human-human distance
+D_HH_by_ID <- df_wide %>%
+  filter(startsWith(as.character(unique_id), "human")) %>%
+  group_by(ID) %>%
+  group_modify(~ {
+    m <- as.matrix(select(.x, all_of(emo_cols)))
+    if (is.null(dim(m))) m <- matrix(m, nrow = 1)
+
+    if (nrow(m) < 2) {
+      tibble(D_HH = NA_real_)
+    } else {
+      dists <- as.matrix(dist(m, method = "euclidean"))
+      upper <- dists[upper.tri(dists)]
+      tibble(D_HH = mean(upper, na.rm = TRUE))
+    }
+  }) %>%
+  ungroup()
+
+# 3) D_GH_by_model_id: average model -> humans distance, per (ID, model)
+gpt_rows <- df_wide %>%
+  filter(!startsWith(as.character(unique_id), "human"))
+
+D_GH_by_model_id <- gpt_rows %>%
+  group_by(ID, unique_id) %>%
+  group_modify(~ {
+    model_mat <- as.matrix(select(.x, all_of(emo_cols)))
+    if (is.null(dim(model_mat))) model_mat <- matrix(model_mat, nrow = 1)
+
+    # average across multiple samples of the same model for the same ID
+    target_vec <- as.numeric(colMeans(model_mat, na.rm = TRUE))
+
+    humans_for_id <- df_wide %>%
+      filter(ID == .y$ID & startsWith(as.character(unique_id), "human"))
+
+    if (nrow(humans_for_id) == 0) {
+      tibble(D_GH = NA_real_)
+    } else {
+      human_mat <- as.matrix(select(humans_for_id, all_of(emo_cols)))
+      if (is.null(dim(human_mat))) human_mat <- matrix(human_mat, nrow = 1)
+      dists <- apply(human_mat, 1, function(h) euclid(h, target_vec))
+      tibble(D_GH = mean(dists, na.rm = TRUE))
+    }
+  }) %>%
+  ungroup()
+
+# 4) Combine
+comparison_by_id <- D_GH_by_model_id %>%
+  left_join(D_CH_by_ID, by = "ID") %>%
+  left_join(D_HH_by_ID, by = "ID") %>%
+  mutate(
+    # distances -> similarities for plotting only
+    S_GH = 1 / (1 + D_GH),
+    S_CH = 1 / (1 + D_CH),
+    S_HH = 1 / (1 + D_HH),
+    delta_dist = D_CH - D_GH,      # >0 means model closer than centroid (distance scale)
+    delta_sim  = S_GH - S_CH       # >0 means model more similar than centroid (similarity scale)
+  )
+
+head(comparison_by_id)
 ```
 
 ```{r}
-# for each stimuli across emotions, compute cosine similarity
+# sanity
+stopifnot("unique_id" %in% names(comparison_by_id))
+
+model_summary <- comparison_by_id %>%
+  group_by(unique_id) %>%
+  summarise(
+    n_IDs = sum(!is.na(D_GH) & !is.na(D_CH)),
+    mean_D_GH = mean(D_GH, na.rm = TRUE),
+    mean_D_CH = mean(D_CH, na.rm = TRUE),
+    mean_D_HH = mean(D_HH, na.rm = TRUE),
+    mean_delta_dist = mean(D_CH - D_GH, na.rm = TRUE),
+
+    mean_S_GH = mean(S_GH, na.rm = TRUE),
+    mean_S_CH = mean(S_CH, na.rm = TRUE),
+    mean_S_HH = mean(S_HH, na.rm = TRUE),
+    mean_delta_sim = mean(S_GH - S_CH, na.rm = TRUE),
+
+    wilcox_p = if (n_IDs >= 2) wilcox.test(D_CH, D_GH, paired = TRUE)$p.value else NA_real_,
+    .groups = "drop"
+  )
+
+model_summary
+
+plot_df <- comparison_by_id %>%
+  group_by(unique_id) %>%
+  summarise(
+    `human-human` = mean(S_HH, na.rm = TRUE),
+    `centroid-human` = mean(S_CH, na.rm = TRUE),
+    `model-human` = mean(S_GH, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_longer(-unique_id, names_to = "pair", values_to = "similarity")
+
+ggplot(plot_df, aes(x = reorder(unique_id, similarity), y = similarity, fill = pair)) +
+  geom_col(position = position_dodge(width = 0.8)) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Model", y = "Similarity = 1 / (1 + Euclidean distance)", fill = "")
+```
+
+
+
+##  pairwise comparison- emotion  - euclidean distance
+
+```{r}
+# for each stimuli across emotions, compute similarity
 pairwise_sim <- df_wide %>%
   group_by(ID) %>%
   do({
@@ -209,8 +365,10 @@ pairwise_sim <- df_wide %>%
     rownames(mat) <- .$unique_id
     # compute cosine similarity
     #sim <- as.matrix(proxy::simil(mat, method = "cosine"))
+    # compute jaccard similarity
+    sim <- as.matrix(proxy::simil(mat, method = "jaccard"))
     # compute Euclidean distance
-    sim <- as.matrix(proxy::dist(mat, method = "Euclidean"))
+    # sim <- as.matrix(proxy::dist(mat, method = "Euclidean"))
     as.data.frame(as.table(sim)) %>%
       rename(unique_id_1 = Var1, unique_id_2 = Var2, similarity = Freq) %>%
       filter(unique_id_1 != unique_id_2)  # remove self-comparison
@@ -220,15 +378,19 @@ pairwise_sim <- df_wide %>%
   mutate(pair = paste(sort(c(unique_id_1, unique_id_2)), collapse = "_")) %>%
   distinct(pair, .keep_all = TRUE) %>%
   select(-pair) %>% 
-   mutate(
+   ############################ scale to similarity [0,1]
+  mutate(similarity = 1 / (1 + similarity)) %>% 
+  mutate(
     unique_id_1_std = ifelse(startsWith(as.character(unique_id_1), "human"), "human", as.character(unique_id_1)),
     unique_id_2_std = ifelse(startsWith(as.character(unique_id_2), "human"), "human", as.character(unique_id_2))
-  )
+  ) 
+  
 
 pairwise_sim
 ```
 
-```{r}
+```{r, eval=F}
+# this is row weighted
 # Compute average  similarity of each non-human ID to humans
 avg_sim_to_human <- pairwise_sim %>%
   # Keep only pairs where one side is human and the other is non-human
@@ -247,6 +409,7 @@ avg_sim_to_human
 ```
 
 ```{r}
+# this is ID/stimuli weighted
 # Step 1: Non-human → human average per stimuli × non-human
 nonhuman_to_human_avg <- pairwise_sim %>%
   filter((unique_id_1_std == "human" & unique_id_2_std != "human") |
@@ -289,6 +452,7 @@ final_pairwise_sim <- final_pairwise_sim %>%
 ```
 
 ### average plot
+
 ```{r}
 #Compute average
 avg_pairwise_sim <- final_pairwise_sim %>%
@@ -304,18 +468,19 @@ avg_pairwise_sim <- final_pairwise_sim %>%
   # Reorder u2 so that "human" is last (at the bottom)
   mutate(u2 = factor(u2, levels = c(sort(setdiff(unique(u2), "human")), "human")))
 
+avg_pairwise_sim %>% filter(u2=="human" | u1=="human")
 
 # Plot heatmap with human at top
 ggplot(avg_pairwise_sim, aes(x = u1, y = u2, fill = avg_similarity)) +
   geom_tile(color = "white") +
   scale_fill_distiller(palette = "Gn", direction = 1) +
-  geom_text(aes(label = round(avg_similarity, 2)), color = "black", size = 4) +
+  geom_text(aes(label = round(avg_similarity, 3)), color = "black", size = 4) +
 
   labs(
-    title = "Average Euclidean Distance Across Stimuli",
+    #title = "Average Euclidean Distance Across Stimuli - scaled to similarity",
     x = "",
     y = "",
-    fill = "Avg Euclidean Distance"
+   # fill = "Avg Euclidean Distance scaled to similarity"
   ) +
   scale_y_discrete(limits = rev(levels(avg_pairwise_sim$u2))) +  # reverse to put top at top
   theme_minimal() +
@@ -324,6 +489,7 @@ ggplot(avg_pairwise_sim, aes(x = u1, y = u2, fill = avg_similarity)) +
 ```
 
 ### linear model
+
 ```{r}
 df_analysis <- final_pairwise_sim %>%
   # ensure character (important if columns are factors)
@@ -395,7 +561,7 @@ pairwise_dist
 ```
 
 ```{r}
-# List of emotion columns
+# List of emotion columns continueous measure
 emotions <- c("Pride","Anger","Guilt","Shame","Embarrassment","Disgust","Contempt","Compassion")
 
 # Initialize empty tables to store results
@@ -726,6 +892,7 @@ agreement_rates <- pairwise_action_sim %>%
 
 agreement_rates
 ```
+
 ```{r}
 # Reorder factors for nicer plotting
 df_agreement <- agreement_rates %>%

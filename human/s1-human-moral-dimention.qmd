@@ -1,0 +1,323 @@
+---
+title: "human-moral-dimention"
+format:
+    html:
+      toc-title: Table of contents
+      toc: true
+      toc-depth: 2
+      code-fold: true # allow code folding
+      number-sections: true
+      highlight-style: github
+      toc-location: body
+      cap-location: top
+      page-layout: full
+      embed-resources: true
+      self-contained-math: true
+      toc-expand: true
+      theme: cosmo
+execute:
+  echo: false        # show R code
+  warning: false    # hide warnings
+  message: false    # hide messages
+  eval: true        # run the code
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning=F,message = F)
+options(download.file.method = "libcurl")
+
+if (!require("groundhog")) install.packages("groundhog")
+library("groundhog")
+pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr","RColorBrewer")
+
+
+groundhog.library(pkgs, "2025-08-11")
+
+options(scipen = 999, digits = 3)
+set.seed(111)
+```
+
+```{r}
+moral<-read.csv( "data/stimuli.csv") %>% 
+  select(ID,moral=rot.moral.foundations) %>% 
+    mutate(ID = as.factor(ID))
+
+df<-read.csv( "data/df_all_long_updated.csv") %>% 
+  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
+  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
+  mutate(ID=as.factor(ID)) %>% 
+  mutate(
+  across(
+    ends_with(c("_reaction", "_reaction_should")),
+    ~ case_when(
+      .x %in% c("Celebrate / praise", "Praise") ~ "Praise",
+      .x %in% c("Do nothing") ~ "Do nothing",
+      .x %in% c("Gossip", "Gossip about / discuss with / complain to others informally") ~ "Gossip",
+      .x %in% c("Inform authority", "Inform the authorities, such as the police") ~ "Inform authority",
+      .x %in% c("Physical confrontation") ~ "Physical confrontation",
+      .x %in% c("Stay away", "Stay away or keep a distance from the actor") ~ "Stay away",
+      .x %in% c("Support", "Support the actor") ~ "Support",
+      .x %in% c("Verbal confrontation", "Verbal reprimand / verbal confrontation") ~ "Verbal confrontation",
+      TRUE ~ NA
+    )
+  )
+) %>% 
+  left_join(moral, by = "ID") %>% 
+    mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) 
+
+```
+
+# emotion 
+
+```{r}
+emotion_long <- df %>%
+  select(rater,unique_id,label_type,source, ID,moral, target=emotion_type,emotion,strength_value) %>% 
+  filter(strength_value>0) %>% 
+  mutate(
+    target = dplyr::recode(
+      target,
+      "emotion_actor" = "actor",
+      "emotion_friend" = "strong tie",
+      "emotion_acquaintance" = "weak tie",
+      "emotion_stranger" = "stranger"
+    ),
+    target = factor(target, levels = c("actor", "strong tie", "weak tie", "stranger"))
+  )
+
+```
+### test 
+
+```{r}
+chi_results_emotion <- emotion_long %>%
+  filter(!is.na(moral), !is.na(emotion), !is.na(source), !is.na(target), emotion != "") %>%
+  group_by(source, target) %>%
+  group_modify(~ {
+    tab <- table(.x$moral, .x$emotion)
+
+    if (nrow(tab) < 2 || ncol(tab) < 2 || sum(tab) == 0) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (low variation)"
+      ))
+    }
+
+    test <- tryCatch(
+      suppressWarnings(chisq.test(tab)),
+      error = function(e) NULL
+    )
+
+    if (is.null(test)) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (failed)"
+      ))
+    }
+
+    tibble(
+      statistic = unname(test$statistic),
+      df = unname(test$parameter),
+      p_value = test$p.value,
+      label = ifelse(test$p.value < .001, "***", "ns")
+    )
+  }) %>%
+  ungroup()
+
+print(chi_results_emotion)
+```
+
+
+### plot
+```{r, fig.width=10,fig.height=6}
+
+# compute proportions within each panel
+emotion_props <- emotion_long %>%
+  count(source, moral, target, emotion) %>%
+  group_by(source, moral, target) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+# plot
+p_emotion <- ggplot(
+  emotion_props,
+  aes(x = moral, y = prop, fill = emotion, color = emotion)
+) +
+  geom_col(alpha = 0.8) +
+  facet_grid(
+    source ~ target
+    ) +
+  scale_x_discrete(labels = function(x) sub("-.*", "", x)) +
+  scale_fill_viridis_d(option = "D") +
+  scale_color_viridis_d(option = "D") +
+  labs(
+    y = "Proportion",
+    x = "Moral Foundation"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y = element_text(size = 13),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold")
+  )+
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") 
+
+p_emotion
+```
+
+
+
+# action by moral foundation
+### dataset
+```{r}
+action_vars <- c(
+  "strangers_reaction",
+  "acquaintances_reaction",
+  "friends_reaction",
+  "strangers_reaction_should",
+  "acquaintances_reaction_should",
+  "friends_reaction_should"
+)
+
+df_action <- df %>%
+  select(rater,unique_id,label_type, ID,moral,source, all_of(action_vars)) %>%
+  distinct() %>% 
+  rename_with(~ .x %>%
+    # tie strength
+    str_replace("^strangers", "stranger") %>%
+    str_replace("^acquaintances", "weak_tie") %>%
+    str_replace("^friends", "strong_tie") %>%
+    # action type
+    str_replace("_reaction_should$", "_should") %>%
+    str_replace("_reaction$", "_would"),
+    all_of(action_vars)
+  )
+
+df_long <- df_action %>%
+  pivot_longer(
+    cols = stranger_would:strong_tie_should,
+    names_to = "variable",
+    values_to = "response"
+  ) %>%
+  mutate(
+    # optional: clean ordering of responses
+    response = factor(response,
+      levels = c(
+        "Do nothing", "Stay away", "Gossip",
+        "Inform authority", "Verbal confrontation",
+        "Physical confrontation", "Support", "Praise"
+      )
+    ),
+    # separate actual vs should (useful later)
+    type = ifelse(grepl("should", variable), "should", "would")
+  )
+
+```
+### descriptive
+```{r}
+stats_counts <- df_long %>%
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, source) %>%
+  summarise(n = n(), .groups = "drop")
+
+stats_props <- df_long %>%
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, source) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  group_by(moral, variable, source) %>%
+  mutate(
+    total_n = sum(n),
+    prop = ifelse(total_n > 0, n / total_n, NA_real_)
+  ) %>%
+  ungroup()
+
+chi_results <- df_long %>%
+  filter(!is.na(moral), !is.na(response), !is.na(source), !is.na(variable)) %>%
+  group_by(source, variable) %>%
+  group_modify(~ {
+    tab <- table(.x$moral, .x$response)
+
+    # check structure
+    if (nrow(tab) < 2 || ncol(tab) < 2 || sum(tab) == 0) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (low variation)"
+      ))
+    }
+
+    test <- tryCatch(
+      suppressWarnings(chisq.test(tab)),
+      error = function(e) NULL
+    )
+
+    if (is.null(test)) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (failed)"
+      ))
+    }
+
+    tibble(
+      statistic = unname(test$statistic),
+      df = unname(test$parameter),
+      p_value = test$p.value,
+      label = ifelse(test$p.value < .001, "***", "ns")
+    )
+  }) %>%
+  ungroup()
+
+print(chi_results)
+
+```
+### plot
+```{r,fig.width=12,fig.height=6}
+p<-ggplot(stats_props, aes(x = moral, y = prop, fill = response, color = response)) +
+  geom_col(
+    alpha = 0.8
+  ) +
+  facet_grid(
+    source ~ variable,
+    labeller = labeller(
+      source = function(x) gsub("_", "\n", x),
+      variable = function(x) gsub("_", "\n", x)
+    )
+    )+
+  labs(
+    x = "Response",
+    y = "Proportion"
+  ) +
+    scale_x_discrete(labels = function(x) sub("-.*", "", x)) +  # keep text before "-"
+
+  theme_minimal(base_size = 16) +  # increases overall text size
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),  # facet labels
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
+  )+
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") 
+p
+
+#ggsave("output/moral_action.svg", plot=p,width = 12, height = 6)
+```
+
+
+# emotion by moral foundation
+
+```{r}
+
+```
+
