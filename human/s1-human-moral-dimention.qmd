@@ -315,9 +315,3 @@ p
 ```
 
 
-# emotion by moral foundation
-
-```{r}
-
-```
-

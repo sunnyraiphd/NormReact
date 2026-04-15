@@ -920,65 +920,65 @@ ggplot(df_agreement, aes(x = pair_type, y = social_distance, fill = agreement_ra
 # Do emotion predict enforcement?
 
 ```{r}
-actions <- c(
-  "do_nothing",
-  "physical_confrontation",
-  "verbal_confrontation",
-  "inform_authority",
-  "gossip",
-  "stay_away",
-  "praise",
-  "support"
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(broom)
+library(stringr)
+library(tibble)
+
+# labels as they appear in the raw data
+action_labels <- c(
+  "Do nothing",
+  "Physical confrontation",
+  "Verbal confrontation",
+  "Inform authority",
+  "Gossip",
+  "Stay away",
+  "Praise",
+  "Support"
 )
 
-# flat all action to binary
+# safe names for columns
+action_names <- action_labels %>%
+  str_to_lower() %>%
+  str_replace_all(" ", "_")
+
+action_map <- tibble(
+  action_label = action_labels,
+  action = action_names
+)
+
 df_action <- df %>%
   mutate(
     across(
       c(friends_reaction, strangers_reaction, acquaintances_reaction),
       .fns = setNames(
-        lapply(actions, function(a) {
+        lapply(action_labels, function(a) {
           function(x) as.integer(x == a)
         }),
-        paste0("is_", gsub(" ", "_", tolower(actions)))
+        paste0("is_", action_names)
       ),
       .names = "{.col}_{.fn}"
     )
-  ) %>% 
-  filter(emotion_type!="emotion_actor") %>% 
-  rename_with(
-    ~ gsub(" ", "_", tolower(.x)),
-    contains("_reaction_is_")
-  )
+  ) %>%
+  filter(emotion_type != "emotion_actor")
 
-action_map <- tibble::tibble(
-  action_label = c(
-    "Do nothing",
-    "Physical confrontation",
-    "Verbal confrontation",
-    "Inform authority",
-    "Gossip",
-    "Stay away",
-    "Praise",
-    "Support"
-  ),
-  action = gsub(" ", "_", tolower(action_label))
-)
-
-combinations <- tidyr::expand_grid(
+combinations <- expand_grid(
   emotion = unique(df_action$emotion),
   emotion_type = unique(df_action$emotion_type),
   action = action_map$action
-) %>% 
-  filter(emotion_type!="emotion_actor")
-```
+)
 
-```{r}
 fit_model_safe <- function(df, outcome_col) {
-  # Check if outcome has both 0 and 1
-  if(length(unique(na.omit(df[[outcome_col]]))) < 2) return(NULL)
-  glm(as.formula(paste0(outcome_col, " ~ strength_value * rater")), 
-      data = df, family = binomial)
+  vals <- unique(na.omit(df[[outcome_col]]))
+  if (length(vals) < 2) return(NULL)
+
+  glm(
+    as.formula(paste0(outcome_col, " ~ strength_value * rater")),
+    data = df,
+    family = binomial
+  )
 }
 
 models <- pmap(
@@ -986,56 +986,48 @@ models <- pmap(
   function(emotion, emotion_type, action) {
 
     outcome_col <- case_when(
-      emotion_type == "emotion_friend" ~
-        paste0("friends_reaction_is_", action),
-      emotion_type == "emotion_acquaintance" ~
-        paste0("acquaintances_reaction_is_", action),
-      emotion_type == "emotion_stranger" ~
-        paste0("strangers_reaction_is_", action)
+      emotion_type == "emotion_friend" ~ paste0("friends_reaction_is_", action),
+      emotion_type == "emotion_acquaintance" ~ paste0("acquaintances_reaction_is_", action),
+      emotion_type == "emotion_stranger" ~ paste0("strangers_reaction_is_", action)
     )
 
     df_sub <- df_action %>%
-      filter(emotion == !!emotion,
-             emotion_type == !!emotion_type)
+      filter(
+        emotion == !!emotion,
+        emotion_type == !!emotion_type
+      )
 
     model <- fit_model_safe(df_sub, outcome_col)
 
-    list(
+    tibble(
       emotion = emotion,
       emotion_type = emotion_type,
       action = action,
       outcome = outcome_col,
-      model = model
+      model = list(model)
     )
   }
-)
+) %>%
+  list_rbind() %>%
+  filter(!map_lgl(model, is.null))
 
-# Remove NULL models
-models <- keep(models, ~ !is.null(.x$model))
+model_results <- models %>%
+  mutate(tidy = map(model, tidy)) %>%
+  unnest(tidy) %>%
+  mutate(
+    odds_ratio = exp(estimate),
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 2),
+    p.value = signif(p.value, 3),
+    odds_ratio = round(odds_ratio, 2)
+  ) %>%
+  select(
+    emotion, emotion_type, action, outcome,
+    term, estimate, std.error, statistic, p.value, odds_ratio
+  )
 ```
 
-```{r}
-library(broom)
-library(purrr)
-library(dplyr)
-
-models_clean <- map(models, "model")
-
-model_results <- map_dfr(models, function(x) {
-
-  tidy_df <- tidy(x$model)
-  if (nrow(tidy_df) == 0) return(NULL)
-
-  tidy_df %>%
-    mutate(
-      emotion = x$emotion,
-      emotion_type = x$emotion_type,
-      action = x$action,
-      odds_ratio = exp(estimate)
-    )
-})
-
-```
 
 ```{r}
 # Extract glm objects if nested
@@ -1075,46 +1067,46 @@ model_results <- model_results %>%
 ```
 
 ```{r}
-pred_list <- lapply(models, function(x) {
+pred_list <- pmap(
+  models,
+  function(emotion, emotion_type, action, outcome, model) {
 
-  model <- x$model
-  if (is.null(model)) return(NULL)
+    if (is.null(model)) return(NULL)
 
-  newdata <- expand.grid(
-    strength_value = 0:4,
-    rater = unique(model$data$rater)
-  )
+    newdata <- expand.grid(
+      strength_value = 0:4,
+      rater = unique(model$data$rater)
+    )
 
-  pred_link <- predict(model, newdata, type = "link", se.fit = TRUE)
+    pred_link <- predict(
+      model,
+      newdata = newdata,
+      type = "link",
+      se.fit = TRUE
+    )
 
-  newdata$predicted <- plogis(pred_link$fit)
-  newdata$conf.low  <- plogis(pred_link$fit - 1.96 * pred_link$se.fit)
-  newdata$conf.high <- plogis(pred_link$fit + 1.96 * pred_link$se.fit)
-
-  newdata$emotion <- x$emotion
-  newdata$emotion_type <- x$emotion_type
-  newdata$action <- x$action          
-  newdata$outcome <- x$outcome       
-
-  newdata
-})
+    newdata %>%
+      mutate(
+        predicted = plogis(pred_link$fit),
+        conf.low  = plogis(pred_link$fit - 1.96 * pred_link$se.fit),
+        conf.high = plogis(pred_link$fit + 1.96 * pred_link$se.fit),
+        emotion = emotion,
+        emotion_type = emotion_type,
+        action = action,
+        outcome = outcome
+      )
+  }
+)
 
 pred_combined <- bind_rows(pred_list)
 
 ```
 
-```{r,fig.height=10,fig.width=10}
-# Optional: prettier labels for facets
-pred_combined <- pred_combined %>%
-  mutate(
-    action_label = gsub("_", " ", action),     
-    #emotion_short = abbreviate(emotion, minlength = 4)
-  )
-
-table(pred_combined$emotion_type)
-
-ggplot(
-  filter(pred_combined,emotion_type =="emotion_acquaintance"),
+```{r,fig.height=6,fig.width=8}
+pred_combined %>%  
+  filter(action =="do_nothing" & emotion %in% c("Anger","Contempt","Disgust")) %>% 
+ggplot(.,
+  #filter(pred_combined,emotion_type =="emotion_acquaintance"),
   aes(
     x = strength_value,
     y = predicted,
@@ -1129,27 +1121,31 @@ ggplot(
     color = NA
   ) +
   facet_grid(
-    action ~ emotion,
-    scales = "free_y",
-    switch = "y"
+    emotion_type ~ emotion,
+    labeller = labeller(
+     emotion_type = function(x) sub(".*_", "", x)
+    )
   ) +
   labs(
     x = "Emotion Strength",
     y = "Predicted Probability of Action",
     color = "Rater",
     fill = "Rater",
-    title = "emotion_acquaintance"
   ) +
-  theme_bw(base_size = 14) +
+theme_minimal(base_size = 16) +  # increases overall text size
   theme(
-    strip.text = element_text(size = 11, face = "bold"),
-    axis.text.x = element_text(size = 11, angle = 30, hjust = 1),
-    axis.text.y = element_text(size = 11),
-    axis.title = element_text(size = 14, face = "bold"),
-    legend.position = "bottom",
-    panel.spacing = unit(0.25, "lines"),
-    strip.background = element_rect(fill = "gray95")
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),  # facet labels
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
   ) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") 
+    
+   
   guides(
     color = guide_legend(nrow = 1),
     fill = guide_legend(nrow = 1)
