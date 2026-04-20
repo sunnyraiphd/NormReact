@@ -919,14 +919,7 @@ ggplot(df_agreement, aes(x = pair_type, y = social_distance, fill = agreement_ra
 
 # Do emotion predict enforcement?
 
-```{r}
-library(dplyr)
-library(tidyr)
-library(purrr)
-library(broom)
-library(stringr)
-library(tibble)
-
+```{r,warning=F}
 # labels as they appear in the raw data
 action_labels <- c(
   "Do nothing",
@@ -975,7 +968,7 @@ fit_model_safe <- function(df, outcome_col) {
   if (length(vals) < 2) return(NULL)
 
   glm(
-    as.formula(paste0(outcome_col, " ~ strength_value * rater")),
+    as.formula(paste0(outcome_col, " ~ strength_value * label_type")),
     data = df,
     family = binomial
   )
@@ -1028,68 +1021,52 @@ model_results <- models %>%
   )
 ```
 
-
-```{r}
-# Extract glm objects if nested
-models_clean <- map(models, ~ if(is.list(.x) && "model" %in% names(.x)) .x$model else .x)
-
-# Remove NULLs
-models_clean <- keep(models_clean, ~ !is.null(.x))
-
-# Extract tidy results
-model_results <- imap_dfr(models_clean, ~ {
-  tidy(.x) %>%
-    mutate(
-      model_name = .y,
-      odds_ratio = exp(estimate)
-    )
-})
-
-# Round numbers for readability
-model_results <- model_results %>%
-  select(model_name, term, estimate, std.error, statistic, p.value, odds_ratio) %>%
-  mutate(
-    estimate = round(estimate, 3),
-    std.error = round(std.error, 3),
-    statistic = round(statistic, 2),
-    p.value = signif(p.value, 3),
-    odds_ratio = round(odds_ratio, 2)
-  )
-
-# Generate LaTeX table using knitr
-#knitr::kable(
-#  model_results,
-#  format = "latex",
-#  booktabs = TRUE,
-#  caption = "GLM model results for approach/avoidance reactions by emotion and social distance",
-#  col.names = c("Model", "Term", "Estimate", "SE", "Z", "p", "Odds Ratio")
-#)
-```
-
-```{r}
+```{r,warning=F}
 pred_list <- pmap(
   models,
   function(emotion, emotion_type, action, outcome, model) {
 
     if (is.null(model)) return(NULL)
+    if (!"label_type" %in% names(model$data)) return(NULL)
 
     newdata <- expand.grid(
       strength_value = 0:4,
-      rater = unique(model$data$rater)
+      label_type = unique(model$data$label_type)
     )
 
-    pred_link <- predict(
-      model,
-      newdata = newdata,
-      type = "link",
-      se.fit = TRUE
+    pred_se <- tryCatch(
+      predict(model, newdata = newdata, type = "link", se.fit = TRUE),
+      error = function(e) NULL
     )
 
-    newdata %>%
+    if (!is.null(pred_se)) {
+      se <- pred_se$se.fit
+      bad_se <- is.na(se) | se > 3
+
+      out <- newdata %>%
+        mutate(
+          predicted = plogis(pred_se$fit),
+          conf.low  = ifelse(bad_se, NA_real_, plogis(pred_se$fit - 1.96 * se)),
+          conf.high = ifelse(bad_se, NA_real_, plogis(pred_se$fit + 1.96 * se))
+        )
+    } else {
+      pred <- tryCatch(
+        predict(model, newdata = newdata, type = "response"),
+        error = function(e) NULL
+      )
+
+      if (is.null(pred)) return(NULL)
+
+      out <- newdata %>%
+        mutate(
+          predicted = pred,
+          conf.low = NA_real_,
+          conf.high = NA_real_
+        )
+    }
+
+    out %>%
       mutate(
-        predicted = plogis(pred_link$fit),
-        conf.low  = plogis(pred_link$fit - 1.96 * pred_link$se.fit),
-        conf.high = plogis(pred_link$fit + 1.96 * pred_link$se.fit),
         emotion = emotion,
         emotion_type = emotion_type,
         action = action,
@@ -1099,19 +1076,29 @@ pred_list <- pmap(
 )
 
 pred_combined <- bind_rows(pred_list)
-
 ```
 
 ```{r,fig.height=6,fig.width=8}
-pred_combined %>%  
+emotionxinaction<-pred_combined %>%  
   filter(action =="do_nothing" & emotion %in% c("Anger","Contempt","Disgust")) %>% 
+  mutate(
+  emotion_type = case_when(
+    emotion_type == "emotion_friend" ~ "strong tie",
+    emotion_type == "emotion_acquaintance" ~ "weak tie",
+    emotion_type == "emotion_stranger" ~ "stranger",
+    TRUE ~ emotion_type),
+   emotion_type = factor(
+      emotion_type,
+      levels = c("strong tie", "weak tie", "stranger")
+    )) %>%
+  mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) %>% 
 ggplot(.,
   #filter(pred_combined,emotion_type =="emotion_acquaintance"),
   aes(
     x = strength_value,
     y = predicted,
-    color = rater,
-    fill = rater
+    color = label_type,
+    fill = label_type
   )
 ) +
   geom_line(size = 1.2) +
@@ -1120,21 +1107,22 @@ ggplot(.,
     alpha = 0.25,
     color = NA
   ) +
+  geom_point(aes(shape = source),size = 3) +
   facet_grid(
-    emotion_type ~ emotion,
+    emotion~emotion_type,
     labeller = labeller(
      emotion_type = function(x) sub(".*_", "", x)
     )
   ) +
   labs(
     x = "Emotion Strength",
-    y = "Predicted Probability of Action",
-    color = "Rater",
-    fill = "Rater",
+    y = "P(Inaction | Emotion strength)",
+    color = "",
+    fill = "",
   ) +
 theme_minimal(base_size = 16) +  # increases overall text size
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+    axis.text.x = element_text(hjust = 1, size = 14),
     axis.text.y = element_text(size = 14),
     axis.title.x = element_text(size = 16, face = "bold"),
     axis.title.y = element_text(size = 16, face = "bold"),
@@ -1143,13 +1131,22 @@ theme_minimal(base_size = 16) +  # increases overall text size
     legend.text = element_text(size = 13)
   ) +
   scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Set2") 
-    
-   
-  guides(
-    color = guide_legend(nrow = 1),
-    fill = guide_legend(nrow = 1)
-  )
+  scale_color_brewer(palette = "Set2") +
+ # scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_shape_manual(values = c(
+  "human" = 1,         # solid circle
+  "close-source" = 17,  # triangle
+  "open-source" = 8    # square
+))
+  
+
+ggsave(
+  filename = "output/emotionxinaction_all.png",
+  plot = emotionxinaction,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
 
 ```
 
@@ -1288,20 +1285,3 @@ ggplot(pred_combined, aes(x = strength_value, y = predicted, color = rater, fill
 
 ```
 
-# alignment analysis 
-
-## correlation by category - does LLM predicted human emotional and behavioral responses to norm violation?
-
-### by gender
-### by tie strength
-### by moral foundation
-
-## difference in alignment by categories
-
-# item wise analysis
-
-### gender difference (is there a sig difference for female vs. male for each measure (i.e., emotion, action, wrongness, app) - anova)
-
-### strong vs. weak tie (is there a sig difference for sanction severeness and emotion intensity for strong tie vs. weak tie - anova)
-
-### if main effect, interactions?

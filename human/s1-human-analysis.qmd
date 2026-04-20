@@ -47,7 +47,7 @@ df<-long %>% filter(strength_value>0)
 ## demographics
 
 ```{r}
-table1(~ gender + as.numeric(age)+race,data=distinct(df,id,.keep_all = TRUE))
+table1(~ gender + as.numeric(age)+race,data=distinct(df,human_id,.keep_all = TRUE) %>% filter(!is.na(age)))
 ```
 
 ## Descriptive stat table (TBD)
