@@ -1,0 +1,185 @@
+---
+title: "0-human-data-clean"
+format:
+  html:
+    toc: true       # include table of contents
+    code-fold: true # allow code folding
+    theme: cosmo
+execute:
+  echo: false        # show R code
+  warning: false    # hide warnings
+  message: false    # hide messages
+  eval: true        # run the code
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning=F,message = F)
+options(download.file.method = "libcurl")
+
+if (!require("groundhog")) install.packages("groundhog")
+library("groundhog")
+pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr")
+groundhog.library(pkgs, "2025-08-11")
+
+options(scipen = 999, digits = 3)
+set.seed(111)
+mycolor=c("gray","#756bb1", "#fdae6b")
+```
+
+## data clean
+
+```{r}
+#raw = read.csv("data/raw1.csv", stringsAsFactors = FALSE) %>% filter(!is.na(age))
+#gpt = read.csv("data/gpt_pilot_responses.csv", stringsAsFactors = FALSE)
+
+dt <- fread("data/raw.csv") %>%  slice(-c(1,2)) 
+
+# --- 1. Import & clean column names ---
+clean_names <- names(dt) %>%
+  trimws() %>%
+  str_replace_all("\\s+", "_") %>%
+  str_replace_all("_+$", "")
+
+setnames(dt, clean_names)
+
+# --- 2. Separate metadata vs question columns ---
+qcols <- grep("^\\d+_", names(dt), value = TRUE)
+meta  <- setdiff(names(dt), qcols)
+
+# --- 3. Long reshape of question blocks ---
+long <- dt %>% #986
+  mutate(age=as.numeric(age),id=ResponseId) %>%
+  filter(Finished=="True") %>% #909
+  filter(Q_RecaptchaScore>0.5) %>%  #893
+  filter("Duration (in seconds)" > 120) %>% #893
+  filter(attention =="Pride") %>% #871
+  pivot_longer(
+    cols = all_of(qcols),
+    names_to = c("behavior", "measure"),
+    names_pattern = "^(\\d+)_(.*)$",
+    values_to = "value"
+  ) %>% 
+ filter(!is.na(value) & value != "")
+
+# --- 4. Recode values into clean categories ---
+long <- long %>%
+  mutate(value = case_when(
+    value == "Celebrate/praise" ~ "Praise",
+    value == "Do nothing" ~ "Do nothing",
+    value == "Gossip about/discuss with/complain to others informally" ~ "Gossip",
+    value == "Informing authority such as police" ~ "Inform authority",
+    value == "Physical confrontation" ~ "Physical confrontation",
+    value == "Stay away or keeping distance from the actor" ~ "Stay away",
+    value == "Support the actor" ~ "Support",
+    value == "Verbal reprimand/verbal confrontation" ~ "Verbal confrontation",
+    TRUE ~ value
+  ))
+
+```
+
+```{r}
+# --- 5. Pivot wider  ---
+wide1 <- long %>%
+  pivot_wider(
+    names_from = "measure",
+    values_from = "value"
+  ) %>% 
+  mutate(
+    appropriate = case_when(
+      appro == "Not at all inappropriate" ~ 1,
+      appro == "Somewhat inappropriate" ~ 2,
+      appro == "Inappropriate" ~ 3,
+      appro == "Very inappropriate" ~ 4,
+      appro == "Extremly inappropriate" ~ 5
+    ),
+    wrong = case_when(
+      wrong == "Not at all wrong" ~ 1,
+      wrong == "Somewhat wrong" ~ 2,
+      wrong == "Wrong" ~ 3,
+      wrong == "Very wrong" ~ 4,
+      wrong == "Extremly wrong" ~ 5
+    ))%>% 
+  mutate(behavior = as.integer(gsub("X", "", behavior))) %>% 
+  mutate(actor_gender = ifelse(behavior<455,"male","female"))
+
+# --- 6. emotion long form and rename ---
+# Example mapping
+emo_map <- c(
+  "1" = "Shame",
+  "2" = "Guilt",
+  "3" = "Contempt",
+  "4" = "Anger",
+  "5" = "Disgust",
+  "6" = "Embarrassment",
+  "7" = "Pride",
+  "8" = "Compassion"
+)
+
+# Select only columns with emotions and their strengths
+emo_cols <- c("actor_emo", "friend_emo", "acq_emo", "stran_emo")
+
+wide <- wide1 %>%
+  # 1. Replace NA in all strength columns with none
+    # convert all strength columns to numeric first
+  # replace NA with 0
+  mutate(across(matches("strength_\\d+$"), ~tidyr::replace_na(.x, "Not at all"))) %>%
+  # 2. Rename columns based on emo_map
+  rename_with(
+    ~ {
+      colnames <- .
+      sapply(colnames, function(col) {
+        # Check if column is a strength column
+        if (str_detect(col, "strength_\\d+$")) {
+          # Extract the number
+          num <- str_extract(col, "\\d+$")
+          # Replace number with emotion name from emo_map
+          str_replace(col, paste0("_strength_", num), paste0("_strength_", emo_map[num]))
+        } else {
+          col
+        }
+      })
+    }
+  ) 
+
+# Columns with renamed strength (emotion names)
+strength_cols <- names(wide)[str_detect(names(wide), "_strength_")]
+
+# --- 7. Pivot strength columns to long ---
+strength_long <- wide %>%
+  pivot_longer(
+    cols = all_of(strength_cols),
+    names_to = c("emo_type", "emotion"),
+    names_pattern = "(.*)_strength_(.+)",
+    values_to = "strength_value"
+  ) %>% 
+  filter(!is.na(strength_value)) %>% 
+  mutate(
+    strength_value = case_when(
+      strength_value == "Not at all"   ~ 0,
+      strength_value == "A little"     ~ 1,
+      strength_value == "Moderate"     ~ 2,
+      strength_value == "A lot"        ~ 3,
+      strength_value == "Extremely"    ~ 4,
+      TRUE ~ NA_real_
+    ),
+    emo_type = case_when(
+      emo_type == "actor_emo"     ~ "emotion_actor",
+      emo_type == "friend_emo"    ~ "emotion_friend",
+      emo_type == "acq_emo"       ~ "emotion_acquaintance",
+      emo_type == "stran_emo"     ~ "emotion_stranger",
+      TRUE                         ~ emo_type 
+    )
+  ) 
+
+# --- 8. Arrange columns (id first, then demographics, then items) ---
+df <- strength_long %>%
+  select(id, gender, age, race, education, behavior:strength_value) %>% 
+  mutate(across(where(is.character) & -id, as.factor)) 
+```
+
+
+```{r}
+write.csv(wide, "data/human-wide.csv")
+write.csv(df, "data/human-long.csv")
+```
+

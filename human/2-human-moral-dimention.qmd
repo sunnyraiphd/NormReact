@@ -1,0 +1,1010 @@
+---
+title: "2-human-moral-dimention"
+format:
+    html:
+      toc-title: Table of contents
+      toc: true
+      toc-depth: 2
+      code-fold: true # allow code folding
+      number-sections: true
+      highlight-style: github
+      toc-location: body
+      cap-location: top
+      page-layout: full
+      embed-resources: true
+      self-contained-math: true
+      toc-expand: true
+      theme: cosmo
+execute:
+  echo: false        # show R code
+  warning: false    # hide warnings
+  message: false    # hide messages
+  eval: true        # run the code
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, warning=F,message = F)
+options(download.file.method = "libcurl")
+
+if (!require("groundhog")) install.packages("groundhog")
+library("groundhog")
+pkgs <- c("tidyverse","car","psych","lme4","table1","jtools","sjPlot","sjmisc","ggpubr","rstatix","lmtest","robustbase","see","rempsyc","sandwich","stargazer","boot","patchwork","data.table","irr","RColorBrewer","scales")
+
+
+groundhog.library(pkgs, "2025-08-11")
+
+options(scipen = 999, digits = 3)
+set.seed(111)
+```
+
+```{r}
+moral<-read.csv( "data/stimuli.csv") %>% 
+  select(ID,moral=rot.moral.foundations) %>% 
+    mutate(ID = as.factor(ID))
+
+df<-read.csv( "data/df_all_long_updated.csv") %>% 
+  mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
+  mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
+  mutate(ID=as.factor(ID)) %>% 
+  mutate(
+  across(
+    ends_with(c("_reaction", "_reaction_should")),
+    ~ case_when(
+      .x %in% c("Celebrate / praise", "Praise") ~ "Praise",
+      .x %in% c("Do nothing") ~ "Do nothing",
+      .x %in% c("Gossip", "Gossip about / discuss with / complain to others informally") ~ "Gossip",
+      .x %in% c("Inform authority", "Inform the authorities, such as the police") ~ "Inform authority",
+      .x %in% c("Physical confrontation") ~ "Physical confrontation",
+      .x %in% c("Stay away", "Stay away or keep a distance from the actor") ~ "Stay away",
+      .x %in% c("Support", "Support the actor") ~ "Support",
+      .x %in% c("Verbal confrontation", "Verbal reprimand / verbal confrontation") ~ "Verbal confrontation",
+      TRUE ~ NA
+    )
+  )
+) %>% 
+  left_join(moral, by = "ID") %>% 
+    mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) 
+
+```
+
+```{r}
+table1(~ gender + as.numeric(age)+race,data=distinct(df,human_id,.keep_all = TRUE))
+```
+
+
+# emotion 
+
+```{r}
+emotion_long <- df %>%
+  select(rater,unique_id,label_type,source, ID,moral, target=emotion_type,emotion,strength_value) %>% 
+  filter(strength_value>0) %>% 
+  mutate(
+    target = dplyr::recode(
+      target,
+      "emotion_actor" = "actor",
+      "emotion_friend" = "strong tie",
+      "emotion_acquaintance" = "weak tie",
+      "emotion_stranger" = "stranger"
+    ),
+    target = factor(target, levels = c("actor", "strong tie", "weak tie", "stranger"))
+  )
+
+```
+### test 
+
+```{r}
+chi_results_emotion <- emotion_long %>%
+  filter(!is.na(moral), !is.na(emotion), !is.na(source), !is.na(target), emotion != "") %>%
+  group_by(source, target) %>%
+  group_modify(~ {
+    tab <- table(.x$moral, .x$emotion)
+
+    if (nrow(tab) < 2 || ncol(tab) < 2 || sum(tab) == 0) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (low variation)"
+      ))
+    }
+
+    test <- tryCatch(
+      suppressWarnings(chisq.test(tab)),
+      error = function(e) NULL
+    )
+
+    if (is.null(test)) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (failed)"
+      ))
+    }
+
+    tibble(
+      statistic = unname(test$statistic),
+      df = unname(test$parameter),
+      p_value = test$p.value,
+      label = ifelse(test$p.value < .001, "***", "ns")
+    )
+  }) %>%
+  ungroup()
+
+print(chi_results_emotion)
+```
+
+
+### plot
+```{r, fig.width=10,fig.height=6}
+
+# set emotion order
+emotion_order <- c(
+  "Shame",
+  "Guilt",
+  "Embarrassment",
+  "Contempt",
+  "Disgust",
+  "Anger",
+  "Pride",
+  "Compassion"
+)
+
+# set custom colors
+emotion_cols <- c(
+  "Shame" = "#E69F00",
+  "Guilt" = "#56B4E9",
+  "Embarrassment" = "#009E73",
+  "Contempt" = "#F0E442",
+  "Disgust" = "#0072B2",
+  "Anger" = "#D55E00",
+  "Pride" = "#CC79A7",
+  "Compassion" = "#666666"
+)
+
+# compute proportions within each panel
+emotion_props <- emotion_long %>%
+  count(source, moral, target, emotion) %>%
+  group_by(source, moral, target) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(emotion = factor(emotion, levels = emotion_order))
+
+# plot
+p_emotion <- ggplot(
+  emotion_props,
+  aes(x = moral, y = prop, fill = emotion, color = emotion)
+) +
+  geom_col(alpha = 0.95) +
+  geom_text(
+  aes(label = ifelse(prop >= 0.05, scales::percent(prop, accuracy = 1), "")),
+  position = position_stack(vjust = 0.5),
+  color = "black",
+  size = 2
+)+
+  facet_grid(source ~ target) +
+  scale_x_discrete(labels = function(x) sub("-.*", "", x)) +
+    scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_fill_manual(values = emotion_cols, breaks = emotion_order, drop = FALSE) +
+  scale_color_manual(values = emotion_cols, breaks = emotion_order, drop = FALSE) +
+  labs(
+    y = "Emotion Distribution (%)",
+    x = "Moral Foundation"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y = element_text(size = 13),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold")
+  )
+
+p_emotion
+
+ggsave(
+  filename = "output/p_emotion.png",
+  plot = p_emotion,
+  width = 10,
+  height = 6,
+  dpi = 300
+)
+```
+
+
+
+# action by moral foundation
+### dataset
+```{r}
+action_vars <- c(
+  "strangers_reaction",
+  "acquaintances_reaction",
+  "friends_reaction",
+  "strangers_reaction_should",
+  "acquaintances_reaction_should",
+  "friends_reaction_should"
+)
+
+df_action <- df %>%
+  select(rater,unique_id,label_type, ID,moral,source, all_of(action_vars)) %>%
+  distinct() %>% 
+  rename_with(~ .x %>%
+    # tie strength
+    str_replace("^strangers", "stranger") %>%
+    str_replace("^acquaintances", "weak_tie") %>%
+    str_replace("^friends", "strong_tie") %>%
+    # action type
+    str_replace("_reaction_should$", "_should") %>%
+    str_replace("_reaction$", "_would"),
+    all_of(action_vars)
+  )
+
+df_long <- df_action %>%
+  pivot_longer(
+    cols = stranger_would:strong_tie_should,
+    names_to = "variable",
+    values_to = "response"
+  ) %>%
+  mutate(
+    # optional: clean ordering of responses
+    response = factor(response,
+      levels = c(
+        "Do nothing", "Stay away", "Gossip",
+        "Inform authority", "Verbal confrontation",
+        "Physical confrontation", "Support", "Praise"
+      )
+    ),
+    # separate actual vs should (useful later)
+    type = ifelse(grepl("should", variable), "should", "would")
+  )
+
+```
+### descriptive
+```{r}
+stats_counts <- df_long %>%
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, source) %>%
+  summarise(n = n(), .groups = "drop")
+
+stats_props <- df_long %>%
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, source) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  group_by(moral, variable, source) %>%
+  mutate(
+    total_n = sum(n),
+    prop = ifelse(total_n > 0, n / total_n, NA_real_)
+  ) %>%
+  ungroup()
+
+chi_results <- df_long %>%
+  filter(!is.na(moral), !is.na(response), !is.na(source), !is.na(variable)) %>%
+  group_by(source, variable) %>%
+  group_modify(~ {
+    tab <- table(.x$moral, .x$response)
+
+    # check structure
+    if (nrow(tab) < 2 || ncol(tab) < 2 || sum(tab) == 0) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (low variation)"
+      ))
+    }
+
+    test <- tryCatch(
+      suppressWarnings(chisq.test(tab)),
+      error = function(e) NULL
+    )
+
+    if (is.null(test)) {
+      return(tibble(
+        statistic = NA_real_,
+        df = NA_real_,
+        p_value = NA_real_,
+        label = "NA (failed)"
+      ))
+    }
+
+    tibble(
+      statistic = unname(test$statistic),
+      df = unname(test$parameter),
+      p_value = test$p.value,
+      label = ifelse(test$p.value < .001, "***", "ns")
+    )
+  }) %>%
+  ungroup()
+
+print(chi_results)
+
+```
+### plot
+```{r,fig.width=12,fig.height=6}
+# set response order
+response_order <- c(
+  "Do nothing",
+  "Stay away",
+  "Gossip",
+  "Verbal confrontation",
+  "Physical confrontation",
+  "Inform authority",
+  "Support",
+  "Praise"
+)
+
+# set custom colors
+response_cols <- c(
+  "Do nothing" = "#7F7F7F",
+  "Stay away" = "#E69F00",
+  "Gossip" = "#56B4E9",
+  "Verbal confrontation" = "#009E73",
+  "Physical confrontation" = "#F0E442",
+  "Inform authority" = "#0072B2",
+  "Support" = "#D55E00",
+  "Praise" = "#CC79A7"
+)
+
+# make sure response is a factor with correct order
+stats_props <- stats_props %>%
+  mutate(response = factor(response, levels = response_order))
+
+# plot
+p_action <- ggplot(stats_props, aes(x = moral, y = prop, fill = response, color = response)) +
+  geom_col(alpha = 0.95) +
+  facet_grid(
+    source ~ variable,
+    labeller = labeller(
+      source = function(x) gsub("_", "\n", x),
+      variable = function(x) gsub("_", "\n", x)
+    )
+  ) +
+  geom_col(alpha = 0.95) +
+  geom_text(
+  aes(label = ifelse(prop >= 0.05, scales::percent(prop, accuracy = 1), "")),
+  position = position_stack(vjust = 0.5),
+  color = "black",
+  size = 2
+)+
+  scale_x_discrete(labels = function(x) sub("-.*", "", x)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_fill_manual(values = response_cols, breaks = response_order, drop = FALSE) +
+  scale_color_manual(values = response_cols, breaks = response_order, drop = FALSE) +
+  labs(
+    x = "Moral Foundation",
+    y = "Action Distribution (%)"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
+  )
+
+p_action
+
+ggsave(
+  filename = "output/p_action.png",
+  plot = p_action,
+  width = 12,
+  height = 6,
+  dpi = 300
+)
+#ggsave("output/moral_action.svg", plot=p,width = 12, height = 6)
+```
+
+# wrongness x inapproperiateness
+
+
+```{r}
+df_long <- df %>%
+  pivot_longer(
+    cols = c(norm_inappropriateness, norm_wrongness),
+    names_to = "measure",
+    values_to = "value"
+  ) %>%
+  mutate(
+    measure = case_when(
+      measure == "norm_inappropriateness" ~ "Inappropriateness",
+      measure == "norm_wrongness" ~ "Wrongness",
+      TRUE ~ measure
+    ),
+    value = as.numeric(value)
+  )
+
+plot_dat <- df_long %>%
+  count(source, measure, value) %>%
+  group_by(source, measure) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+source_cols <- c(
+  "human" = "#7F7F7F",
+  "close-source" = "#E69F00",
+  "open-source" = "#56B4E9"
+)
+
+# overall chi-square test for each measure
+overall_test <- df_long %>%
+  group_by(measure) %>%
+  group_modify(~{
+    tab <- table(.x$source, .x$value)
+    test <- chisq.test(tab)
+
+    tibble(
+      chisq = unname(test$statistic),
+      df = unname(test$parameter),
+      p = test$p.value,
+      label = paste0(
+  "\u03C7\u00B2(", unname(test$parameter), ") = ",
+  round(unname(test$statistic), 2),
+  "\n",
+  "p ", scales::pvalue(test$p.value, accuracy = 0.001)
+)
+    )
+  }) %>%
+  ungroup() %>%
+  mutate(
+    x = 2,
+    y = 0.34
+  )
+overall_test
+
+# pairwise chi-square tests within each measure
+pairwise_test <- df_long %>%
+  group_by(measure) %>%
+  group_modify(~{
+    pairs <- combn(sort(unique(.x$source)), 2, simplify = FALSE)
+
+    map_dfr(pairs, function(pair) {
+      dat_sub <- .x %>% filter(source %in% pair)
+      tab <- table(dat_sub$source, dat_sub$value)
+      test <- chisq.test(tab)
+
+      tibble(
+        source_1 = pair[1],
+        source_2 = pair[2],
+        chisq = unname(test$statistic),
+        df = unname(test$parameter),
+        p = test$p.value
+      )
+    })
+  }) %>%
+  ungroup() %>%
+  mutate(
+    p_adj = p.adjust(p, method = "holm"),
+    comparison = paste(source_1, "vs", source_2),
+    result = paste0(
+      comparison, ": ",
+      "chi-square(", df, ") = ", round(chisq, 2),
+      ", p = ", scales::pvalue(p_adj, accuracy = 0.001)
+    )
+  )
+
+pairwise_test
+
+```
+
+```{r}
+p_norm <- ggplot(
+  plot_dat,
+  aes(x = value, y = prop, color = source, group = source)
+) +
+  geom_line(linewidth = 1.2, alpha = 0.7) +
+  geom_point(size = 2.8, alpha = 0.7) +
+  geom_text(
+    data = overall_test,
+    aes(x = x, y = y, label = label),
+    inherit.aes = FALSE,
+    size = 4.5
+  ) +
+  facet_wrap(~ measure, ncol = 2) +
+  scale_x_continuous(breaks = 1:5, limits = c(1, 5)) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_color_manual(values = source_cols) +
+  labs(
+    x = "Rating (1=Not at all; 5=Extremely)",
+    y = "Percentage",
+    color = ""
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 16),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 16, face = "bold"),
+    legend.position = "top"
+  )
+
+p_norm
+
+ggsave(
+  filename = "output/p_norm.png",
+  plot = p_norm,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+
+```
+
+## figure for each models
+
+```{r}
+
+# set custom colors for stacked ratings
+strength_cols <- c(
+  "1" = "#7F7F7F",
+  "2" = "#E69F00",
+  "3" = "#56B4E9",
+  "4" = "#CC79A7",
+  "5" = "#F0E442"
+)
+
+# reshape data
+df_long <- df %>%
+  mutate(
+    label_type = factor(
+      label_type,
+      levels = c("human", "claude", "gpt_5.2","gemini", "gpt_oss", "gemma",   "llama")
+    )
+  ) %>% 
+  pivot_longer(
+    cols = c(norm_inappropriateness, norm_wrongness),
+    names_to = "measure",
+    values_to = "strength"
+  ) %>%
+  mutate(
+    measure = case_when(
+      measure == "norm_inappropriateness" ~ "Inappropriateness",
+      measure == "norm_wrongness" ~ "Wrongness",
+      TRUE ~ measure
+    ),
+    strength = factor(strength, levels = c("5", "4", "3", "2", "1"),
+                      labels = c("5 = Extremely", "4","3","2","1 = Not at all")),
+    source = factor(source, levels = c("human", "close-source", "open-source"))
+  )
+
+# calculate proportions
+stats_props <- df_long %>%
+  count(label_type, measure, strength) %>%
+  group_by(label_type, measure) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+# plot
+p_norm <- ggplot(
+  stats_props,
+  aes(x = label_type, y = prop, fill = strength, color = strength)
+) +
+  geom_col(alpha = 0.95) +
+  facet_grid(
+    measure ~ .,
+    labeller = labeller(
+      source = function(x) gsub("-", "\n", x)
+    )
+  ) +
+  geom_text(
+    aes(label = ifelse(prop >= 0.05, scales::percent(prop, accuracy = 1), "")),
+    position = position_stack(vjust = 0.5),
+    color = "black",
+    size = 3
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_fill_manual(values = strength_cols, breaks = strength_order, drop = FALSE) +
+  scale_color_manual(values = strength_cols, breaks = strength_order, drop = FALSE) +
+  labs(
+    x = NULL,
+    y = "Rating Distribution (%)",
+    fill = "Rating",
+    color = "Rating"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13),
+    legend.position = "bottom"
+  )
+
+p_norm
+
+ggsave(
+  filename = "output/p_norm.png",
+  plot = p_norm,
+  width = 7,
+  height = 8,
+  dpi = 300
+)
+```
+
+## wrongness predict action
+
+```{r}
+# 1) build a long dataset with only the "Do nothing" outcome
+df_dn <- df %>%
+  transmute(
+    label_type,
+    source,
+    norm_inappropriateness,
+    norm_wrongness,
+    strong_tie = !(friends_reaction %in% c("Do nothing", "Praise", "Support")),
+    weak_tie   = !(acquaintances_reaction %in% c("Do nothing", "Praise", "Support")),
+    stranger   = !(strangers_reaction %in% c("Do nothing", "Praise", "Support"))
+  ) %>%
+  pivot_longer(
+    cols = c(strong_tie, weak_tie, stranger),
+    names_to = "tie",
+    values_to = "sanction"
+  ) %>%
+  mutate(
+    sanction = as.integer(sanction),
+    tie = factor(tie, levels = c("strong_tie", "weak_tie", "stranger"))
+  )
+
+# 2) reshape the two norm measures into one column for easier modeling/faceting
+df_dn_long <- df_dn %>%
+  pivot_longer(
+    cols = c(norm_inappropriateness, norm_wrongness),
+    names_to = "measure",
+    values_to = "rating"
+  ) %>%
+  mutate(
+    measure = case_when(
+      measure == "norm_inappropriateness" ~ "Inappropriateness",
+      measure == "norm_wrongness" ~ "Wrongness",
+      TRUE ~ measure
+    ),
+    rating = as.numeric(rating)
+  )
+
+# 3) fit one model per tie x measure
+models_dn <- df_dn_long %>%
+  group_by(tie, measure) %>%
+  group_split() %>%
+  map(function(dat) {
+    mod <- glm(
+      sanction ~ rating * label_type,
+      data = dat,
+      family = binomial
+    )
+    
+    tibble(
+      tie = dat$tie[1],
+      measure = dat$measure[1],
+      model = list(mod)
+    )
+  }) %>%
+  bind_rows()
+
+# 4) get predicted probabilities
+pred_dn <- pmap_dfr(
+  models_dn,
+  function(tie, measure, model) {
+    
+    newdata <- expand.grid(
+      rating = 1:5,
+      label_type = unique(model$data$label_type)
+    )
+    
+    pred_se <- tryCatch(
+      predict(model, newdata = newdata, type = "link", se.fit = TRUE),
+      error = function(e) NULL
+    )
+    
+    if (!is.null(pred_se)) {
+      se <- pred_se$se.fit
+      bad_se <- is.na(se) | se > 3
+      
+      newdata %>%
+        mutate(
+          predicted = plogis(pred_se$fit),
+          conf.low = ifelse(bad_se, NA_real_, plogis(pred_se$fit - 1.96 * se)),
+          conf.high = ifelse(bad_se, NA_real_, plogis(pred_se$fit + 1.96 * se)),
+          tie = tie,
+          measure = measure
+        )
+    } else {
+      pred <- predict(model, newdata = newdata, type = "response")
+      
+      newdata %>%
+        mutate(
+          predicted = pred,
+          conf.low = NA_real_,
+          conf.high = NA_real_,
+          tie = tie,
+          measure = measure
+        )
+    }
+  }
+)
+
+# 5) relabel tie for plotting
+pred_dn <- pred_dn %>%
+  mutate(
+    tie = case_when(
+      tie == "strong_tie" ~ "strong tie",
+      tie == "weak_tie" ~ "weak tie",
+      tie == "stranger" ~ "stranger",
+      TRUE ~ tie
+    ),
+    tie = factor(tie, levels = c("strong tie", "weak tie","stranger"))
+  ) %>% 
+  mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) 
+
+
+# 6) plot
+p_sanction <- ggplot(
+  pred_dn,
+  aes(x = rating, y = predicted, color = label_type, fill = label_type)
+) +
+  geom_line(linewidth = 1.2) +
+  geom_point(aes(shape = source),size = 3) +
+  geom_ribbon(
+    aes(ymin = conf.low, ymax = conf.high),
+    alpha = 0.2,
+    color = NA
+  ) +
+  facet_grid(measure ~ tie) +
+  labs(
+    x = "Norm Rating",
+    y = "P(Enforcement | Norm Ratings)",
+    color = "",
+    fill = ""
+  ) +
+ # scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_shape_manual(values = c(
+  "human" = 1,         # solid circle
+  "close-source" = 17,  # triangle
+  "open-source" = 8    # square
+))+
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),  # facet labels
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2")
+
+
+p_sanction
+
+ggsave(
+  filename = "output/normxsanction_all.png",
+  plot = p_sanction,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+
+# emotion predict sanction 
+
+```{r, warning=F}
+non_enforcement <- c("Do nothing", "Praise", "Support")
+
+df_action <- df %>%
+  mutate(
+    friends_enforce = as.integer(!(friends_reaction %in% non_enforcement)),
+    acquaintances_enforce = as.integer(!(acquaintances_reaction %in% non_enforcement)),
+    strangers_enforce = as.integer(!(strangers_reaction %in% non_enforcement))
+  ) %>%
+  filter(emotion_type != "emotion_actor")
+
+combinations <- expand_grid(
+  emotion = unique(df_action$emotion),
+  emotion_type = unique(df_action$emotion_type)
+)
+
+fit_model_safe <- function(df, outcome_col) {
+  vals <- unique(na.omit(df[[outcome_col]]))
+  if (length(vals) < 2) return(NULL)
+
+  glm(
+    as.formula(paste0(outcome_col, " ~ strength_value * label_type")),
+    data = df,
+    family = binomial
+  )
+}
+
+models <- pmap(
+  combinations,
+  function(emotion, emotion_type) {
+
+    outcome_col <- case_when(
+      emotion_type == "emotion_friend" ~ "friends_enforce",
+      emotion_type == "emotion_acquaintance" ~ "acquaintances_enforce",
+      emotion_type == "emotion_stranger" ~ "strangers_enforce"
+    )
+
+    df_sub <- df_action %>%
+      filter(
+        emotion == !!emotion,
+        emotion_type == !!emotion_type
+      )
+
+    model <- fit_model_safe(df_sub, outcome_col)
+
+    tibble(
+      emotion = emotion,
+      emotion_type = emotion_type,
+      outcome = outcome_col,
+      model = list(model)
+    )
+  }
+) %>%
+  list_rbind() %>%
+  filter(!map_lgl(model, is.null))
+
+model_results <- models %>%
+  mutate(tidy = map(model, tidy)) %>%
+  unnest(tidy) %>%
+  mutate(
+    odds_ratio = exp(estimate),
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    statistic = round(statistic, 2),
+    p.value = signif(p.value, 3),
+    odds_ratio = round(odds_ratio, 2)
+  ) %>%
+  select(
+    emotion, emotion_type, outcome,
+    term, estimate, std.error, statistic, p.value, odds_ratio
+  )
+
+```
+
+```{r, warning=F}
+# ## 2. Generate predictions
+pred_list <- pmap(
+  models,
+  function(emotion, emotion_type, outcome, model) {
+
+    if (is.null(model)) return(NULL)
+    if (!"label_type" %in% names(model$data)) return(NULL)
+
+    newdata <- expand.grid(
+      strength_value = 0:4,
+      label_type = unique(model$data$label_type)
+    )
+
+    pred_se <- tryCatch(
+      predict(model, newdata = newdata, type = "link", se.fit = TRUE),
+      error = function(e) NULL
+    )
+
+    if (!is.null(pred_se)) {
+      se <- pred_se$se.fit
+      bad_se <- is.na(se) | se > 3
+
+      out <- newdata %>%
+        mutate(
+          predicted = plogis(pred_se$fit),
+          conf.low  = ifelse(bad_se, NA_real_, plogis(pred_se$fit - 1.96 * se)),
+          conf.high = ifelse(bad_se, NA_real_, plogis(pred_se$fit + 1.96 * se))
+        )
+    } else {
+      pred <- tryCatch(
+        predict(model, newdata = newdata, type = "response"),
+        error = function(e) NULL
+      )
+
+      if (is.null(pred)) return(NULL)
+
+      out <- newdata %>%
+        mutate(
+          predicted = pred,
+          conf.low = NA_real_,
+          conf.high = NA_real_
+        )
+    }
+
+    out %>%
+      mutate(
+        emotion = emotion,
+        emotion_type = emotion_type,
+        outcome = outcome
+      )
+  }
+)
+
+pred_combined <- bind_rows(pred_list)
+
+```
+
+
+
+```{r, fig.height=6, fig.width=8}
+## 3. Plot enforcement probability
+
+emotionxenforcement <- pred_combined %>%  
+  filter(emotion %in% c("Anger", "Contempt", "Disgust")) %>%
+  mutate(
+    emotion_type = case_when(
+      emotion_type == "emotion_friend" ~ "strong tie",
+      emotion_type == "emotion_acquaintance" ~ "weak tie",
+      emotion_type == "emotion_stranger" ~ "stranger",
+      TRUE ~ emotion_type
+    ),
+    emotion_type = factor(
+      emotion_type,
+      levels = c("strong tie", "weak tie", "stranger")
+    ),
+    source = ifelse(
+      label_type %in% c("claude", "gemini", "gpt_5.2"),
+      "close-source",
+      ifelse(label_type == "human", "human", "open-source")
+    )
+  ) %>%
+  ggplot(
+    aes(
+      x = strength_value,
+      y = predicted,
+      color = label_type,
+      fill = label_type
+    )
+  ) +
+  geom_line(size = 1.2) +
+  geom_ribbon(
+    aes(ymin = conf.low, ymax = conf.high),
+    alpha = 0.25,
+    color = NA
+  ) +
+  geom_point(aes(shape = source), size = 3) +
+  facet_grid(
+    emotion ~ emotion_type,
+    labeller = labeller(
+      emotion_type = function(x) sub(".*_", "", x)
+    )
+  ) +
+  labs(
+    x = "Emotion Strength",
+    y = "P(Enforcement | Emotion strength)",
+    color = "",
+    fill = ""
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
+  scale_shape_manual(values = c(
+    "human" = 1,
+    "close-source" = 17,
+    "open-source" = 8
+  ))
+
+emotionxenforcement
+
+ggsave(
+  filename = "output/emotionxsanction_all.png",
+  plot = emotionxenforcement,
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+```
