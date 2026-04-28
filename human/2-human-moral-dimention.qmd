@@ -63,7 +63,12 @@ df<-read.csv( "data/df_all_long_updated.csv") %>%
   )
 ) %>% 
   left_join(moral, by = "ID") %>% 
-    mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) 
+    mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) %>% 
+  mutate(
+    label_type = factor(
+      label_type,
+      levels = c("human", "claude", "gpt_5.2","gemini", "gpt_oss", "gemma",   "llama")
+    ))
 
 ```
 
@@ -88,7 +93,6 @@ emotion_long <- df %>%
     ),
     target = factor(target, levels = c("actor", "strong tie", "weak tie", "stranger"))
   )
-
 ```
 ### test 
 
@@ -135,9 +139,8 @@ print(chi_results_emotion)
 ```
 
 
-### plot
+### plot - open, closed, human 
 ```{r, fig.width=10,fig.height=6}
-
 # set emotion order
 emotion_order <- c(
   "Shame",
@@ -211,9 +214,61 @@ ggsave(
 )
 ```
 
+### plot - by models 
+
+```{r, fig.width=10,fig.height=8}
+# compute proportions within each panel
+emotion_props <- emotion_long %>%
+  count(label_type, moral, target, emotion) %>%
+  group_by(label_type, moral, target) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(emotion = factor(emotion, levels = emotion_order))
+
+# plot
+p_emotion <- ggplot(
+  emotion_props,
+  aes(x = label_type, y = prop, fill = emotion, color = emotion)
+) +
+  geom_col(alpha = 0.95) +
+  geom_text(
+  aes(label = ifelse(prop >= 0.05, scales::percent(prop, accuracy = 1), "")),
+  position = position_stack(vjust = 0.5),
+  color = "black",
+  size = 2
+)+
+  facet_grid(moral ~ target,labeller = labeller(moral = function(x) gsub("-", "\n", x))) +
+  scale_x_discrete(labels = function(x) sub("-.*", "", x)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_fill_manual(values = emotion_cols, breaks = emotion_order, drop = FALSE) +
+  scale_color_manual(values = emotion_cols, breaks = emotion_order, drop = FALSE) +
+  labs(
+    y = "Emotion Distribution (%)",
+    x = "Moral Foundation"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y = element_text(size = 13),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold")
+  )
+
+p_emotion
+
+ggsave(
+  filename = "output/p_emotion_bymodel.png",
+  plot = p_emotion,
+  width = 10,
+  height = 8,
+  dpi = 300
+)
+```
 
 
 # action by moral foundation
+
 ### dataset
 ```{r}
 action_vars <- c(
@@ -259,7 +314,8 @@ df_long <- df_action %>%
   )
 
 ```
-### descriptive
+
+### plot - open, closed human
 ```{r}
 stats_counts <- df_long %>%
   filter(!is.na(response)) %>%
@@ -319,7 +375,7 @@ chi_results <- df_long %>%
 print(chi_results)
 
 ```
-### plot
+
 ```{r,fig.width=12,fig.height=6}
 # set response order
 response_order <- c(
@@ -395,6 +451,85 @@ ggsave(
   dpi = 300
 )
 #ggsave("output/moral_action.svg", plot=p,width = 12, height = 6)
+```
+
+### plot- for each model
+
+```{r}
+stats_counts <- df_long %>%
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, label_type) %>%
+  summarise(n = n(), .groups = "drop")
+
+stats_props <- df_long %>%
+  mutate(
+    label_type = factor(
+      label_type,
+      levels = c("human", "claude", "gpt_5.2","gemini", "gpt_oss", "gemma",   "llama")
+    )) %>% 
+  filter(!is.na(response)) %>%
+  group_by(moral, variable, response, label_type) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  group_by(moral, variable, label_type) %>%
+  mutate(
+    total_n = sum(n),
+    prop = ifelse(total_n > 0, n / total_n, NA_real_)
+  ) %>%
+  ungroup() 
+
+```
+
+```{r,fig.width=12,fig.height=8}
+# make sure response is a factor with correct order
+stats_props <- stats_props %>%
+  mutate(response = factor(response, levels = response_order))
+
+# plot
+p_action <- ggplot(stats_props, aes(x = label_type, y = prop, fill = response, color = response)) +
+  geom_col(alpha = 0.95) +
+  facet_grid(
+    moral ~ variable,
+    labeller = labeller(
+     moral = function(x) gsub("-", "\n", x),
+     variable = function(x) gsub("_", "\n", x)
+    )
+  ) +
+  geom_col(alpha = 0.95) +
+  geom_text(
+  aes(label = ifelse(prop >= 0.05, scales::percent(prop, accuracy = 1), "")),
+  position = position_stack(vjust = 0.5),
+  color = "black",
+  size = 2
+)+
+  scale_x_discrete(labels = function(x) sub("-.*", "", x)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_fill_manual(values = response_cols, breaks = response_order, drop = FALSE) +
+  scale_color_manual(values = response_cols, breaks = response_order, drop = FALSE) +
+  labs(
+    x = "Moral Foundation",
+    y = "Action Distribution (%)"
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 14),
+    axis.text.y = element_text(size = 14),
+    axis.title.x = element_text(size = 16, face = "bold"),
+    axis.title.y = element_text(size = 16, face = "bold"),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 14, face = "bold"),
+    legend.text = element_text(size = 13)
+  )
+
+p_action
+
+ggsave(
+  filename = "output/p_action_bymodel.png",
+  plot = p_action,
+  width = 12,
+  height = 8,
+  dpi = 300
+)
+
 ```
 
 # wrongness x inapproperiateness
@@ -541,11 +676,11 @@ ggsave(
 
 # set custom colors for stacked ratings
 strength_cols <- c(
-  "1" = "#7F7F7F",
+  "1 = Not at all" = "#7F7F7F",
   "2" = "#E69F00",
   "3" = "#56B4E9",
   "4" = "#CC79A7",
-  "5" = "#F0E442"
+  "5 = Extremely" = "#F0E442"
 )
 
 # reshape data
@@ -598,8 +733,8 @@ p_norm <- ggplot(
     size = 3
   ) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  scale_fill_manual(values = strength_cols, breaks = strength_order, drop = FALSE) +
-  scale_color_manual(values = strength_cols, breaks = strength_order, drop = FALSE) +
+  scale_fill_manual(values = strength_cols, breaks = c("5 = Extremely", "4","3","2","1 = Not at all"), drop = FALSE) +
+  scale_color_manual(values = strength_cols, breaks = c("5 = Extremely", "4","3","2","1 = Not at all"), drop = FALSE) +
   labs(
     x = NULL,
     y = "Rating Distribution (%)",
@@ -621,13 +756,50 @@ p_norm <- ggplot(
 p_norm
 
 ggsave(
-  filename = "output/p_norm.png",
+  filename = "output/p_norm_bymodel.png",
   plot = p_norm,
   width = 7,
   height = 8,
   dpi = 300
 )
 ```
+### pairwise testing
+```{r}
+fit1 <- MASS::polr(
+  ordered(value) ~ label_type,
+  data = df_long %>% dplyr::filter(measure == "Wrongness"),
+  Hess = TRUE
+)
+
+
+coef_table1 <- coef(summary(fit1))
+p_values1 <- 2 * pnorm(abs(coef_table1[, "t value"]), lower.tail = FALSE)
+coef_table1 <- cbind(
+  coef_table1,
+  OR = exp(coef_table1[, "Value"]),
+  p = p_values1
+)
+
+coef_table1
+
+fit2 <- MASS::polr(
+  ordered(value) ~ label_type,
+  data = df_long %>% dplyr::filter(measure == "Inappropriateness"),
+  Hess = TRUE
+)
+
+
+coef_table2 <- coef(summary(fit2))
+p_values2 <- 2 * pnorm(abs(coef_table2[, "t value"]), lower.tail = FALSE)
+coef_table2 <- cbind(
+  coef_table2,
+  OR = exp(coef_table2[, "Value"]),
+  p = p_values2
+)
+
+coef_table2
+```
+
 
 ## wrongness predict action
 
