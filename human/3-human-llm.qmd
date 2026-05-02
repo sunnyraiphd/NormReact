@@ -749,81 +749,77 @@ df_action_long <- df_action %>%
     values_to = "choice"
   ) %>%
   mutate(
-    # identify social distance
     social_distance = case_when(
       grepl("strangers", action_var) ~ "stranger",
       grepl("acquaintances", action_var) ~ "acquaintance",
       grepl("friends", action_var) ~ "friend"
     ),
-    # identify action type
     action_type = ifelse(
       grepl("_should$", action_var),
       "should",
       "would"
     )
   ) %>%
-  select(unique_id, ID, social_distance, action_type, choice) %>% 
-  # drop 18 missing 
+  select(unique_id, ID, social_distance, action_type, choice) %>%
   filter(!is.na(choice))
 
 # -----------------------------
-# 3. Compute pairwise choice agreement (0/1)
+# 3. Compute pairwise agreement
 # -----------------------------
 pairwise_action_sim <- df_action_long %>%
   group_by(ID, social_distance, action_type) %>%
   group_modify(~{
     dat <- .x
-    # all unique pairs of agents
     pairs <- combn(seq_len(nrow(dat)), 2, simplify = FALSE)
-    map_dfr(pairs, function(idx) {
+    purrr::map_dfr(pairs, function(idx) {
       a <- dat[idx[1], ]
       b <- dat[idx[2], ]
       tibble(
-        unique_id_1 = a$unique_id,
-        unique_id_2 = b$unique_id,
+        unique_id_1 = as.character(a$unique_id),
+        unique_id_2 = as.character(b$unique_id),
         agreement = as.integer(a$choice == b$choice)
       )
     })
   }) %>%
   ungroup() %>%
   mutate(
-    # standardize human IDs
     unique_id_1_std = ifelse(startsWith(unique_id_1, "human"), "human", unique_id_1),
     unique_id_2_std = ifelse(startsWith(unique_id_2, "human"), "human", unique_id_2),
-    # classify pair type
+
+    # specific human-vs-LLM pair labels
     pair_type = case_when(
       unique_id_1_std == "human" & unique_id_2_std == "human" ~ "human_human",
-      unique_id_1_std == "human" | unique_id_2_std == "human" ~ "LLM_human",
+      unique_id_1_std == "human" & unique_id_2_std != "human" ~ paste0(unique_id_2_std, "__human"),
+      unique_id_2_std == "human" & unique_id_1_std != "human" ~ paste0(unique_id_1_std, "__human"),
       TRUE ~ "LLM_LLM"
-    ),
-    # order-invariant pair ID
-    pair_id = paste(pmin(unique_id_1, unique_id_2), pmax(unique_id_1, unique_id_2), sep = "_")
+    )
   ) %>%
-  distinct(ID, social_distance, action_type, pair_id, .keep_all = TRUE)
+  distinct(ID, social_distance, action_type, unique_id_1_std, unique_id_2_std, .keep_all = TRUE)
 
 # -----------------------------
-# 4. Function to fit logistic mixed-effects model per condition
+# 4. Fit logistic mixed-effects model per condition
 # -----------------------------
 fit_action_model <- function(data, distance, action) {
   dat <- data %>%
     filter(
       social_distance == distance,
       action_type == action,
-      pair_type != "LLM_LLM" # exclude LLM–LLM
+      pair_type != "LLM_LLM"
     ) %>%
-    mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")),
-           pair_id = relevel(factor(pair_id), ref = "human_human"))
-)
-  
+    mutate(
+      pair_type = relevel(factor(pair_type), ref = "human_human")
+    )
+
   glmer(
-    agreement ~ pair_id + (1 | ID),
+    agreement ~ pair_type + (1 | ID),
     data = dat,
-    family = binomial
+    family = binomial,
+    control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
   )
 }
 
 # -----------------------------
-# 5. Fit models for each social distance × action type
+# 5. Fit models
 # -----------------------------
 models_action <- list(
   stranger_would = fit_action_model(pairwise_action_sim, "stranger", "would"),
@@ -835,287 +831,61 @@ models_action <- list(
 )
 
 # -----------------------------
-# 6. Extract results in tidy format
+# 6. Extract fixed effects
 # -----------------------------
 action_results <- purrr::imap_dfr(
   models_action,
-  ~ tidy(.x, effects = "fixed") %>%
-      filter(term == "pair_idLLM_human") %>%
-      mutate(
-        condition = .y,
-        odds_ratio = exp(estimate)
-      )
+  ~ broom.mixed::tidy(.x, effects = "fixed", conf.int = TRUE) %>%
+    mutate(
+      condition = .y,
+      odds_ratio = exp(estimate),
+      or_low = exp(conf.low),
+      or_high = exp(conf.high)
+    )
 )
-
 action_results
 
-# -----------------------------
-# 7. Optional: Descriptive agreement rates
-# -----------------------------
-agreement_rates <- pairwise_action_sim %>%
-  filter(pair_type != "LLM_LLM") %>%
-  group_by(social_distance, action_type, pair_id) %>%
-  summarise(
-    agreement_rate = mean(agreement),
-    .groups = "drop"
-  )
+
+# ----------------------------- # 7. Optional: Descriptive agreement rates # -----------------------------
+
+agreement_rates <- pairwise_action_sim %>% 
+  filter(pair_type != "LLM_LLM") %>% 
+  group_by(social_distance, action_type,pair_type) %>% 
+  summarise( agreement_rate = mean(agreement), .groups = "drop" ) 
 
 agreement_rates
+
 ```
 
+
 ```{r}
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+library(scales)
+
 # Reorder factors for nicer plotting
 df_agreement <- agreement_rates %>%
   mutate(
     social_distance = factor(social_distance, levels = c("stranger", "acquaintance", "friend")),
     action_type = factor(action_type, levels = c("would", "should")),
-    pair_id = relevel(factor(pair_id), ref = "human_human"))
+    pair_id = relevel(factor(pair_id), ref = "human_human")
   )
-
-library(RColorBrewer)
 
 ggplot(df_agreement, aes(x = pair_id, y = social_distance, fill = agreement_rate)) +
   geom_tile(color = "white") +
-  geom_text(aes(label = scales::percent(agreement_rate, accuracy = 1)), color = "black") +
+  geom_text(aes(label = percent(agreement_rate, accuracy = 1)), color = "black", size = 4) +
   facet_wrap(~action_type) +
-  scale_fill_distiller(palette = "Blues", direction = 1, name = "Agreement Rate") +
+  scale_fill_distiller(palette = "Blues", direction = 1, name = "Agreement Rate",
+                       labels = percent_format(accuracy = 1)) +
   labs(
-    title = "",
+    title = "Agreement Rates by Pair Type and Social Distance",
     x = "Pair Type",
     y = "Social Distance"
   ) +
-  theme_minimal(base_size = 14)
-```
-
-# Do emotion predict enforcement?
-
-```{r,warning=F}
-# labels as they appear in the raw data
-action_labels <- c(
-  "Do nothing",
-  "Physical confrontation",
-  "Verbal confrontation",
-  "Inform authority",
-  "Gossip",
-  "Stay away",
-  "Praise",
-  "Support"
-)
-
-# safe names for columns
-action_names <- action_labels %>%
-  str_to_lower() %>%
-  str_replace_all(" ", "_")
-
-action_map <- tibble(
-  action_label = action_labels,
-  action = action_names
-)
-
-df_action <- df %>%
-  mutate(
-    across(
-      c(friends_reaction, strangers_reaction, acquaintances_reaction),
-      .fns = setNames(
-        lapply(action_labels, function(a) {
-          function(x) as.integer(x == a)
-        }),
-        paste0("is_", action_names)
-      ),
-      .names = "{.col}_{.fn}"
-    )
-  ) %>%
-  filter(emotion_type != "emotion_actor")
-
-combinations <- expand_grid(
-  emotion = unique(df_action$emotion),
-  emotion_type = unique(df_action$emotion_type),
-  action = action_map$action
-)
-
-fit_model_safe <- function(df, outcome_col) {
-  vals <- unique(na.omit(df[[outcome_col]]))
-  if (length(vals) < 2) return(NULL)
-
-  glm(
-    as.formula(paste0(outcome_col, " ~ strength_value * label_type")),
-    data = df,
-    family = binomial
-  )
-}
-
-models <- pmap(
-  combinations,
-  function(emotion, emotion_type, action) {
-
-    outcome_col <- case_when(
-      emotion_type == "emotion_friend" ~ paste0("friends_reaction_is_", action),
-      emotion_type == "emotion_acquaintance" ~ paste0("acquaintances_reaction_is_", action),
-      emotion_type == "emotion_stranger" ~ paste0("strangers_reaction_is_", action)
-    )
-
-    df_sub <- df_action %>%
-      filter(
-        emotion == !!emotion,
-        emotion_type == !!emotion_type
-      )
-
-    model <- fit_model_safe(df_sub, outcome_col)
-
-    tibble(
-      emotion = emotion,
-      emotion_type = emotion_type,
-      action = action,
-      outcome = outcome_col,
-      model = list(model)
-    )
-  }
-) %>%
-  list_rbind() %>%
-  filter(!map_lgl(model, is.null))
-
-model_results <- models %>%
-  mutate(tidy = map(model, tidy)) %>%
-  unnest(tidy) %>%
-  mutate(
-    odds_ratio = exp(estimate),
-    estimate = round(estimate, 3),
-    std.error = round(std.error, 3),
-    statistic = round(statistic, 2),
-    p.value = signif(p.value, 3),
-    odds_ratio = round(odds_ratio, 2)
-  ) %>%
-  select(
-    emotion, emotion_type, action, outcome,
-    term, estimate, std.error, statistic, p.value, odds_ratio
-  )
-```
-
-```{r,warning=F}
-pred_list <- pmap(
-  models,
-  function(emotion, emotion_type, action, outcome, model) {
-
-    if (is.null(model)) return(NULL)
-    if (!"label_type" %in% names(model$data)) return(NULL)
-
-    newdata <- expand.grid(
-      strength_value = 0:4,
-      label_type = unique(model$data$label_type)
-    )
-
-    pred_se <- tryCatch(
-      predict(model, newdata = newdata, type = "link", se.fit = TRUE),
-      error = function(e) NULL
-    )
-
-    if (!is.null(pred_se)) {
-      se <- pred_se$se.fit
-      bad_se <- is.na(se) | se > 3
-
-      out <- newdata %>%
-        mutate(
-          predicted = plogis(pred_se$fit),
-          conf.low  = ifelse(bad_se, NA_real_, plogis(pred_se$fit - 1.96 * se)),
-          conf.high = ifelse(bad_se, NA_real_, plogis(pred_se$fit + 1.96 * se))
-        )
-    } else {
-      pred <- tryCatch(
-        predict(model, newdata = newdata, type = "response"),
-        error = function(e) NULL
-      )
-
-      if (is.null(pred)) return(NULL)
-
-      out <- newdata %>%
-        mutate(
-          predicted = pred,
-          conf.low = NA_real_,
-          conf.high = NA_real_
-        )
-    }
-
-    out %>%
-      mutate(
-        emotion = emotion,
-        emotion_type = emotion_type,
-        action = action,
-        outcome = outcome
-      )
-  }
-)
-
-pred_combined <- bind_rows(pred_list)
-```
-
-```{r,fig.height=6,fig.width=8}
-emotionxinaction<-pred_combined %>%  
-  filter(action =="do_nothing" & emotion %in% c("Anger","Contempt","Disgust")) %>% 
-  mutate(
-  emotion_type = case_when(
-    emotion_type == "emotion_friend" ~ "strong tie",
-    emotion_type == "emotion_acquaintance" ~ "weak tie",
-    emotion_type == "emotion_stranger" ~ "stranger",
-    TRUE ~ emotion_type),
-   emotion_type = factor(
-      emotion_type,
-      levels = c("strong tie", "weak tie", "stranger")
-    )) %>%
-  mutate(source = ifelse(label_type %in% c("claude","gemini","gpt_5.2"),"close-source",ifelse(label_type=="human","human","open-source"))) %>% 
-ggplot(.,
-  #filter(pred_combined,emotion_type =="emotion_acquaintance"),
-  aes(
-    x = strength_value,
-    y = predicted,
-    color = label_type,
-    fill = label_type
-  )
-) +
-  geom_line(size = 1.2) +
-  geom_ribbon(
-    aes(ymin = conf.low, ymax = conf.high),
-    alpha = 0.25,
-    color = NA
-  ) +
-  geom_point(aes(shape = source),size = 3) +
-  facet_grid(
-    emotion~emotion_type,
-    labeller = labeller(
-     emotion_type = function(x) sub(".*_", "", x)
-    )
-  ) +
-  labs(
-    x = "Emotion Strength",
-    y = "P(Inaction | Emotion strength)",
-    color = "",
-    fill = "",
-  ) +
-theme_minimal(base_size = 16) +  # increases overall text size
+  theme_minimal(base_size = 14) +
   theme(
-    axis.text.x = element_text(hjust = 1, size = 14),
-    axis.text.y = element_text(size = 14),
-    axis.title.x = element_text(size = 16, face = "bold"),
-    axis.title.y = element_text(size = 16, face = "bold"),
-    strip.text = element_text(size = 14, face = "bold"),  # facet labels
-    legend.title = element_text(size = 14, face = "bold"),
-    legend.text = element_text(size = 13)
-  ) +
-  scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Set2") +
- # scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  scale_shape_manual(values = c(
-  "human" = 1,         # solid circle
-  "close-source" = 17,  # triangle
-  "open-source" = 8    # square
-))
-  
-
-ggsave(
-  filename = "output/emotionxinaction_all.png",
-  plot = emotionxinaction,
-  width = 8,
-  height = 6,
-  dpi = 300
-)
-
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 ```
