@@ -42,7 +42,7 @@ moral<-read.csv( "data/stimuli.csv") %>%
   select(ID,rot.moral.foundations) %>% 
     mutate(ID = as.factor(ID))
 
-df<-read.csv( "data/df_all_long_updated.csv") %>% 
+df<-read.csv( "data/df_all_long_filtered_last.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
   mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
   mutate(ID=as.factor(ID)) %>% 
@@ -162,9 +162,9 @@ ggplot(human_cor_list, aes(x = LLM, y = emotion_type, fill = Correlation)) +
 # with strength
 df_wide_strength <- df %>%
   #filter(emotion_type == "emotion_friend") %>% 
-  #filter(emotion_type == "emotion_acquaintance") %>% 
+  filter(emotion_type == "emotion_acquaintance") %>% 
   #filter(emotion_type == "emotion_stranger") %>% 
-  filter(emotion_type == "emotion_actor") %>% 
+  #filter(emotion_type == "emotion_actor") %>% 
   select(ID, stimuli,rater, unique_id, emotion, strength_value,emotion_type) %>% 
   group_by(ID,stimuli,rater, unique_id, emotion,emotion_type) %>% 
   summarise(strength_value = mean(strength_value, na.rm = TRUE), .groups = "drop") %>% 
@@ -334,9 +334,9 @@ pairwise_sim <- df_wide %>%
     # compute cosine similarity
     #sim <- as.matrix(proxy::simil(mat, method = "cosine"))
     # compute jaccard similarity
-    sim <- as.matrix(proxy::simil(mat, method = "jaccard"))
+    #sim <- as.matrix(proxy::simil(mat, method = "jaccard"))
     # compute Euclidean distance
-    # sim <- as.matrix(proxy::dist(mat, method = "Euclidean"))
+    sim <- as.matrix(proxy::dist(mat, method = "Euclidean"))
     as.data.frame(as.table(sim)) %>%
       rename(unique_id_1 = Var1, unique_id_2 = Var2, similarity = Freq) %>%
       filter(unique_id_1 != unique_id_2)  # remove self-comparison
@@ -487,7 +487,7 @@ df_analysis <- final_pairwise_sim %>%
 model<-lmer(similarity~pair_type + (1|ID), df_analysis)
 # each model
 model2<-lmer(similarity~pair_model + (1|ID), df_analysis)
-tab_model(model,model2)
+tab_model(model2)
 ```
 
 ## similarity for each emotions
@@ -811,10 +811,12 @@ fit_action_model <- function(data, distance, action) {
       action_type == action,
       pair_type != "LLM_LLM" # exclude LLM–LLM
     ) %>%
-    mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")))
+    mutate(pair_type = factor(pair_type, levels = c("human_human", "LLM_human")),
+           pair_id = relevel(factor(pair_id), ref = "human_human"))
+)
   
   glmer(
-    agreement ~ pair_type + (1 | ID),
+    agreement ~ pair_id + (1 | ID),
     data = dat,
     family = binomial
   )
@@ -838,7 +840,7 @@ models_action <- list(
 action_results <- purrr::imap_dfr(
   models_action,
   ~ tidy(.x, effects = "fixed") %>%
-      filter(term == "pair_typeLLM_human") %>%
+      filter(term == "pair_idLLM_human") %>%
       mutate(
         condition = .y,
         odds_ratio = exp(estimate)
@@ -852,7 +854,7 @@ action_results
 # -----------------------------
 agreement_rates <- pairwise_action_sim %>%
   filter(pair_type != "LLM_LLM") %>%
-  group_by(social_distance, action_type, pair_type) %>%
+  group_by(social_distance, action_type, pair_id) %>%
   summarise(
     agreement_rate = mean(agreement),
     .groups = "drop"
@@ -867,12 +869,12 @@ df_agreement <- agreement_rates %>%
   mutate(
     social_distance = factor(social_distance, levels = c("stranger", "acquaintance", "friend")),
     action_type = factor(action_type, levels = c("would", "should")),
-    pair_type = factor(pair_type, levels = c("human_human", "LLM_human"))
+    pair_id = relevel(factor(pair_id), ref = "human_human"))
   )
 
 library(RColorBrewer)
 
-ggplot(df_agreement, aes(x = pair_type, y = social_distance, fill = agreement_rate)) +
+ggplot(df_agreement, aes(x = pair_id, y = social_distance, fill = agreement_rate)) +
   geom_tile(color = "white") +
   geom_text(aes(label = scales::percent(agreement_rate, accuracy = 1)), color = "black") +
   facet_wrap(~action_type) +

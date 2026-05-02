@@ -35,6 +35,8 @@ groundhog.library(pkgs, "2025-08-11")
 
 options(scipen = 999, digits = 3)
 set.seed(111)
+colors <- brewer.pal(n = 7, "Set2")
+colors[1] <- "black"  # replace first color
 ```
 
 ```{r}
@@ -42,7 +44,7 @@ moral<-read.csv( "data/stimuli.csv") %>%
   select(ID,moral=rot.moral.foundations) %>% 
     mutate(ID = as.factor(ID))
 
-df<-read.csv( "data/df_all_long_updated.csv") %>% 
+df<-read.csv( "data/df_all_long_filtered_last.csv") %>% 
   mutate(rater=ifelse(label_type=="human","human","llm")) %>% 
   mutate(unique_id=paste0(label_type,"_",human_id)) %>% 
   mutate(ID=as.factor(ID)) %>% 
@@ -70,10 +72,6 @@ df<-read.csv( "data/df_all_long_updated.csv") %>%
       levels = c("human", "claude", "gpt_5.2","gemini", "gpt_oss", "gemma",   "llama")
     ))
 
-```
-
-```{r}
-table1(~ gender + as.numeric(age)+race,data=distinct(df,human_id,.keep_all = TRUE))
 ```
 
 
@@ -670,6 +668,8 @@ ggsave(
 
 ```
 
+
+
 ## figure for each models
 
 ```{r}
@@ -764,9 +764,31 @@ ggsave(
 )
 ```
 ### pairwise testing
+
 ```{r}
+df_long <- df %>%
+  mutate(
+    label_type = factor(
+      label_type,
+      levels = c("human", "claude", "gpt_5.2","gemini", "gpt_oss", "gemma",   "llama")
+    )
+  ) %>% 
+  pivot_longer(
+    cols = c(norm_inappropriateness, norm_wrongness),
+    names_to = "measure",
+    values_to = "strength"
+  ) %>%
+  mutate(
+    measure = case_when(
+      measure == "norm_inappropriateness" ~ "Inappropriateness",
+      measure == "norm_wrongness" ~ "Wrongness",
+      TRUE ~ measure
+    ),
+    source = factor(source, levels = c("human", "close-source", "open-source"))
+  )
+
 fit1 <- MASS::polr(
-  ordered(value) ~ label_type,
+  ordered(strength) ~ label_type,
   data = df_long %>% dplyr::filter(measure == "Wrongness"),
   Hess = TRUE
 )
@@ -783,7 +805,7 @@ coef_table1 <- cbind(
 coef_table1
 
 fit2 <- MASS::polr(
-  ordered(value) ~ label_type,
+  ordered(strength) ~ label_type,
   data = df_long %>% dplyr::filter(measure == "Inappropriateness"),
   Hess = TRUE
 )
@@ -951,8 +973,8 @@ p_sanction <- ggplot(
     legend.title = element_text(size = 14, face = "bold"),
     legend.text = element_text(size = 13)
   ) +
-  scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Set2")
+  scale_fill_manual(values = colors) +
+  scale_color_manual(values = colors)
 
 
 p_sanction
@@ -1103,6 +1125,9 @@ pred_combined <- bind_rows(pred_list)
 
 
 ```{r, fig.height=6, fig.width=8}
+
+
+
 ## 3. Plot enforcement probability
 
 emotionxenforcement <- pred_combined %>%  
@@ -1161,8 +1186,8 @@ emotionxenforcement <- pred_combined %>%
     legend.title = element_text(size = 14, face = "bold"),
     legend.text = element_text(size = 13)
   ) +
-  scale_fill_brewer(palette = "Set2") +
-  scale_color_brewer(palette = "Set2") +
+  scale_fill_manual(values = colors) +
+  scale_color_manual(values = colors) +
   scale_shape_manual(values = c(
     "human" = 1,
     "close-source" = 17,

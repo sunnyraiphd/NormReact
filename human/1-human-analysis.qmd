@@ -47,7 +47,7 @@ df<-long %>% filter(strength_value>0)
 ## demographics
 
 ```{r}
-#df<-read.csv( "data/df_all_long_updated.csv") 
+#df<-read.csv( "data/df_all_long_filtered_last.csv") 
 #table1(~ gender + as.numeric(age)+race,data=filter(df,label_type=="human") %>% distinct(human_id,.keep_all = T))
 
 table1(~ gender + as.numeric(age)+race,data=distinct(wide,ResponseId,.keep_all = T))
