@@ -10,13 +10,13 @@ Victor Hugo Orozco-Olvera, Ana Maria Munoz-Boudet, Lyle H. Ungar, Sharath C. Gun
 
 ---
 
-## Overview
+## 📌 Overview
 
 Most AI alignment efforts have focused on first-order social norms—teaching models what is socially acceptable or unacceptable (e.g., "do not steal").
 
-However, human social intelligence depends not only on recognizing norms, but also on anticipating who will enforce them and how (e.g., public shame, confrontation, or inaction). These second-order expectations, known as metanorms, govern how people respond when social rules are broken.
+However, human social intelligence depends not only on recognizing norms, but also on anticipating who will enforce them and how (e.g., public shame, confrontation, or inaction). These second-order expectations, known as **metanorms**, govern how people respond when social rules are broken.
 
-This project introduces a framework for evaluating metanorm reasoning in large language models (LLMs) across two key dimensions:
+This project introduces a framework for evaluating **metanorm reasoning in large language models (LLMs)** across two key dimensions:
 
 * Emotional appraisal
 * Behavioral response
@@ -28,7 +28,7 @@ We also propose two new prediction tasks:
 
 ---
 
-## NormReact Dataset
+## 📊 NormReact Dataset
 
 We release NormReact, a multi-perspective dataset consisting of:
 
@@ -46,7 +46,7 @@ This dataset enables systematic study of social enforcement dynamics beyond simp
 
 ---
 
-## Key Findings
+## 🔍 Key Findings
 
 Across six large language models, we find that:
 
@@ -62,7 +62,7 @@ These results suggest that current LLMs:
 
 ---
 
-## Implications
+## ⚠️ Implications
 
 These biases have important implications for AI systems deployed in socially sensitive domains, including:
 
@@ -74,15 +74,15 @@ Without careful calibration, such systems may produce distorted representations 
 
 ---
 
-## Paper
+## 📄 Paper
 
-Add arXiv or conference link here.
+Coming soon.
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
-```
+```id="3ry1q1"
 NormReact/
 ├── data/              # NormReact dataset
 ├── src/               # Evaluation / modeling code
@@ -92,17 +92,16 @@ NormReact/
 
 ---
 
-## Setup
+## ⚙️ Setup
 
-```bash
+```bash id="f2xb6o"
 git clone https://github.com/sunnyraiphd/NormReact.git
 cd NormReact
-npm install
 ```
 
 ---
 
-## Tasks
+## 🧪 Tasks
 
 This repository supports evaluation of:
 
@@ -112,9 +111,9 @@ This repository supports evaluation of:
 
 ---
 
-## Citation
+## 📚 Citation
 
-```bibtex
+```bibtex id="6wky64"
 @article{rai2026beyond,
   title={Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models},
   author={Rai, Sunny and Kuang, Jinyi and Jamalova, Reyhan and Lou, Annie and Bicchieri, Cristina and Malhotra, Niyati and Orozco-Olvera, Victor Hugo and Munoz-Boudet, Ana Maria and Ungar, Lyle H. and Guntuku, Sharath C.},
@@ -124,25 +123,15 @@ This repository supports evaluation of:
 
 ---
 
-## Contributing
 
-Contributions, issues, and discussions are welcome.
+## 📄 License
 
----
-
-## License
-
-CC BY 4.0 
+CC BY 4.0
 
 ---
 
-## Contact
+## 📬 Contact
 
 For questions or collaboration, please open an issue or contact:
 [sunnyrai@upenn.edu](mailto:sunnyrai@upenn.edu)
 
----
-
-## Acknowledgements
-
-We thank collaborators and the broader research community working on AI alignment and social reasoning.
