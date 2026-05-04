@@ -2,11 +2,6 @@
 
 ## Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models
 
-**Sunny Rai***, **Jinyi Kuang***, Reyhan Jamalova, Annie Lou, Cristina Bicchieri, Niyati Malhotra,
-Victor Hugo Orozco-Olvera, Ana Maria Munoz-Boudet, Lyle H. Ungar, Sharath C. Guntuku
-
-*University of Pennsylvania · The World Bank*
-* Equal contribution
 
 ---
 
@@ -117,13 +112,7 @@ This repository supports evaluation of:
 
 ## 📚 Citation
 
-```bibtex id="6wky64"
-@article{rai2026beyond,
-  title={Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models},
-  author={Rai, Sunny and Kuang, Jinyi and Jamalova, Reyhan and Lou, Annie and Bicchieri, Cristina and Malhotra, Niyati and Orozco-Olvera, Victor Hugo and Munoz-Boudet, Ana Maria and Ungar, Lyle H. and Guntuku, Sharath C.},
-  year={2026}
-}
-```
+Anonymous
 
 ---
 
@@ -137,5 +126,5 @@ CC BY 4.0
 ## 📬 Contact
 
 For questions or collaboration, please open an issue or contact:
-[sunnyrai@upenn.edu](mailto:sunnyrai@upenn.edu)
+Anonymous
 
