@@ -44,6 +44,10 @@ We release NormReact, a multi-perspective dataset consisting of:
 
 This dataset enables systematic study of social enforcement dynamics beyond simple norm recognition.
 
+**Access the dataset:**
+- **Hugging Face**: [NormReact/NormReact](https://huggingface.co/datasets/NormReact/NormReact)
+- **This repository**: `data/` folder
+
 ---
 
 ## 🔍 Key Findings
