@@ -85,8 +85,8 @@ Coming soon.
 ```id="3ry1q1"
 NormReact/
 ├── data/              # NormReact dataset
-├── src/               # Evaluation / modeling code
-├── notebooks/         # Analysis scripts (if included)
+├── human/             # Human Analysis R code
+├── notebooks/         # Analysis/Experiment notebooks
 └── README.md
 ```
 
