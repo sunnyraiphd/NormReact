@@ -2,7 +2,6 @@
 
 ## Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models
 
-
 ---
 
 ## 📌 Overview
