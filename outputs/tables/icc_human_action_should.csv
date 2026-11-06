@@ -1,0 +1,25 @@
+"actor_type","category","ICC"
+"acquaintance","Do nothing",0.168576083171568
+"acquaintance","Gossip",0.809485476787175
+"acquaintance","Inform authority",0.411405929530233
+"acquaintance","Physical confrontation",0.499809470872728
+"acquaintance","Praise",0.339646920681277
+"acquaintance","Stay away",0.144596221808963
+"acquaintance","Support",0.400522939201523
+"acquaintance","Verbal confrontation",0.157865027570202
+"friend","Do nothing",0.135669341122079
+"friend","Gossip",0.443580984513116
+"friend","Inform authority",0.388515939256822
+"friend","Physical confrontation",0.491364902589638
+"friend","Praise",0.348109211246928
+"friend","Stay away",0.43641995271734
+"friend","Support",0.279246244723232
+"friend","Verbal confrontation",0.169416258475329
+"stranger","Do nothing",0.181165691594135
+"stranger","Gossip",0.472285122019611
+"stranger","Inform authority",0.418767296546605
+"stranger","Physical confrontation",0.461812637025695
+"stranger","Praise",0.460757967833435
+"stranger","Stay away",0.0986446439511984
+"stranger","Support",0.414260955276161
+"stranger","Verbal confrontation",0.423297918153015
