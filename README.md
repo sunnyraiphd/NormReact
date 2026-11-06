@@ -2,8 +2,6 @@
 
 ## Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models
 
----
-
 ## 📌 Overview
 
 Most AI alignment efforts have focused on first-order social norms—teaching models what is socially acceptable or unacceptable (e.g., "do not steal").
