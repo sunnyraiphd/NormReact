@@ -98,6 +98,7 @@ NormReact/
 │   ├── tables/                 # Supplementary analysis tables
 │   └── figures/                # Generated figures and plots
 ├── scripts/                    # Standalone scripts for model experiments
+├── Appendix.pdf
 ├── README.md                   
 ├── requirements.txt            
 └── .gitignore                  
