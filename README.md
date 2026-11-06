@@ -146,5 +146,5 @@ CC BY-SA 4.0
 
 ## 📬 Contact
 
-For questions or collaboration, please open an issue or contact:
+For questions or collaboration, please open an issue.
 
