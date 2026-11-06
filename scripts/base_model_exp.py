@@ -1,4 +1,3 @@
-"""Reaction experiment; use --help for local smoke tests and cluster runs."""
 import argparse
 import json
 import os
