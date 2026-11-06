@@ -1,0 +1,903 @@
+HUMAN ITEM ID,SPREADSHEET ID,moral foundation,stimuli,name,gender
+3,1,care-harm,William did not tell someone's girlfriend that he cheated on her.,William,male
+4,2,care-harm,John rarely talks to his elderly roommates and does not make efforts to create a friendly atmosphere in the house.,John,male
+5,3,care-harm,Robert stayed up until 5 am because he assumed that his girlfriend was not trying to sleep.,Robert,male
+6,4,care-harm,"David does not listen to his girlfriend about his health, so he is not taking care of his health.",David,male
+7,5,care-harm,Thomas did not grieve his dead dog before getting a new one.,Thomas,male
+8,6,care-harm,Mark smacked a car that parked in crosswalks because the car belonged to him and that was what he wanted to do.,Mark,male
+9,7,care-harm,Mark hit a car in a parking lot.,Mark,male
+10,8,care-harm,William gives people money on Instagram and is not cautious with strangers he meets online.,William,male
+11,9,care-harm,James hopes his roommate's dog dies.,James,male
+12,10,care-harm,Mark wishes death on any living thing.,Mark,male
+13,11,care-harm,William looks for ways to spend more time with mom because he wants to monopolize all of his parents' time.,William,male
+14,12,care-harm,Robert makes fun of others' kinks.,Robert,male
+15,13,care-harm,David refuses to put more effort into his best friendship because he doesn't want to support his friend who is having problems anymore.,David,male
+16,14,care-harm,David's parents have never told him that they are proud of him and he does not think he'll ever get the chance to hear it.,David's parents,male
+17,15,care-harm,Michael is in love with his own image.,Michael,male
+18,16,care-harm,Charles deleted his mom's Facebook posts because he was not accepting of her self-expression.,Charles,male
+19,17,care-harm,Mark stole from his sister 6 years ago.,Mark,male
+20,18,care-harm,Thomas did not thank his friend for hosting him in his new home.,Thomas,male
+21,19,care-harm,David hurt a boy in a fight by kicking him in the stomach and pushing him down.,David,male
+22,20,care-harm,James bottles up emotions and moves past hardships of life without shedding a tear.,James,male
+23,21,care-harm,Mark works at a place where he is abused all the time but he can't afford to quit his job.,Mark,male
+24,22,care-harm,"Mark kicked a guy on his nut unintentionally, and the guy cried and ran away.",Mark,male
+25,23,care-harm,Michael does not fill out paperwork for his partner.,Michael,male
+26,24,care-harm,James plays music fairly loudly in his car.,James,male
+27,25,care-harm,William likes to dip his bread in coca cola.,William,male
+28,26,care-harm,Michael has to stay at an expensive hotel in order to enjoy his vacation.,Michael,male
+29,27,care-harm,William is 21 and already done with dating because he is too hard on himself.,William,male
+30,28,care-harm,William broke into tears after he got the ticket because he did not follow the laws.,William,male
+31,29,care-harm,Michael drove to his friend's house instead of walking even though walking was possible.,Michael,male
+32,30,care-harm,John rear-ended someone because he was going over 50 miles per hour and driving dangerously.,John,male
+33,31,care-harm,"James can no longer afford eating more than once a day and, therefore, is losing weight.",James,male
+34,32,care-harm,David doesn't want his wife to drive his expensive car because he thinks she will destroy it.,David,male
+35,33,care-harm,James micromanages his child's social life by advising the child to trade old friends in for new ones.,James,male
+36,34,care-harm,James has been starving himself and has not been maintaining a healthy diet.,James,male
+37,35,care-harm,Mark's in-laws disrespected Mark in his own home.,Mark's in-laws,male
+38,36,care-harm,Robert wants to kill himself and end it all.,Robert,male
+39,37,care-harm,"Richard was talking on the phone while giving blood, so he wasn't paying attention to the medical procedure.",Richard,male
+40,38,care-harm,Mark cursed at someone by calling them a fat piece of shit.,Mark,male
+41,39,care-harm,Richard puked on the bus because the bus made him feel sick.,Richard,male
+42,40,care-harm,Charles gave an uber driver fewer stars for making a phone call while he was in the car.,Charles,male
+43,41,care-harm,Mark killed people and distributed their belongings.,Mark,male
+44,42,care-harm,James accepted money from a woman he had no interest in.,James,male
+45,43,care-harm,Robert decides not to donate to someone's surgery because they smoke.,Robert,male
+46,44,care-harm,"Charles didn't notice that someone had stopped suddenly in front of him, and he ran over them.",Charles,male
+47,45,care-harm,"Thomas sent his nurse flowers with his phone number attached, hoping she would call him.",Thomas,male
+48,46,care-harm,"Mark returned a too-far joke with another too-far joke, and therefore offended others.",Mark,male
+49,47,care-harm,"William fed his friend when they said no, therefore annoying his friend.",William,male
+50,48,care-harm,William tried to fool an elderly man with dementia and let him think that he was his son.,William,male
+51,49,care-harm,Thomas punched his autistic sibling.,Thomas,male
+52,50,care-harm,James called his girlfriend overweight and told her to lose weight if she wanted to keep dating him.,James,male
+53,51,care-harm,Robert refuses to talk to his father after an argument.,Robert,male
+54,52,care-harm,William accidentally laughed at a fat joke directed at his kid's teacher.,William,male
+55,53,care-harm,"Mark farted in front of people on the train, where people couldn't escape the smell.",Mark,male
+56,54,care-harm,James isn't being friendly with a classmate and tells him he doesn't consider him a friend.,James,male
+57,55,care-harm,Richard does not visit his grandparents very often.,Richard,male
+58,56,care-harm,Mark yelled at his dad and vowed never to open up to him again.,Mark,male
+59,57,care-harm,John told a girl she didn't age well.,John,male
+60,58,care-harm,William hid his mother's things around the house so she couldn't find them.,William,male
+61,59,care-harm,James yelled at an old man for cutting the line at a grocery store.,James,male
+62,60,care-harm,Charles demanded that he get a refund and caused trouble for the cashier.,Charles,male
+63,61,care-harm,"Robert told someone that unfortunate incidents in their life were ""karma"" and they got what they deserved.",Robert,male
+64,62,care-harm,Thomas let his wife consume mushrooms that were potentially poisonous and dangerous.,Thomas,male
+65,63,care-harm,"James revenged on his group member by not putting his name on a project presentation, which resulted in him getting a 0 for the project.",James,male
+66,64,care-harm,Thomas made his friend sleep in the garage.,Thomas,male
+67,65,care-harm,Michael offended someone with insensitive questions and asked them if they were transgender.,Michael,male
+68,66,care-harm,John unsolicitedly brought up a short colleague's height and commented favorably on it.,John,male
+69,67,care-harm,James disinvited a friend from a trip they had planned together and canceled the friend's plane ticket.,James,male
+70,68,care-harm,Michael was mean to his significant other and called her spoiled.,Michael,male
+71,69,care-harm,Charles told a missionary to fuck off when he was bothering him.,Charles,male
+72,70,care-harm,John destroyed others' property by throwing away toys left by neighbor kids in his yard.,John,male
+73,71,care-harm,Richard insulted his spouse by agreeing with his friends that his wife is fat.,Richard,male
+74,72,care-harm,Richard punched a survivor of pediatric brain cancer.,Richard,male
+75,73,care-harm,Mark is excluding someone from his party unless they pay for food.,Mark,male
+76,74,care-harm,Robert threw out his ex wife's photo albums,Robert,male
+77,75,care-harm,"Robert did not tell his friend that he might have an STD, therefore keeping information from him that could cause medical problems.",Robert,male
+78,76,care-harm,Thomas chooses not to be with his family on the anniversary of his sister's son's death and does not want to see his sister that day.,Thomas,male
+79,77,care-harm,John is cruel and uncaring of his employees and chooses not to give an employee Christmas off.,John,male
+80,78,care-harm,William reposted a meme that had the n-word in it.,William,male
+81,79,care-harm,James responded with sarcasm in response to a customer's sarcasm.,James,male
+82,80,care-harm,"Richard confessed to his childhood best friend that he loved her, which made her uncomfortable.",Richard,male
+83,81,care-harm,Charles unplugged someone's laptop in the school working area.,Charles,male
+84,82,care-harm,John did not let his son know that his grandfather died.,John,male
+85,83,care-harm,"Michael taught his 7-year-old daughter how to play blackjack, a gambling game.",Michael,male
+86,84,care-harm,Michael is forgetful about important promises and made plans on the day he agreed to meet his friend.,Michael,male
+87,85,care-harm,Thomas made his wife quit her new job.,Thomas,male
+88,86,care-harm,James called out people's white lies and created unnecessary conflict with people.,James,male
+89,87,care-harm,William is mean to his depressed friend.,William,male
+90,88,care-harm,Mark wants to vape.,Mark,male
+91,89,care-harm,John took revenge on a coworker.,John,male
+92,90,care-harm,John gave his sister weed knowing she had bad experiences in the past.,John,male
+93,91,care-harm,Robert kicked a girl's water bottle into her face because she bullied him.,Robert,male
+94,92,care-harm,Richard chose not to visit a friend when they felt down and needed encouragement.,Richard,male
+95,93,care-harm,Charles called his friend's girlfriend a coke addict after being told that she did cocaine.,Charles,male
+96,94,care-harm,David does not want to take his wife on a trip to Europe with him.,David,male
+97,95,loyalty-betrayal,James dates multiple people instead of being monogamous.,James,male
+98,96,loyalty-betrayal,Thomas is friends with people he doesn't really like.,Thomas,male
+99,97,loyalty-betrayal,Thomas has some secrets that he hates himself for.,Thomas,male
+100,98,loyalty-betrayal,William had a secrete affair that led to a long marriage.,William,male
+101,99,loyalty-betrayal,Mark stayed in a relationship when he was attracted to someone else.,Mark,male
+102,100,loyalty-betrayal,Richard questions his spouse about his suspicions.,Richard,male
+103,101,loyalty-betrayal,Charles and his fiancée are lying to her religious parents to get married.,Charles,male
+104,102,loyalty-betrayal,Michael isn't respecting his wife's wishes as he doesn't want her to drive his exotic car.,Michael,male
+105,103,loyalty-betrayal,"Michael is late meeting his girlfriend at the airport, and she is pissed at him.",Michael,male
+106,104,loyalty-betrayal,Richard betrayed his friend by making him believe he wanted to sleep with his wife to hide an even darker truth.,Richard,male
+107,105,loyalty-betrayal,Mark left a date with a very nice person because he ran into an old flame and wanted to get back with her.,Mark,male
+108,106,loyalty-betrayal,John spied on people on social media.,John,male
+109,107,loyalty-betrayal,Richard kissed his sister-in-law in a fury.,Richard,male
+110,108,loyalty-betrayal,Charles moved for love and felt stranded after break up because he had expected the relationship to last forever.,Charles,male
+111,109,loyalty-betrayal,"Richard uses his ex's name as a curse word, which disrespects his ex.",Richard,male
+112,110,loyalty-betrayal,Richard told his class that his friend was bi,Richard,male
+113,111,loyalty-betrayal,James wanted to go to a party instead of driving up to see his girlfriend and spending a good amount of time with her.,James,male
+114,112,loyalty-betrayal,James got mad about taking his little brother home and was not willing to help his family.,James,male
+115,113,loyalty-betrayal,Robert ruined his ex's life.,Robert,male
+116,114,loyalty-betrayal,Michael realized he was wasting time and idolizing his partner after two years.,Michael,male
+117,115,loyalty-betrayal,"William constantly calls his girlfriend, which annoys her.",William,male
+118,116,loyalty-betrayal,Richard cheated after 7 years and lied to the people he loves.,Richard,male
+119,117,loyalty-betrayal,Richard put his parents on the spot by telling them he was moving out only a week prior.,Richard,male
+120,118,loyalty-betrayal,Mark pushes everyone away and isolates himself.,Mark,male
+121,119,loyalty-betrayal,John said to being a groomsman at a friend's wedding.,John,male
+122,120,loyalty-betrayal,James didn't have much trust in his girlfriend; he looked through her phone and then broke up with her.,James,male
+123,121,loyalty-betrayal,Robert wants a relationship with his wife's sister.,Robert,male
+124,122,loyalty-betrayal,Mark didn't help his sister as he didn't lend her his car.,Mark,male
+125,123,loyalty-betrayal,Charles hung up abruptly on his cousin.,Charles,male
+126,124,loyalty-betrayal,David told his girlfriend to stop talking to her dead husband's family.,David,male
+127,125,loyalty-betrayal,Thomas is romantically interested in his best friend's ex.,Thomas,male
+128,126,loyalty-betrayal,John doesn't trust his girlfriend and doesn't want her to hang out with a guy who's clearly trying to sleep with her.,John,male
+129,127,loyalty-betrayal,William didn't get his mom a birthday gift.,William,male
+130,128,loyalty-betrayal,Robert tried to exclude a friend by telling the friend to stop hanging out with them.,Robert,male
+131,129,loyalty-betrayal,Michael canceled his trip with his family to go home.,Michael,male
+132,130,loyalty-betrayal,David is mad at his friend for dating his ex.,David,male
+133,131,loyalty-betrayal,Mark is jealous of his girlfriend.,Mark,male
+134,132,loyalty-betrayal,Charles doesn't want to take care of his dad.,Charles,male
+135,133,loyalty-betrayal,Thomas ghosted a very lonely lady who he just befriended,Thomas,male
+136,134,loyalty-betrayal,John ended a friendship without warning or explaining why.,John,male
+137,135,loyalty-betrayal,James ghosted a friend for his odd text messages.,James,male
+138,136,loyalty-betrayal,Michael gave black kids more candy than white kids.,Michael,male
+139,137,loyalty-betrayal,David does not want to spend time with family.,David,male
+140,138,loyalty-betrayal,Mark exposed his friend's secret by telling his parents about his relationship.,Mark,male
+141,139,loyalty-betrayal,William insulted his girlfriend's family by asking her outright if they are racist.,William,male
+142,140,loyalty-betrayal,Charles told his mother off for not properly cleaning the dishes.,Charles,male
+143,141,loyalty-betrayal,"David hasn't seen his dad for ten years, and he just canceled a trip to see him for the first time because his dad wanted to get married.",David,male
+144,142,loyalty-betrayal,Richard is not supporting his sister as he disagrees with her drama.,Richard,male
+145,143,loyalty-betrayal,Robert betrayed his girlfriend's trust and threw her under the bus to help someone else.,Robert,male
+146,144,loyalty-betrayal,James does not want to see his friends.,James,male
+147,145,loyalty-betrayal,Mark danced with his female friend in front of his girlfriend.,Mark,male
+148,146,loyalty-betrayal,Richard did not show up to his friend's wedding.,Richard,male
+149,147,loyalty-betrayal,Robert did not pay rent even though he said he would.,Robert,male
+150,148,loyalty-betrayal,Mark did not answer the door when his parents visited him.,Mark,male
+151,149,loyalty-betrayal,Thomas disowned his parents.,Thomas,male
+152,150,loyalty-betrayal,John isn't being social and doesn't talk to his coworkers when they eat lunch.,John,male
+153,151,loyalty-betrayal,Thomas refuses to see most of his biological family.,Thomas,male
+154,152,loyalty-betrayal,David turned his brother away in the rain.,David,male
+155,153,loyalty-betrayal,James skipped his grandparent's funeral to attend an important work training.,James,male
+156,154,loyalty-betrayal,Mark ended a friendship after his friend made a joke that he didn't find funny.,Mark,male
+157,155,loyalty-betrayal,Richard reported his parents to the IRS for evading their taxes for 8 years and didn't help hide his family's illegal activities.,Richard,male
+158,156,loyalty-betrayal,Charles abandoned his abused friend and let him down when he was counting on him.,Charles,male
+159,157,loyalty-betrayal,William told his best friend that him and his friend were obnoxious together.,William,male
+160,158,loyalty-betrayal,"John silently got up and walked away when his grandma sat next to him, shunning her when she wanted to spend time with him.",John,male
+161,159,loyalty-betrayal,"Richard thinks he should be involved in every aspect of his girlfriend's life, and therefore expects to be invited to her surprise party.",Richard,male
+162,160,loyalty-betrayal,James insulted his religious dad.,James,male
+163,161,loyalty-betrayal,Michael does not want his boyfriend to touch him anymore.,Michael,male
+164,162,loyalty-betrayal,"Thomas didn't show respect toward his family's partners and called his brother's girlfriend ""Miss Piggy"" for eating their food after they told her not to.",Thomas,male
+165,163,loyalty-betrayal,Charles logged into his ex-girlfriend's Snapchat and found out that she might have cheated.,Charles,male
+166,164,loyalty-betrayal,James held onto grudges with his friend for too long and did not want to reconcile with him.,James,male
+167,165,loyalty-betrayal,John avoids his mom's boyfriend.,John,male
+168,166,loyalty-betrayal,Richard expects his girlfriend to watch a TV show with him because he expects her to do things with him all the time.,Richard,male
+169,167,loyalty-betrayal,William lies to his friends constantly.,William,male
+170,168,loyalty-betrayal,Mark hid things from his partner by not telling her the name of an old friend.,Mark,male
+171,169,loyalty-betrayal,Robert told his wife to shush when she was laughing loudly.,Robert,male
+172,170,loyalty-betrayal,John does not want to go to a surprise engagement party 8 hours away and support his friend in his important moments.,John,male
+173,171,loyalty-betrayal,Richard did not buy his close friend a real birthday gift.,Richard,male
+174,172,loyalty-betrayal,Robert wasn't happy for his girlfriend and supposedly ruined her big moment after she received a prestigious scholarship.,Robert,male
+175,173,loyalty-betrayal,William wants his wife to drop her best friend.,William,male
+176,174,loyalty-betrayal,"Michael didn't help out the family when they needed it, as he overrode his wife and didn't let his brother-in-law's dog stay at their place.",Michael,male
+177,175,loyalty-betrayal,"John is jealous of his friend for having other friends, and he wants him to stop being friends with another person.",John,male
+178,176,loyalty-betrayal,Charles invited his ex-wife to his birthday party.,Charles,male
+179,177,loyalty-betrayal,"John expects his partner's life to revolve around him, and he is angry that she is going on an overseas holiday.",John,male
+180,178,loyalty-betrayal,David cleaned out his mom's pantry without her permission.,David,male
+181,179,loyalty-betrayal,Michael got in a fight with his dad and disrespected him.,Michael,male
+182,180,loyalty-betrayal,Mark ditched his friends to hang out with his girlfriend.,Mark,male
+183,181,loyalty-betrayal,Richard is keeping a secret from his wife; he didn't tell her that he had a second child through sperm donation after she gave him a hard time about the first donor kid.,Richard,male
+184,182,loyalty-betrayal,"William is not supporting his cousin, as he told her that her crappy gelato-serving job is not getting her anywhere.",William,male
+185,183,loyalty-betrayal,Mark doesn't want to help out his coworkers as he doesn't want to print things for them.,Mark,male
+186,184,fairness-cheating,John reported someone for cheating.,John,male
+187,185,fairness-cheating,Thomas kept in touch with his female friends while being in a relationship.,Thomas,male
+188,186,fairness-cheating,Charles is bringing his new family to Disneyland but excluding the child from his previous marriage.,Charles,male
+189,187,fairness-cheating,"Richard has been replacing his wife's ""all natural"" stuff with poisonous alternatives",Richard,male
+190,188,fairness-cheating,Charles regularly gives people misinformation to teach them to listen clearly.,Charles,male
+191,189,fairness-cheating,John signed a contract that he didn't expect to finish.,John,male
+192,190,fairness-cheating,William fakes illness a lot.,William,male
+193,191,fairness-cheating,"Robert owes over $650,000 in student loans and cannot pay off.",Robert,male
+194,192,fairness-cheating,James is a smoker and the odor lingers on his book long after he returns it to the library.,James,male
+195,193,fairness-cheating,"William's dad decided to use William's recipe and start a business, even though he did not ask for permission first.",William's dad,male
+196,194,fairness-cheating,Richard manipulates others.,Richard,male
+197,195,fairness-cheating,Charles leaves his Uber driver a one star because the service is bad.,Charles,male
+198,196,fairness-cheating,Mark has an offensive belief that we need cancer and disease to control population.,Mark,male
+199,197,fairness-cheating,James asks his neighbor to clean up their yard before he puts his house on the market.,James,male
+200,198,fairness-cheating,James does not want to be friends with his ex and her boyfriend and completely cuts his ex out of his life.,James,male
+201,199,fairness-cheating,William ruined his sister's marriage unintentionally.,William,male
+202,200,fairness-cheating,Robert still has romantic feelings for a married friend.,Robert,male
+203,201,fairness-cheating,Charles has been faking a medical condition and misleading people about his health since he was 8 years old.,Charles,male
+204,202,fairness-cheating,Robert lost his mom's wedding ring.,Robert,male
+205,203,fairness-cheating,Michael tries to make money off his friends.,Michael,male
+206,204,fairness-cheating,Mark only dates women for their money.,Mark,male
+207,205,fairness-cheating,Robert hates himself and everyone else for no reason.,Robert,male
+208,206,fairness-cheating,Mark had his booty call coming over when his brother was staying at his apartment for the night.,Mark,male
+209,207,fairness-cheating,Richard takes advantage of coworkers by expecting them to cover for him,Richard,male
+210,208,fairness-cheating,Robert recovered photos from a broken drive without telling the customer the price first and forced him to pay for it.,Robert,male
+211,209,fairness-cheating,James stole his mom's money.,James,male
+212,210,fairness-cheating,Robert has people over late at night although he has a roommate.,Robert,male
+213,211,fairness-cheating,Richard infringed on his girlfriend's privacy by reading through all her messages.,Richard,male
+214,212,fairness-cheating,Charles has bias against females.,Charles,male
+215,213,fairness-cheating,William accepted money from a woman that he does not want to date.,William,male
+216,214,fairness-cheating,Richard let his kids chew on store merchandise.,Richard,male
+217,215,fairness-cheating,"Richard, a sports parent, dislikes other sports parents while pretending that he likes them.",Richard,male
+218,216,fairness-cheating,"When in secondary school, Mark stole other students' coursework and destroyed them",Mark,male
+219,217,fairness-cheating,Richard lets his neighbors take advantage of him.,Richard,male
+220,218,fairness-cheating,James didn't do his fair share as he didn't get anything for his secret santa giftee.,James,male
+221,219,fairness-cheating,Charles says racist things such as jews shouldn't have the right to vote.,Charles,male
+222,220,fairness-cheating,David pulled his work from a project last minute and screwed the team over.,David,male
+223,221,fairness-cheating,Michael intentionally deflated a child's ball,Michael,male
+224,222,fairness-cheating,James locked his neighbor's bike after they blocked his from getting out,James,male
+225,223,fairness-cheating,Richard used his twin brother's pic on Tinder.,Richard,male
+226,224,fairness-cheating,Robert did not attend the lectures his parents paid for and wasted their money.,Robert,male
+227,225,fairness-cheating,William does not want to pay half of his son's daycare bill and sticks the mother of his son with the full amount of the bill.,William,male
+228,226,fairness-cheating,John tells people he is black even though he's not.,John,male
+229,227,fairness-cheating,John did not pay a friend back.,John,male
+230,228,fairness-cheating,Richard enjoys using a fake name and lying that he has a disease so people can give him attention and sympathy.,Richard,male
+231,229,fairness-cheating,Mark is going to steal a tip jar tomorrow.,Mark,male
+232,230,fairness-cheating,James is employed in a full-time job but only actually works 4 hours a day.,James,male
+233,231,fairness-cheating,"John has a secret relationship with his cousin's childhood friend, who is in another relationship.",John,male
+234,232,fairness-cheating,Richard cheated on his girlfriend.,Richard,male
+235,233,fairness-cheating,"Charles had a fake wedding, and his parents didn't know it was fake.",Charles,male
+236,234,fairness-cheating,"Mark slept with his now step-cousin, which disrupted his family.",Mark,male
+237,235,fairness-cheating,David plagiarized his entire final project for his computer science class.,David,male
+238,236,fairness-cheating,Robert discriminated against people with disabilities by excluding his friend who has Asperger's Syndrome.,Robert,male
+239,237,fairness-cheating,"James profited from the owner's ignorance, buying expensive antiques at a yard sale for a low price because the owner had no idea of their value.",James,male
+240,238,fairness-cheating,Richard did not get his friends a wedding gift.,Richard,male
+241,239,fairness-cheating,John watched Captain Marvel using a ticket he bought for Alita.,John,male
+242,240,fairness-cheating,Charles lined up at a second checkout line while his wife was already in another line.,Charles,male
+243,241,fairness-cheating,Michael put all the blame on his wife for their financial problems.,Michael,male
+244,242,fairness-cheating,Thomas asked for more money after an agreement had been reached.,Thomas,male
+245,243,fairness-cheating,"Robert went ""shopping"" at the lost and found table and took things that were not his.",Robert,male
+246,244,fairness-cheating,"David told his roommate that he would move out in two months, but after his roommate bought a house to live in, David changed his mind and found a new roommate, misleading him about his plans.",David,male
+247,245,fairness-cheating,John went to the ER and pretended to be sick to get a doctor's note for work.,John,male
+248,246,fairness-cheating,Mark refused to pay rent and demanded to live for free.,Mark,male
+249,247,fairness-cheating,Robert expects to be invited on every trip his friends go on and is angry that his friends went on a trip without him.,Robert,male
+250,248,fairness-cheating,"Michael cut his daughter off financially but not his son, therefore not treating his kids equally.",Michael,male
+251,249,fairness-cheating,James talked to his low-income friend about being stressed about buying a house.,James,male
+252,250,fairness-cheating,Richard played white noise to sleep and bothered his neighbors.,Richard,male
+253,251,fairness-cheating,Charles interviewed with other companies after accepting a job offer.,Charles,male
+254,252,fairness-cheating,Thomas used his girlfriend's credit card without permission.,Thomas,male
+255,253,fairness-cheating,John does not tell people who flirt with him that he has a partner.,John,male
+256,254,fairness-cheating,David judges others and feels superior to people who are more unfit than him at the gym.,David,male
+257,255,fairness-cheating,Mark judged the poor harshly and tried to get a few homeless guys with bad odor to be kicked out of Starbucks.,Mark,male
+258,256,fairness-cheating,William cheated a store with fraudulent returns by forcefully refunding games that he then got to keep.,William,male
+259,257,fairness-cheating,"Thomas did not share a collaborative study guide with a classmate, which he shared with everyone else.",Thomas,male
+260,258,fairness-cheating,Robert planned a trip with his friend and excluded his other friend.,Robert,male
+261,259,fairness-cheating,James caused financial hardship for his parents by studying in Cambridge.,James,male
+262,260,fairness-cheating,"John didn't tell a girl to leave him alone even though he didn't like her, so he led her on.",John,male
+263,261,fairness-cheating,"Robert compares his girlfriend to his exes and shows her pictures of them, who he thinks are better looking than her.",Robert,male
+264,262,fairness-cheating,Richard helped everyone but one kid in the class with homework.,Richard,male
+265,263,fairness-cheating,Thomas takes personal beliefs and ideology into consideration when he hires new people for his small business.,Thomas,male
+266,264,fairness-cheating,Charles has an obsession with Asian women.,Charles,male
+267,265,fairness-cheating,David likes airdropping strangers constantly.,David,male
+268,266,fairness-cheating,William stole a microwave.,William,male
+269,267,fairness-cheating,Mark scammed women online for thousands of dollars over the past several months.,Mark,male
+270,268,fairness-cheating,David once faked interest in a girl's foot injury just to see her feet.,David,male
+271,269,fairness-cheating,Thomas tells people his parents are dead instead of the truth - that he cut all contact with them because they're awful,Thomas,male
+272,270,fairness-cheating,Richard can't stop procrastinating his studies.,Richard,male
+273,271,fairness-cheating,"Charles wasn't of age yet, but he got a fake ID.",Charles,male
+274,272,fairness-cheating,John was late and made his son wait in the restaurant for 20 minutes.,John,male
+275,273,authority-subversion,Mark is eating during a crowded five-hour bus trip.,Mark,male
+276,274,authority-subversion,James is dating an older woman with a daughter close to his age.,James,male
+277,275,authority-subversion,Mark cancelled his plans with friends at the last minute.,Mark,male
+278,276,authority-subversion,Michael did illegal things to find joy.,Michael,male
+279,277,authority-subversion,Richard asked his wife's friend to stop coming to their house.,Richard,male
+280,278,authority-subversion,Charles was rude to others by being a loud cell phone user on public transit.,Charles,male
+281,279,authority-subversion,John does not let his girlfriend be friend with his classmate,John,male
+282,280,authority-subversion,John disobeyed his dad because he went into his dad's Facebook account when he was at work.,John,male
+283,281,authority-subversion,Charles assumes people think he is ineffective and unhelpful.,Charles,male
+284,282,authority-subversion,Mark violated every food health and safety rule in the book.,Mark,male
+285,283,authority-subversion,Thomas confronted his parents and disrespected them.,Thomas,male
+286,284,authority-subversion,Richard lost his sister when he was supposed to be watching her.,Richard,male
+287,285,authority-subversion,William did not thank the author after receiving a free copy of his book.,William,male
+288,286,authority-subversion,"Robert, a monk who taught at the school, was alone with his student Jennifer and seduced her into having an affair with him.",Robert,male
+289,287,authority-subversion,Charles expects other people to hate his ex best friend because he hates him.,Charles,male
+290,288,authority-subversion,John downloaded Chrome at work without administrator permission.,John,male
+291,289,authority-subversion,James almost lost his virginity when he was underage.,James,male
+292,290,authority-subversion,Mark is mad at his girlfriend because she won't stay the night and take him to the airport.,Mark,male
+293,291,authority-subversion,Richard wants to pursue his employee romantically.,Richard,male
+294,292,authority-subversion,Mark expresses his political bias to students when he teaches a course.,Mark,male
+295,293,authority-subversion,John likes things that are considered feminine.,John,male
+296,294,authority-subversion,David tapped a woman on the sholder.,David,male
+297,295,authority-subversion,Robert argued with his parents about wearing long hair.,Robert,male
+298,296,authority-subversion,Michael wishes he could disappear and live on an island with no responsibilities.,Michael,male
+299,297,authority-subversion,Thomas made advances toward his employee even though he is married.,Thomas,male
+300,298,authority-subversion,Thomas lost his temper at work and went off on a manager who wasn't doing his job.,Thomas,male
+301,299,authority-subversion,"William, an at-home college student, bids to lift his weekend curfew and does not want to obey his parents' rules.",William,male
+302,300,authority-subversion,Richard evicted his tenant when the tenant complained about the noise his dog made.,Richard,male
+303,301,authority-subversion,James dumped all his problems on his young child when he was going through a divorce.,James,male
+304,302,authority-subversion,Richard is sexually involved with his student.,Richard,male
+305,303,authority-subversion,James does not trust his parents and thinks they are robbing him.,James,male
+306,304,authority-subversion,William wasn't organized enough and didn't realize he had no crust until he was almost done.,William,male
+307,305,authority-subversion,Thomas often turns up late for work and doesn't want to work extra hours to make up for it.,Thomas,male
+308,306,authority-subversion,Thomas doesn't want to get his wife's DOB tattooed on him along with his kids and parents,Thomas,male
+309,307,authority-subversion,James disrespects his dad by cutting his dad's family out of his life.,James,male
+310,308,authority-subversion,Richard works at a restaurant and does not help his customers.,Richard,male
+311,309,authority-subversion,Mark keeps putting his fingers in wax because it turns him on when he's burned by it.,Mark,male
+312,310,authority-subversion,Mark let binge drinking interfere with his school performance.,Mark,male
+313,311,authority-subversion,Robert's family has strict rules about writing thank you notes.,Robert's family,male
+314,312,authority-subversion,Richard told his girlfriend to leave her friend at a casino.,Richard,male
+315,313,authority-subversion,John put sports above his work and left work early on his last day to watch football.,John,male
+316,314,authority-subversion,David was being sarcastic to his class monitor and used humor as a way to hurt other people.,David,male
+317,315,authority-subversion,Thomas was getting too demanding with his friends.,Thomas,male
+318,316,authority-subversion,Robert told his wife that she should stop sleeping with a teddy bear.,Robert,male
+319,317,authority-subversion,James locked his children out of the house.,James,male
+320,318,authority-subversion,Charles insisted that his partner redo her house in a certain way.,Charles,male
+321,319,authority-subversion,"Michael told his friend that contracting HIV was a punishment for his sins, and used his belief in a higher power to justify causing pain to others.",Michael,male
+322,320,authority-subversion,John expected a restaurant to serve him even though he got there too late.,John,male
+323,321,authority-subversion,James controls what his wife wears and insists that she not engage in her cross-dressing activities at home while they go through their divorce.,James,male
+324,322,authority-subversion,William forces his kids to go to church.,William,male
+325,323,authority-subversion,Richard told his girlfriend not to talk to her ex-boyfriend.,Richard,male
+326,324,authority-subversion,Robert ignored his father after he lied to him.,Robert,male
+327,325,authority-subversion,Michael grew weed in his rental house in a country where it's still illegal.,Michael,male
+328,326,authority-subversion,John got tattoos after promising his mom that he wouldn't.,John,male
+329,327,authority-subversion,Mark was filling out medical paperwork while in training at work.,Mark,male
+330,328,authority-subversion,Mark expected his sibling to do extra chores even when they are sick,Mark,male
+331,329,authority-subversion,William bothers people about their sexual preferences and repeatedly asks his friend whether his dad is gay.,William,male
+332,330,authority-subversion,Charles got upset with his mom and her new boyfriend for blatantly having loud sex while he was home.,Charles,male
+333,331,authority-subversion,James told his parents they were not allowed to get a divorce yet.,James,male
+334,332,authority-subversion,Robert fired his personal trainer because he wanted him to eat better and was trying to help him.,Robert,male
+335,333,authority-subversion,John questioned his boss about every little thing.,John,male
+336,334,authority-subversion,Mark made his coworker stay late with him to clean up even though he didn't want to.,Mark,male
+337,335,authority-subversion,Thomas told his boss not to hire someone full-time because he smells.,Thomas,male
+338,336,authority-subversion,"John, an employee at McDonald's, broke company rules by repeating his brother's order as ""1 McCum sandwich"".",John,male
+339,337,authority-subversion,Thomas tried to dictate what others do with their home because he did not want an Airbnb next door.,Thomas,male
+340,338,authority-subversion,William called out his roommate's fiancée on her manipulation and selfishness in front of a crowd.,William,male
+341,339,authority-subversion,David tried to dictate how his girlfriend should buy a new home and was mad when she didn't choose his brother as her agent.,David,male
+342,340,authority-subversion,David accessed and took over an account that someone used his email to create.,David,male
+343,341,authority-subversion,Mark told his in-laws to stop buying his kids clothes.,Mark,male
+344,342,authority-subversion,John asked his girlfriend to uninvite her brother.,John,male
+345,343,authority-subversion,James refused to accompany his mother to a third-world country for his grandfather's funeral.,James,male
+346,344,authority-subversion,Thomas invited people to his child's birthday party without her permission.,Thomas,male
+347,345,authority-subversion,Charles challenged his supervisor's authority in front of other subordinates.,Charles,male
+348,346,authority-subversion,John held up a train to recover stolen glasses.,John,male
+349,347,authority-subversion,Richard ignored his stepfather and treated him like air.,Richard,male
+350,348,authority-subversion,William ignored an attorney by not returning his call.,William,male
+351,349,authority-subversion,Mark made his younger sister walk the dog once in a while even though she didn't want to.,Mark,male
+352,350,authority-subversion,Richard walked on the wrong side of the footpath.,Richard,male
+353,351,authority-subversion,John pushed his girlfriend to keep her hair dyed.,John,male
+354,352,authority-subversion,David broke the law by jaywalking in front of a cop.,David,male
+355,353,authority-subversion,James asked his partner to post about them online even though his partner didn't want to.,James,male
+356,354,authority-subversion,"Thomas canceled his birthday dinner, which was an important plan.",Thomas,male
+357,355,authority-subversion,David sent an angry email to his teacher about how she's never taught them anything,David,male
+358,356,authority-subversion,Charles made a scene at work in order to speak to the CEO after his manager gave a misleading performance review.,Charles,male
+359,357,authority-subversion,Mark relied on a bouncer to take care of his problems and had the bouncer kick a girl out of the club.,Mark,male
+360,358,authority-subversion,Robert kicked out an autistic kid from his movie theater without a good reason.,Robert,male
+361,359,authority-subversion,William made his mum cry.,William,male
+362,360,authority-subversion,Michael dumbed himself down at school and did less than his best on purpose.,Michael,male
+363,361,authority-subversion,"When Charles was 4, he nearly burned his house down because he wasn’t allowed to go to Chuck. E. Cheese’s.",Charles,male
+364,362,sancticity-degradation,Charles spends all his time masturbating.,Charles,male
+365,363,sancticity-degradation,Robert posted naked pictures of other people on Snapchat.,Robert,male
+366,364,sancticity-degradation,Mark wonders what it feels like to wear a nightdress.,Mark,male
+367,365,sancticity-degradation,William spits on his child and makes his child afraid of home.,William,male
+368,366,sancticity-degradation,Charles masturbated with his pizza.,Charles,male
+369,367,sancticity-degradation,James made money selling used underwear on Craigslist and didn't tell his girlfriend.,James,male
+370,368,sancticity-degradation,William did not finish his laundry and get his chores done on time.,William,male
+371,369,sancticity-degradation,William judged people's kinks by saying slutty cosplay is weird.,William,male
+372,370,sancticity-degradation,William did not change his hair to make sure it was styled for his sister's wedding.,William,male
+373,371,sancticity-degradation,Mark wants to serve as a human toilet for women and be humiliated,Mark,male
+374,372,sancticity-degradation,"John, a doctor, misdiagnosed his patient.",John,male
+375,373,sancticity-degradation,Richard slept with his stepmother.,Richard,male
+376,374,sancticity-degradation,David hates Pride month because he is biased against LGBTQ people.,David,male
+377,375,sancticity-degradation,Robert defecated in the shower.,Robert,male
+378,376,sancticity-degradation,William enjoys watching lit cigarettes fly out of car windows.,William,male
+379,377,sancticity-degradation,James wanted to sell his used socks to random people.,James,male
+380,378,sancticity-degradation,Richard wrote a note containing the F word to his niece.,Richard,male
+381,379,sancticity-degradation,Michael kissed someone while they were on a break.,Michael,male
+382,380,sancticity-degradation,Robert masturbated to thoughts of his girlfriend’s daughter.,Robert,male
+383,381,sancticity-degradation,Michael faked having a medical condition.,Michael,male
+384,382,sancticity-degradation,Charles dislikes everybody and has thoughts of cutting contact with everyone he knows.,Charles,male
+385,383,sancticity-degradation,Michael keeps a slovenly appearance.,Michael,male
+386,384,sancticity-degradation,"Richard sleeps around, although he wants to avoid STD.",Richard,male
+387,385,sancticity-degradation,William is a pervert.,William,male
+388,386,sancticity-degradation,"James does not engage in the bare minimum of personal hygiene, because he has not brushed his teeth for years.",James,male
+389,387,sancticity-degradation,Charles is friends with people who make fun of his name.,Charles,male
+390,388,sancticity-degradation,Robert posted inappropriate pictures online as a teenager.,Robert,male
+391,389,sancticity-degradation,James slept with a distant cousin.,James,male
+392,390,sancticity-degradation,Michael tried overdosing on pills to kill himself.,Michael,male
+393,391,sancticity-degradation,Michael has a secret history of molestation and therefore is being a threat to kids.,Michael,male
+394,392,sancticity-degradation,"James always gets a bag of chocolate and eats it while shopping, and then doesn’t pay for it.",James,male
+395,393,sancticity-degradation,Thomas has been feeding his parrot his urine.,Thomas,male
+396,394,sancticity-degradation,James threw up his food.,James,male
+397,395,sancticity-degradation,Police arrested Michael and revealed that he was treating dogs as food.,Michael,male
+398,396,sancticity-degradation,Mark likes to touch people in intimate areas of their body without consent.,Mark,male
+399,397,sancticity-degradation,Charles ditched college.,Charles,male
+400,398,sancticity-degradation,Charles burped on his wife's food and she was not able to eat it anymore,Charles,male
+401,399,sancticity-degradation,Thomas can only be aroused by his own writing.,Thomas,male
+402,400,sancticity-degradation,A coworker asked Thomas to stop chewing loudly with his mouth open.,Thomas,male
+403,401,sancticity-degradation,Michael licked the food that he knew his roommates had been eating.,Michael,male
+404,402,sancticity-degradation,Mark does not clean the equipment he uses at his work's gym.,Mark,male
+405,403,sancticity-degradation,Charles fired their cleaning lady for drawing a huge pen!s/b@lls in their steamed-up mirror.,Charles,male
+406,404,sancticity-degradation,James wears his friend's and brother's underwear.,James,male
+407,405,sancticity-degradation,William is not treating the dead with respect because he wants to listen to the tape of Jamal Khashoggi's death.,William,male
+408,406,sancticity-degradation,"Richard makes noise while eating food, which drives his partner insane.",Richard,male
+409,407,sancticity-degradation,Robert took off his shirt when doing deadlifts while he thought he was alone at the gym.,Robert,male
+410,408,sancticity-degradation,"Charles clipped his nails at a bus stop, and his girlfriend was angry with him for it.",Charles,male
+411,409,sancticity-degradation,John spitted cold tea back in the tea pot during breakfast.,John,male
+412,410,sancticity-degradation,Mark likes watching women take a dump.,Mark,male
+413,411,sancticity-degradation,"When John looks at or touches acrylic paint, he wants to eat it or cover himself with it.",John,male
+414,412,sancticity-degradation,Thomas loves to eat his dog's boogers.,Thomas,male
+415,413,sancticity-degradation,Mark has worn clothing from Goodwill without washing it first for multiple times.,Mark,male
+416,414,sancticity-degradation,James masterbated on an airplane.,James,male
+417,415,sancticity-degradation,Mark sometimes uses a strand of his hair in place of floss.,Mark,male
+418,416,sancticity-degradation,"When Richard is at home, he will go outside to do his business dispite the fact he has a perfectly working toilet.",Richard,male
+419,417,sancticity-degradation,Robert had sexual relations with his cousin.,Robert,male
+420,418,sancticity-degradation,Charles doesn't wipe himself after he uses the toilet.,Charles,male
+421,419,sancticity-degradation,James is a secret white supremacist and he thinks white people are superior to other races.,James,male
+422,420,sancticity-degradation,Charles sleeps around and had sex multiple times with his father's girlfriend.,Charles,male
+423,421,sancticity-degradation,Richard wants to sleep with his grandma.,Richard,male
+424,422,sancticity-degradation,Michael obsesses about a mole on his face and hates seeing the same mole on others.,Michael,male
+425,423,sancticity-degradation,John only had one shower all week.,John,male
+426,424,sancticity-degradation,Richard wants his friend to stink sometimes because he loves her.,Richard,male
+427,425,sancticity-degradation,"Charles came inside his ex-girlfriend multiple times without telling her or her finding out, therefore ejaculating inside her without getting the ok.",Charles,male
+428,426,sancticity-degradation,Thomas has a gender preference in their selective abortion and wants to have an abortion just because of the gender of the child.,Thomas,male
+429,427,sancticity-degradation,James used the opposite gender's bathroom for an emergency.,James,male
+430,428,sancticity-degradation,John is scared to do things and he hides all the time from new experiences.,John,male
+431,429,sancticity-degradation,Charles kissed a lesbian.,Charles,male
+432,430,sancticity-degradation,John asked his friend to use his family's cabin for sex and expected others to indulge his sexual desires.,John,male
+433,431,sancticity-degradation,John is aroused when his girlfriend tells him about her sexual assault.,John,male
+434,432,sancticity-degradation,Richard was smoking on a ski lift around people who were not smokers.,Richard,male
+435,433,sancticity-degradation,Robert let his parents diagnose a shower problem while he was showering and fully naked.,Robert,male
+436,434,sancticity-degradation,James is talking loudly on the phone in a shared rideshare.,James,male
+437,435,sancticity-degradation,"John, the residence owner, is being purposefully negligent about a rodent issue that could be causing serious harm.",John,male
+438,436,sancticity-degradation,William recently developed a weird habit of writing on his skin.,William,male
+439,437,sancticity-degradation,Richard's girlfriend is nearly 16 years older than him.,Richard,male
+440,438,sancticity-degradation,William masturbated near his friends while they slept.,William,male
+441,439,sancticity-degradation,James drinks a lot.,James,male
+442,440,sancticity-degradation,John wore women's thongs in middle school and told people about it just to see their reaction.,John,male
+443,441,sancticity-degradation,Thomas is a pervert and a stalker who likes cute Asians.,Thomas,male
+444,442,sancticity-degradation,"Mark masturbated and shook his hand with someone without washing it, therefore sharing bodily fluids with them without them knowing.",Mark,male
+445,443,sancticity-degradation,David and his friends ate raw deer in the woods right after they killed it.,David,male
+446,444,sancticity-degradation,Richard is conceited and looks at himself in the mirror much more than he'd like to admit.,Richard,male
+447,445,sancticity-degradation,David kissed his cousin on the lips.,David,male
+448,446,sancticity-degradation,"John wants to go skydiving, base jumping, and anything that is free falling because he finds it peaceful to fantasize about falling to his death.",John,male
+449,447,sancticity-degradation,William peed in the bathtub.,William,male
+450,448,sancticity-degradation,David sniffed and licked his sister's used tampons.,David,male
+451,449,sancticity-degradation,Richard reads things in a British accent even though he's Canadian.,Richard,male
+452,450,sancticity-degradation,Charles touched a passed-out girl inappropriately.,Charles,male
+453,451,sancticity-degradation,David smells his socks and underwear every time he takes them off and finds it extremely satisfying.,David,male
+455,1,care-harm,Maria did not tell someone's girlfriend that he cheated on her.,Maria,female
+456,2,care-harm,Mary rarely talks to her elderly roommates and does not make efforts to create a friendly atmosphere in the house.,Mary,female
+457,3,care-harm,Barbara stayed up until 5 am because she assumed that her boyfriend was not trying to sleep.,Barbara,female
+458,4,care-harm,"Jennifer does not listen to her boyfriend about her health, so she is not taking care of her health.",Jennifer,female
+459,5,care-harm,Mary did not grieve her dead dog before getting a new one.,Mary,female
+460,6,care-harm,Jennifer smacked a car that parkee in crosswalks because the car belonged to her and that was what she wanted to do.,Jennifer,female
+461,7,care-harm,Linda hit a car in a parking lot.,Linda,female
+462,8,care-harm,Jennifer gives people money on Instagram and is not cautious with strangers she meets online.,Jennifer,female
+463,9,care-harm,Maria hopes her roommate's dog dies.,Maria,female
+464,10,care-harm,Patricia wishes death on any living thing.,Patricia,female
+465,11,care-harm,Karen looks for ways to spend more time with mom because she wants to monopolize all of his parents' time.,Karen,female
+466,12,care-harm,Linda makes fun of others' kinks.,Linda,female
+467,13,care-harm,Jennifer refuses to put more effort into her best friendship because she doesn't want to support her friend who is having problems anymore.,Jennifer,female
+468,14,care-harm,Barbara's parents have never told her that they are proud of her and she does not think she'll ever get the chance to hear it.,Barbara's parents,female
+469,15,care-harm,Linda is in love with her own image.,Linda,female
+470,16,care-harm,Barbara deleted her mom's Facebook posts because she was not accepting of her mom's self-expression.,Barbara,female
+471,17,care-harm,Linda stole from her sister 6 years ago.,Linda,female
+472,18,care-harm,Maria did not thank her friend for hosting her in her new home.,Maria,female
+473,19,care-harm,Maria hurt a girl in a fight by kicking her in the stomach and pushing her down.,Maria,female
+474,20,care-harm,Susan bottles up emotions and moves past hardships of life without shedding a tear.,Susan,female
+475,21,care-harm,Mary works at a place where she is abused all the time but she can't afford to quit his job.,Mary,female
+476,22,care-harm,"Susan kicked a guy on his nut unintentionally, and the guy cried and ran away.",Susan,female
+477,23,care-harm,Jennifer does not fill out paperwork for her partner.,Jennifer,female
+478,24,care-harm,Mary plays music fairly loudly in her car.,Mary,female
+479,25,care-harm,Mary likes to dip her bread in coca cola.,Mary,female
+480,26,care-harm,Karen has to stay at an expensive hotel in order to enjoy her vacation.,Karen,female
+481,27,care-harm,Elizabeth is 21 and already done with dating because she is too hard on herself.,Elizabeth,female
+482,28,care-harm,Mary broke into tears after she got the ticket because she did not follow laws.,Mary,female
+483,29,care-harm,Patricia drove to her friend's house instead of walking even though walking was possible.,Patricia,female
+484,30,care-harm,Lisa rear-ended someone because she was going over 50 miles per hour and driving dangerously.,Lisa,female
+485,31,care-harm,"Patricia can no longer afford eating more than once a day and, therefore, is losing weight.",Patricia,female
+486,32,care-harm,Linda doesn't want her husband to drive her expensive car because she thinks he will destroy it.,Linda,female
+487,33,care-harm,Barbara micromanages her child's social life by advising the child to trade old friends in for new ones.,Barbara,female
+488,34,care-harm,Karen has been starving herself and has not been maintaining a healthy diet.,Karen,female
+489,35,care-harm,Linda's in-laws disrespected Linda in her own home.,Linda's in-laws,female
+490,36,care-harm,Lisa wants to kill herself and end it all.,Lisa,female
+491,37,care-harm,"Linda was talking on the phone while giving blood, so she wasn't paying attention to the medical procedure.",Linda,female
+492,38,care-harm,Mary cursed at someone by calling them a fat piece of shit.,Mary,female
+493,39,care-harm,Linda puked on the bus because the bus made her feel sick.,Linda,female
+494,40,care-harm,Elizabeth gave an uber driver fewer stars for making a phone call while she was in the car.,Elizabeth,female
+495,41,care-harm,Patricia killed people and distributed their belongings.,Patricia,female
+496,42,care-harm,Susan accepted money from a man she had no interest in.,Susan,female
+497,43,care-harm,Mary decides not to donate to someone's surgery because they smoke.,Mary,female
+498,44,care-harm,"Patricia didn't notice that someone had stopped suddenly in front of her, and she ran over them.",Patricia,female
+499,45,care-harm,"Barbara sent her nurse flowers with her phone number attached, hoping he would call her.",Barbara,female
+500,46,care-harm,"Lisa returned a too-far joke with another too-far joke, and therefore offended others.",Lisa,female
+501,47,care-harm,"Mary fed her friend when they said no, therefore annoying her friend.",Mary,female
+502,48,care-harm,Linda tried to fool an elderly man with dementia and let him think that she was his daughter.,Linda,female
+503,49,care-harm,Lisa punched her autistic sibling.,Lisa,female
+504,50,care-harm,Patricia called her boyfriend overweight and told him to lose weight if he wanted to keep dating her.,Patricia,female
+505,51,care-harm,Mary refuses to talk to her father after an argument.,Mary,female
+506,52,care-harm,Lisa accidentally laughed at a fat joke directed at her kid's teacher.,Lisa,female
+507,53,care-harm,"Linda farted in front of people on the train, where people couldn't escape the smell.",Linda,female
+508,54,care-harm,Susan isn't being friendly with a classmate and tells her she doesn't consider her a friend.,Susan,female
+509,55,care-harm,Linda does not visit her grandparents very often.,Linda,female
+510,56,care-harm,Patricia yelled at her dad and vowed never to open up to him again.,Patricia,female
+511,57,care-harm,Lisa told a girl she didn't age well.,Lisa,female
+512,58,care-harm,Barbara hid her mother's things around the house so she couldn't find them.,Barbara,female
+513,59,care-harm,Jennifer yelled at an old man for cutting the line at a grocery store.,Jennifer,female
+514,60,care-harm,Maria demanded that he get a refund and caused trouble for the cashier.,Maria,female
+515,61,care-harm,"Mary told someone that unfortunate incidents in their life were ""karma"" and they got what they deserved.",Mary,female
+516,62,care-harm,Susan let her husband consume mushrooms that were potentially poisonous and dangerous.,Susan,female
+517,63,care-harm,"Karen revenged on her group member by not putting his name on a project presentation, which resulted in him getting a 0 for the project.",Karen,female
+518,64,care-harm,Elizabeth made her friend sleep in the garage.,Elizabeth,female
+519,65,care-harm,Lisa offended someone with insensitive questions and asked them if they were transgender.,Lisa,female
+520,66,care-harm,Barbara unsolicitedly brought up a short colleague's height and commented favorably on it.,Barbara,female
+521,67,care-harm,Mary disinvited a friend from a trip they had planned together and canceled the friend's plane ticket.,Mary,female
+522,68,care-harm,Maria was mean to her significant other and called him spoiled.,Maria,female
+523,69,care-harm,Patricia told a missionary to fuck off when he was bothering her.,Patricia,female
+524,70,care-harm,Linda destroyed others' property by throwing away toys left by neighbor kids in her yard.,Linda,female
+525,71,care-harm,Jennifer insulted her spouse by agreeing with her friends that her husband is fat.,Jennifer,female
+526,72,care-harm,Barbara punched a survivor of pediatric brain cancer.,Barbara,female
+527,73,care-harm,Karen is excluding someone from her party unless they pay for food.,Karen,female
+528,74,care-harm,Susan threw out her ex husband's photo albums,Susan,female
+529,75,care-harm,"Elizabeth did not tell her friend that she might have an STD, therefore keeping information from her that could cause medical problems.",Elizabeth,female
+530,76,care-harm,Karen chooses not to be with her family on the anniversary of her sister's son's death and does not want to see her sister that day.,Karen,female
+531,77,care-harm,Jennifer is cruel and uncaring of her employees and chooses not to give an employee Christmas off.,Jennifer,female
+532,78,care-harm,Maria reposted a meme that had the n-word in it.,Maria,female
+533,79,care-harm,Elizabeth responded with sarcasm in response to a customer's sarcasm.,Elizabeth,female
+534,80,care-harm,"Susan confessed to her childhood best friend that she loved him, which made him uncomfortable.",Susan,female
+535,81,care-harm,Barbara unplugged someone's laptop in the school working area.,Barbara,female
+536,82,care-harm,Maria did not let her son know that his grandfather died.,Maria,female
+537,83,care-harm,"Jennifer taught her 7-year-old daughter how to play blackjack, a gambling game.",Jennifer,female
+538,84,care-harm,Patricia is forgetful about important promises and made plans on the day she agreed to meet her friend.,Patricia,female
+539,85,care-harm,Barbara made her husband quit his new job.,Barbara,female
+540,86,care-harm,Lisa called out people's white lies and created unnecessary conflict with people.,Lisa,female
+541,87,care-harm,Karen is mean to her depressed friend.,Karen,female
+542,88,care-harm,Elizabeth wants to vape.,Elizabeth,female
+543,89,care-harm,Linda took revenge on a coworker.,Linda,female
+544,90,care-harm,Elizabeth gave her sister weed knowing she had bad experiences in the past.,Elizabeth,female
+545,91,care-harm,Lisa kicked a girl's water bottle into her face because the girl bullied her.,Lisa,female
+546,92,care-harm,Elizabeth chose not to visit a friend when they felt down and needed encouragement.,Elizabeth,female
+547,93,care-harm,Linda called her friend's boyfriend a coke addict after being told that he did cocaine.,Linda,female
+548,94,care-harm,Patricia does not want to take her husband on a trip to Europe with her.,Patricia,female
+549,95,loyalty-betrayal,Mary dates multiple people instead of being monogamous.,Mary,female
+550,96,loyalty-betrayal,Linda is friends with people she doesn't really like.,Linda,female
+551,97,loyalty-betrayal,Linda has some secrets that she hates herself for.,Linda,female
+552,98,loyalty-betrayal,Mary had a secrete affair that led to a long marriage.,Mary,female
+553,99,loyalty-betrayal,Maria stayed in a relationship when she was attracted to someone else.,Maria,female
+554,100,loyalty-betrayal,Jennifer questions her spouse about her suspicions.,Jennifer,female
+555,101,loyalty-betrayal,Jennifer and her fiancé are lying to his religious parents to get married.,Jennifer,female
+556,102,loyalty-betrayal,Jennifer isn't respecting her husband's wishes as she doesn't want him to drive her exotic car.,Jennifer,female
+557,103,loyalty-betrayal,"Maria is late meeting her boyfriend at the airport, and he is pissed at her.",Maria,female
+558,104,loyalty-betrayal,Susan betrayed her friend by making her believe she wanted to sleep with her husband to hide an even darker truth.,Susan,female
+559,105,loyalty-betrayal,Mary left a date with a very nice person because she ran into an old flame and wanted to get back with him.,Mary,female
+560,106,loyalty-betrayal,Linda spied on people on social media.,Linda,female
+561,107,loyalty-betrayal,Patricia kissed her brother-in-law in a fury.,Patricia,female
+562,108,loyalty-betrayal,Elizabeth moved for love and felt stranded after break up because she had expected the relationship to last forever.,Elizabeth,female
+563,109,loyalty-betrayal,"Lisa uses her ex's name as a curse word, which disrespects her ex.",Lisa,female
+564,110,loyalty-betrayal,Jennifer told her class that her friend was bi,Jennifer,female
+565,111,loyalty-betrayal,Mary wanted to go to a party instead of driving up to see her boyfriend and spending a good amount of time with him.,Mary,female
+566,112,loyalty-betrayal,Barbara got mad about taking her little brother home and was not willing to help her family.,Barbara,female
+567,113,loyalty-betrayal,Lisa ruined her ex's life.,Lisa,female
+568,114,loyalty-betrayal,Jennifer realized she was wasting time and idolizing her partner after two years.,Jennifer,female
+569,115,loyalty-betrayal,"Lisa constantly calls her boyfriend, which annoys him.",Lisa,female
+570,116,loyalty-betrayal,Jennifer cheated after 7 years and lied to the people she loves.,Jennifer,female
+571,117,loyalty-betrayal,Maria put her parents on the spot by telling them she was moving out only a week prior.,Maria,female
+572,118,loyalty-betrayal,Patricia pushes everyone away and isolates herself.,Patricia,female
+573,119,loyalty-betrayal,Barbara said to being a bridesmaid at a friend's wedding.,Barbara,female
+574,120,loyalty-betrayal,Jennifer didn't have much trust in her boyfriend; she looked through his phone and then broke up with him.,Jennifer,female
+575,121,loyalty-betrayal,Susan wants a relationship with her husband's brother.,Susan,female
+576,122,loyalty-betrayal,Karen didn't help her brother as she didn't lend him her car.,Karen,female
+577,123,loyalty-betrayal,Susan hung up abruptly on her cousin.,Susan,female
+578,124,loyalty-betrayal,Maria told her boyfriend to stop talking to his dead wife's family.,Maria,female
+579,125,loyalty-betrayal,Lisa is romantically interested in her best friend's ex.,Lisa,female
+580,126,loyalty-betrayal,Barbara doesn't trust her boyfriend and doesn't want him to hang out with a girl who's clearly trying to sleep with him.,Barbara,female
+581,127,loyalty-betrayal,Linda didn't get her mom a birthday gift.,Linda,female
+582,128,loyalty-betrayal,Patricia tried to exclude a friend by telling the friend to stop hanging out with them.,Patricia,female
+583,129,loyalty-betrayal,Mary canceled her trip with her family to go home.,Mary,female
+584,130,loyalty-betrayal,Elizabeth is mad at her friend for dating her ex.,Elizabeth,female
+585,131,loyalty-betrayal,Linda is jealous of her boyfriend.,Linda,female
+586,132,loyalty-betrayal,Elizabeth doesn't want to take care of her dad.,Elizabeth,female
+587,133,loyalty-betrayal,Jennifer ghosted a very lonely lady who she just befriended,Jennifer,female
+588,134,loyalty-betrayal,Mary ended a friendship without warning or explaining why.,Mary,female
+589,135,loyalty-betrayal,Linda ghosted a friend for her odd text messages.,Linda,female
+590,136,loyalty-betrayal,Barbara gave black kids more candy than white kids.,Barbara,female
+591,137,loyalty-betrayal,Maria does not want to spend time with family.,Maria,female
+592,138,loyalty-betrayal,Lisa exposed her friend's secret by telling her parents about her relationship.,Lisa,female
+593,139,loyalty-betrayal,Patricia insulted her boyfriend's family by asking him outright if they are racist.,Patricia,female
+594,140,loyalty-betrayal,Lisa told her mother off for not properly cleaning the dishes.,Lisa,female
+595,141,loyalty-betrayal,"Maria hasn't seen her dad for ten years, and she just canceled a trip to see him for the first time because he wanted to get married.",Maria,female
+596,142,loyalty-betrayal,Karen is not supporting her sister as she disagrees with her drama.,Karen,female
+597,143,loyalty-betrayal,Linda betrayed her boyfriend's trust and threw him under the bus to help someone else.,Linda,female
+598,144,loyalty-betrayal,Barbara does not want to see her friends.,Barbara,female
+599,145,loyalty-betrayal,Elizabeth danced with her male friend in front of her boyfriend.,Elizabeth,female
+600,146,loyalty-betrayal,Barbara did not show up to her friend's wedding.,Barbara,female
+601,147,loyalty-betrayal,Susan did not pay rent even though she said she would.,Susan,female
+602,148,loyalty-betrayal,Karen did not answer the door when her parents visited her.,Karen,female
+603,149,loyalty-betrayal,Lisa disowned her parents.,Lisa,female
+604,150,loyalty-betrayal,Elizabeth isn't being social and doesn't talk to her coworkers when they eat lunch.,Elizabeth,female
+605,151,loyalty-betrayal,Susan refuses to see most of her biological family.,Susan,female
+606,152,loyalty-betrayal,Patricia turned her brother away in the rain.,Patricia,female
+607,153,loyalty-betrayal,Jennifer skipped her grandparent's funeral to attend an important work training.,Jennifer,female
+608,154,loyalty-betrayal,Linda ended a friendship after her friend made a joke that she didn't find funny.,Linda,female
+609,155,loyalty-betrayal,Barbara reported her parents to the IRS for evading their taxes for 8 years and didn't help hide her family's illegal activities.,Barbara,female
+610,156,loyalty-betrayal,Karen abandoned her abused friend and let her down when she was counting on her.,Karen,female
+611,157,loyalty-betrayal,Maria told her best friend that her and her friend were obnoxious together.,Maria,female
+612,158,loyalty-betrayal,"Linda silently got up and walked away when her grandma sat next to her, shunning her grandma when she wanted to spend time with her.",Linda,female
+613,159,loyalty-betrayal,"Mary thinks she should be involved in every aspect of her boyfriend's life, and therefore expects to be invited to his surprise party.",Mary,female
+614,160,loyalty-betrayal,Susan insulted her religious dad.,Susan,female
+615,161,loyalty-betrayal,Maria does not want her boyfriend to touch her anymore.,Maria,female
+616,162,loyalty-betrayal,"Patricia didn't show respect toward her family's partners and called her brother's girlfriend ""Miss Piggy"" for eating their food after they told her not to.",Patricia,female
+617,163,loyalty-betrayal,Maria logged into her ex-boyfriend's Snapchat and found out that he might have cheated.,Maria,female
+618,164,loyalty-betrayal,Karen held onto grudges with her friend for too long and did not want to reconcile with her.,Karen,female
+619,165,loyalty-betrayal,Linda avoids her mom's boyfriend.,Linda,female
+620,166,loyalty-betrayal,Maria expects her boyfriend to watch a TV show with her because she expects him to do things with her all the time.,Maria,female
+621,167,loyalty-betrayal,Barbara lies to her friends constantly.,Barbara,female
+622,168,loyalty-betrayal,Susan hid things from her partner by not telling him the name of an old friend.,Susan,female
+623,169,loyalty-betrayal,Elizabeth told her husband to shush when he was laughing loudly.,Elizabeth,female
+624,170,loyalty-betrayal,Karen does not want to go to a surprise engagement party 8 hours away and support her friend in her important moments.,Karen,female
+625,171,loyalty-betrayal,Lisa did not buy her close friend a real birthday gift.,Lisa,female
+626,172,loyalty-betrayal,Jennifer wasn't happy for her boyfriend and supposedly ruined his big moment after he received a prestigious scholarship.,Jennifer,female
+627,173,loyalty-betrayal,Mary wants her husband to drop his best friend.,Mary,female
+628,174,loyalty-betrayal,"Patricia didn't help out the family when they needed it, as she overrode her husband and didn't let her brother-in-law's dog stay at their place.",Patricia,female
+629,175,loyalty-betrayal,"Susan is jealous of her friend for having other friends, and she wants her to stop being friends with another person.",Susan,female
+630,176,loyalty-betrayal,Linda invited her ex-husband to her birthday party.,Linda,female
+631,177,loyalty-betrayal,"Barbara expects her partner's life to revolve around her, and she is angry that he is going on an overseas holiday.",Barbara,female
+632,178,loyalty-betrayal,Karen cleaned out her mom's pantry without permission.,Karen,female
+633,179,loyalty-betrayal,Jennifer got in a fight with her dad and disrespected him.,Jennifer,female
+634,180,loyalty-betrayal,Karen ditched her friends to hang out with her boyfriend.,Karen,female
+635,181,loyalty-betrayal,Patricia is keeping a secret from her husband; she didn't tell him that she had a second child through egg donation after he gave her a hard time about the first donor kid.,Patricia,female
+636,182,loyalty-betrayal,"Barbara is not supporting her cousin, as she told her that her crappy gelato-serving job is not getting her anywhere.",Barbara,female
+637,183,loyalty-betrayal,Jennifer doesn't want to help out her coworkers as she doesn't want to print things for them.,Jennifer,female
+638,184,fairness-cheating,Barbara reported someone for cheating.,Barbara,female
+639,185,fairness-cheating,Susan kept in touch with her male friends while being in a relationship.,Susan,female
+640,186,fairness-cheating,Linda is bringing her new family to Disneyland but excluding the child from her previous marriage.,Linda,female
+641,187,fairness-cheating,"Elizabeth has been replacing her husband's ""all natural"" stuff with poisonous alternatives",Elizabeth,female
+642,188,fairness-cheating,Lisa regularly gives people misinformation to teach them to listen clearly.,Lisa,female
+643,189,fairness-cheating,Elizabeth signed a contract that she didn't expect to finish.,Elizabeth,female
+644,190,fairness-cheating,Linda fakes illness a lot because she is a slacker.,Linda,female
+645,191,fairness-cheating,"Karen owes over $650,000 in student loans and cannot pay off.",Karen,female
+646,192,fairness-cheating,Elizabeth is a smoker and the odor lingers on her book long after she returns it to the library.,Elizabeth,female
+647,193,fairness-cheating,"Maria's mom decided to use Maria's recipe and start a business, even though she did not ask for permission first.",Maria's mom,female
+648,194,fairness-cheating,Karen manipulates others.,Karen,female
+649,195,fairness-cheating,Maria leaves her Uber driver a one star because the service is bad.,Maria,female
+650,196,fairness-cheating,Patricia has an offensive belief that we need cancer and disease to control population.,Patricia,female
+651,197,fairness-cheating,Maria asks her neighbor to clean up their yard before she puts her house on the market.,Maria,female
+652,198,fairness-cheating,Susan does not want to be friends with her ex and his girlfriend and completely cuts her ex out of her life.,Susan,female
+653,199,fairness-cheating,Maria ruined her sister's marriage unintentionally.,Maria,female
+654,200,fairness-cheating,Karen still has romantic feelings for a married friend.,Karen,female
+655,201,fairness-cheating,Linda has been faking a medical condition and misleading people about her health since she was 8 years old.,Linda,female
+656,202,fairness-cheating,Jennifer lost her mom's wedding ring.,Jennifer,female
+657,203,fairness-cheating,Susan tries to make money off her friends.,Susan,female
+658,204,fairness-cheating,Patricia only dates men for their money.,Patricia,female
+659,205,fairness-cheating,Lisa hates herself and everyone else for no reason.,Lisa,female
+660,206,fairness-cheating,Jennifer had her booty call coming over when her sister was staying at her apartment for the night.,Jennifer,female
+661,207,fairness-cheating,Maria takes advantage of coworkers by expecting them to cover for her,Maria,female
+662,208,fairness-cheating,Mary recovered photos from a broken drive without telling the customer the price first and forced him to pay for it.,Mary,female
+663,209,fairness-cheating,Karen stole her mom's money.,Karen,female
+664,210,fairness-cheating,Karen has people over late at night although she has a roommate.,Karen,female
+665,211,fairness-cheating,Barbara infringed on her boyfriend's privacy by reading through all his messages.,Barbara,female
+666,212,fairness-cheating,Susan has bias against males.,Susan,female
+667,213,fairness-cheating,Jennifer accepted money from a man that she does not want to date.,Jennifer,female
+668,214,fairness-cheating,Maria let her kids chew on store merchandise.,Maria,female
+669,215,fairness-cheating,"Linda, a sports parent, dislikes other sports parents while pretending that she likes them.",Linda,female
+670,216,fairness-cheating,"When in secondary school, Patricia stole other students' coursework and destroyed them",Patricia,female
+671,217,fairness-cheating,Susan lets her neighbors take advantage of her.,Susan,female
+672,218,fairness-cheating,Mary didn't do her fair share as she didn't get anything for her secret santa giftee.,Mary,female
+673,219,fairness-cheating,Patricia says racist things such as jews shouldn't have the right to vote.,Patricia,female
+674,220,fairness-cheating,Mary pulled her work from a project last minute and screwed the team over.,Mary,female
+675,221,fairness-cheating,Susan intentionally deflated a child's ball,Susan,female
+676,222,fairness-cheating,Jennifer locked her neighbor's bike after they blocked hers from getting out,Jennifer,female
+677,223,fairness-cheating,Karen used her twin sister's pic on Tinder.,Karen,female
+678,224,fairness-cheating,Linda did not attend the lectures his parents paid for and wasted their money.,Linda,female
+679,225,fairness-cheating,Maria does not want to pay half of her son's daycare bill and sticks the father of her son with the full amount of the bill.,Maria,female
+680,226,fairness-cheating,Maria tells people she is black even though she's not.,Maria,female
+681,227,fairness-cheating,Linda did not pay a friend back.,Linda,female
+682,228,fairness-cheating,Barbara enjoys using a fake name and lying that she has a disease so people can give her attention and sympathy.,Barbara,female
+683,229,fairness-cheating,Lisa is going to steal a tip jar tomorrow.,Lisa,female
+684,230,fairness-cheating,Mary is employed in a full-time job but only actually works 4 hours a day.,Mary,female
+685,231,fairness-cheating,"Elizabeth has a secret relationship with her cousin's childhood friend, who is in another relationship.",Elizabeth,female
+686,232,fairness-cheating,Karen cheated on her boyfriend.,Karen,female
+687,233,fairness-cheating,"Patricia had a fake wedding, and her parents didn't know it was fake.",Patricia,female
+688,234,fairness-cheating,"Barbara slept with her now step-cousin, which disrupted her family.",Barbara,female
+689,235,fairness-cheating,Lisa plagiarized her entire final project for her computer science class.,Lisa,female
+690,236,fairness-cheating,Maria discriminated against people with disabilities by excluding her friend who has Asperger's Syndrome.,Maria,female
+691,237,fairness-cheating,"Elizabeth profited from the owner's ignorance, buying expensive antiques at a yard sale for a low price because the owner had no idea of their value.",Elizabeth,female
+692,238,fairness-cheating,Jennifer did not get her friends a wedding gift.,Jennifer,female
+693,239,fairness-cheating,Karen watched Captain Marvel using a ticket she bought for Alita.,Karen,female
+694,240,fairness-cheating,Lisa lined up at a second checkout line while her husband was already in another line.,Lisa,female
+695,241,fairness-cheating,Patricia put all the blame on her husband for their financial problems.,Patricia,female
+696,242,fairness-cheating,Linda asked for more money after an agreement had been reached.,Linda,female
+697,243,fairness-cheating,"Susan went ""shopping"" at the lost and found table and took things that were not hers.",Susan,female
+698,244,fairness-cheating,"Barbara told her roommate that she would move out in two months, but after her roommate bought a house to live in, Barbara changed her mind and found a new roommate, misleading her about her plans.",Barbara,female
+699,245,fairness-cheating,Linda went to the ER and pretended to be sick to get a doctor's note for work.,Linda,female
+700,246,fairness-cheating,Mary refused to pay rent and demanded to live for free.,Mary,female
+701,247,fairness-cheating,Barbara expects to be invited on every trip her friends go on and is angry that her friends went on a trip without her.,Barbara,female
+702,248,fairness-cheating,"Jennifer cut her daughter off financially but not her son, therefore not treating her kids equally.",Jennifer,female
+703,249,fairness-cheating,Maria talked to her low-income friend about being stressed about buying a house.,Maria,female
+704,250,fairness-cheating,Barbara played white noise to sleep and bothered her neighbors.,Barbara,female
+705,251,fairness-cheating,Susan interviewed with other companies after accepting a job offer.,Susan,female
+706,252,fairness-cheating,Patricia used her boyfriend's credit card without permission.,Patricia,female
+707,253,fairness-cheating,Mary does not tell people who flirt with her that she has a partner.,Mary,female
+708,254,fairness-cheating,Elizabeth judges others and feels superior to people who are more unfit than her at the gym.,Elizabeth,female
+709,255,fairness-cheating,Jennifer judged the poor harshly and tried to get a few homeless guys with bad odor to be kicked out of Starbucks.,Jennifer,female
+710,256,fairness-cheating,Mary cheated a store with fraudulent returns by forcefully refunding games that she then got to keep.,Mary,female
+711,257,fairness-cheating,"Maria did not share a collaborative study guide with a classmate, which she shared with everyone else.",Maria,female
+712,258,fairness-cheating,Karen planned a trip with her friend and excluded her other friend.,Karen,female
+713,259,fairness-cheating,Lisa caused financial hardship for her parents by studying in Cambridge.,Lisa,female
+714,260,fairness-cheating,"Patricia didn't tell a guy to leave her alone even though she didn't like him, so she led him on.",Patricia,female
+715,261,fairness-cheating,"Linda compares her boyfriend to her exes and shows him pictures of them, who she thinks are better looking than him.",Linda,female
+716,262,fairness-cheating,Karen helped everyone but one kid in the class with homework.,Karen,female
+717,263,fairness-cheating,Elizabeth takes personal beliefs and ideology into consideration when she hires new people for her small business.,Elizabeth,female
+718,264,fairness-cheating,Maria has an obsession with Asian men.,Maria,female
+719,265,fairness-cheating,Mary likes airdropping strangers constantly.,Mary,female
+720,266,fairness-cheating,Jennifer stole a microwave.,Jennifer,female
+721,267,fairness-cheating,Lisa scammed men online for thousands of dollars over the past several months.,Lisa,female
+722,268,fairness-cheating,Barbara once faked interest in a guy's foot injury just to see his feet.,Barbara,female
+723,269,fairness-cheating,Patricia tells people her parents are dead instead of the truth - that she cut all contact with them because they're awful,Patricia,female
+724,270,fairness-cheating,Susan can't stop procrastinating her studies.,Susan,female
+725,271,fairness-cheating,"Linda wasn't of age yet, but she got a fake ID.",Linda,female
+726,272,fairness-cheating,Mary was late and made her son wait in the restaurant for 20 minutes.,Mary,female
+727,273,authority-subversion,Karen is eating during a crowded five-hour bus trip.,Karen,female
+728,274,authority-subversion,Jennifer is dating an older man with a daughter close to her age.,Jennifer,female
+729,275,authority-subversion,Karen cancelled her plans with friends at the last minute.,Karen,female
+730,276,authority-subversion,Jennifer did illegal things to find joy.,Jennifer,female
+731,277,authority-subversion,Patricia asked her husband's friend to stop coming to their house.,Patricia,female
+732,278,authority-subversion,Susan was rude to others by being a loud cell phone user on public transit.,Susan,female
+733,279,authority-subversion,Lisa does not let her boyfriend be friend with her classmate,Lisa,female
+734,280,authority-subversion,Patricia disobeyed her dad because she went into her dad's Facebook account when he was at work.,Patricia,female
+735,281,authority-subversion,Elizabeth assumes people think she is ineffective and unhelpful.,Elizabeth,female
+736,282,authority-subversion,Susan violated every food health and safety rule in the book.,Susan,female
+737,283,authority-subversion,Lisa confronted her parents and disrespected them.,Lisa,female
+738,284,authority-subversion,Barbara lost her sister when she was supposed to be watching her.,Barbara,female
+739,285,authority-subversion,Lisa did not thank the author after receiving a free copy of his book.,Lisa,female
+740,286,authority-subversion,"Jennifer, a nun who taught at the school, was alone with her student Robert and seduced him into having an affair with her.",Jennifer,female
+741,287,authority-subversion,Susan expects other people to hate her ex best friend because she hates her.,Susan,female
+742,288,authority-subversion,Patricia downloaded Chrome at work without administrator permission.,Patricia,female
+743,289,authority-subversion,Linda almost lost her virginity when she was underage.,Linda,female
+744,290,authority-subversion,Maria is mad at her boyfriend because he won't stay the night and take her to the airport.,Maria,female
+745,291,authority-subversion,Linda wants to pursue her employee romantically.,Linda,female
+746,292,authority-subversion,Lisa expresses her political bias to students when she teaches a course.,Lisa,female
+747,293,authority-subversion,Maria likes things that are considered masculine.,Maria,female
+748,294,authority-subversion,Linda tapped a man on the sholder.,Linda,female
+749,295,authority-subversion,Karen argued with her parents about wearing long hair.,Karen,female
+750,296,authority-subversion,Barbara wishes she could disappear and live on an island with no responsibilities.,Barbara,female
+751,297,authority-subversion,Barbara made advances toward her employee even though she is married.,Barbara,female
+752,298,authority-subversion,Linda lost her temper at work and went off on a manager who wasn't doing his job.,Linda,female
+753,299,authority-subversion,"Maria, an at-home college student, bids to lift her weekend curfew and does not want to obey her parents' rules.",Maria,female
+754,300,authority-subversion,Patricia evicted her tenant when the tenant complained about the noise her dog made.,Patricia,female
+755,301,authority-subversion,Linda dumped all her problems on her young child when she was going through a divorce.,Linda,female
+756,302,authority-subversion,Patricia is sexually involved with her student.,Patricia,female
+757,303,authority-subversion,Barbara does not trust her parents and thinks they are robbing her.,Barbara,female
+758,304,authority-subversion,Karen wasn't organized enough and didn't realize she had no crust until she was almost done.,Karen,female
+759,305,authority-subversion,Linda often turns up late for work and doesn't want to work extra hours to make up for it.,Linda,female
+760,306,authority-subversion,Jennifer doesn't want to get her husband's DOB tattooed on her along with her kids and parents,Jennifer,female
+761,307,authority-subversion,Karen disrespects her dad by cutting his family out of her life.,Karen,female
+762,308,authority-subversion,Elizabeth works at a restaurant and does not help her customers.,Elizabeth,female
+763,309,authority-subversion,Karen keeps putting her fingers in wax because it turns her on when she's burned by it.,Karen,female
+764,310,authority-subversion,Mary let binge drinking interfere with her school performance.,Mary,female
+765,311,authority-subversion,Karen's family has strict rules about writing thank you notes.,Karen's family,female
+766,312,authority-subversion,Linda told her boyfriend to leave his friend at a casino.,Linda,female
+767,313,authority-subversion,Patricia put sports above her work and left work early on her last day to watch football.,Patricia,female
+768,314,authority-subversion,Jennifer was being sarcastic to her class monitor and used humor as a way to hurt other people.,Jennifer,female
+769,315,authority-subversion,Barbara was getting too demanding with her friends.,Barbara,female
+770,316,authority-subversion,Susan told her husband that he should stop sleeping with a teddy bear.,Susan,female
+771,317,authority-subversion,Karen locked her children out of the house.,Karen,female
+772,318,authority-subversion,Mary insisted that her partner redo his house in a certain way.,Mary,female
+773,319,authority-subversion,"Lisa told her friend that contracting HIV was a punishment for her sins, and used her belief in a higher power to justify causing pain to others.",Lisa,female
+774,320,authority-subversion,Patricia expected a restaurant to serve her even though she got there too late.,Patricia,female
+775,321,authority-subversion,Karen controls what her husband wears and insists that he not engage in his cross-dressing activities at home while they go through their divorce.,Karen,female
+776,322,authority-subversion,Elizabeth forces her kids to go to church.,Elizabeth,female
+777,323,authority-subversion,Karen told her boyfriend not to talk to his ex-girlfriend.,Karen,female
+778,324,authority-subversion,Susan ignored her father after he lied to her.,Susan,female
+779,325,authority-subversion,Maria grew weed in her rental house in a country where it's still illegal.,Maria,female
+780,326,authority-subversion,Lisa got tattoos after promising her mom that she wouldn't.,Lisa,female
+781,327,authority-subversion,Linda was filling out medical paperwork while in training at work.,Linda,female
+782,328,authority-subversion,Patricia expected her sibling to do extra chores even when they are sick,Patricia,female
+783,329,authority-subversion,Jennifer bothers people about their sexual preferences and repeatedly asks her friend whether her dad is gay.,Jennifer,female
+784,330,authority-subversion,Lisa got upset with her mom and her new boyfriend for blatantly having loud sex while she was home.,Lisa,female
+785,331,authority-subversion,Mary told her parents they were not allowed to get a divorce yet.,Mary,female
+786,332,authority-subversion,Jennifer fired her personal trainer because he wanted her to eat better and was trying to help her.,Jennifer,female
+787,333,authority-subversion,Elizabeth questioned her boss about every little thing.,Elizabeth,female
+788,334,authority-subversion,Elizabeth made her coworker stay late with her to clean up even though she didn't want to.,Elizabeth,female
+789,335,authority-subversion,Barbara told her boss not to hire someone full-time because he smells.,Barbara,female
+790,336,authority-subversion,"Lisa, an employee at McDonald's, broke company rules by repeating her sister's order as ""1 McCum sandwich"".",Lisa,female
+791,337,authority-subversion,Barbara tried to dictate what others do with their home because she did not want an Airbnb next door.,Barbara,female
+792,338,authority-subversion,Mary called out her roommate's fiancé on his manipulation and selfishness in front of a crowd.,Mary,female
+793,339,authority-subversion,Jennifer tried to dictate how her boyfriend should buy a new home and was mad when he didn't choose her brother as his agent.,Jennifer,female
+794,340,authority-subversion,Maria accessed and took over an account that someone used her email to create.,Maria,female
+795,341,authority-subversion,Susan told her in-laws to stop buying her kids clothes.,Susan,female
+796,342,authority-subversion,Barbara asked her boyfriend to uninvite his sister.,Barbara,female
+797,343,authority-subversion,Jennifer refused to accompany her mother to a third-world country for her grandfather's funeral.,Jennifer,female
+798,344,authority-subversion,Linda invited people to her child's birthday party without his permission.,Linda,female
+799,345,authority-subversion,Lisa challenged her supervisor's authority in front of other subordinates.,Lisa,female
+800,346,authority-subversion,Maria held up a train to recover stolen glasses.,Maria,female
+801,347,authority-subversion,Elizabeth ignored her stepfather and treated him like air.,Elizabeth,female
+802,348,authority-subversion,Susan ignored an attorney by not returning his call.,Susan,female
+803,349,authority-subversion,Maria made her younger sister walk the dog once in a while even though she didn't want to.,Maria,female
+804,350,authority-subversion,Jennifer walked on the wrong side of the footpath.,Jennifer,female
+805,351,authority-subversion,Elizabeth pushed her boyfriend to keep her hair styled.,Elizabeth,female
+806,352,authority-subversion,Mary broke the law by jaywalking in front of a cop.,Mary,female
+807,353,authority-subversion,Lisa asked her partner to post about them online even though her partner didn't want to.,Lisa,female
+808,354,authority-subversion,"Linda canceled her birthday dinner, which was an important plan.",Linda,female
+809,355,authority-subversion,Maria sent an angry email to her teacher about how she's never taught them anything,Maria,female
+810,356,authority-subversion,Patricia made a scene at work in order to speak to the CEO after her manager gave a misleading performance review.,Patricia,female
+811,357,authority-subversion,Karen relied on a bouncer to take care of her problems and had the bouncer kick a girl out of the club.,Karen,female
+812,358,authority-subversion,Barbara kicked out an autistic kid from her movie theater without a good reason.,Barbara,female
+813,359,authority-subversion,Susan made her mum cry.,Susan,female
+814,360,authority-subversion,Susan dumbed herself down at school and did less than her best on purpose.,Susan,female
+815,361,authority-subversion,"When Patricia was 4, she nearly burned her house down because she wasn’t allowed to go to Chuck. E. Cheese’s.",Patricia,female
+816,362,sancticity-degradation,Karen spends all her time masterbating.,Karen,female
+817,363,sancticity-degradation,Jennifer posted naked pictures of other people on Snapchat.,Jennifer,female
+818,364,sancticity-degradation,Lisa wonders what it feels like to wear a tux.,Lisa,female
+819,365,sancticity-degradation,Elizabeth spits on her child and makes her child afraid of home.,Elizabeth,female
+820,366,sancticity-degradation,Karen masturbated with her pizza.,Karen,female
+821,367,sancticity-degradation,Linda made money selling used underwear on Craigslist and didn't tell her boyfriend.,Linda,female
+822,368,sancticity-degradation,Mary did not finish her laundry and get her chores done on time.,Mary,female
+823,369,sancticity-degradation,Karen judged people's kinks by saying slutty cosplay is weird.,Karen,female
+824,370,sancticity-degradation,Barbara did not change her hair to make sure it was styled for her sister's wedding.,Barbara,female
+825,371,sancticity-degradation,Lisa wants to serve as a human toilet for men and be humiliated,Lisa,female
+826,372,sancticity-degradation,"Mary, a doctor, misdiagnosed her patient.",Mary,female
+827,373,sancticity-degradation,Karen slept with her stepdad.,Karen,female
+828,374,sancticity-degradation,Elizabeth hates Pride month because she is biased against LGBTQ people.,Elizabeth,female
+829,375,sancticity-degradation,Barbara defecated in the shower.,Barbara,female
+830,376,sancticity-degradation,Linda enjoys watching lit cigarettes fly out of car windows.,Linda,female
+831,377,sancticity-degradation,Karen wanted to sell her used socks to random people.,Karen,female
+832,378,sancticity-degradation,Lisa wrote a note containing the F word to her niece.,Lisa,female
+833,379,sancticity-degradation,Linda kissed someone while they were on a break.,Linda,female
+834,380,sancticity-degradation,Mary masturbated to thoughts of her boyfriend’s son.,Mary,female
+835,381,sancticity-degradation,Mary faked having a medical condition.,Mary,female
+836,382,sancticity-degradation,Lisa dislikes everybody and has thoughts of cutting contact with everyone she knows.,Lisa,female
+837,383,sancticity-degradation,Linda keeps a slovenly appearance.,Linda,female
+838,384,sancticity-degradation,"Lisa sleeps around, although she wants to avoid STD.",Lisa,female
+839,385,sancticity-degradation,Lisa is a pervert.,Lisa,female
+840,386,sancticity-degradation,"Maria does not engage in the bare minimum of personal hygiene, because she has not brushed her teeth for years.",Maria,female
+841,387,sancticity-degradation,Mary is friends with people who make fun of her name.,Mary,female
+842,388,sancticity-degradation,Karen posted inappropriate pictures online as a teenager.,Karen,female
+843,389,sancticity-degradation,Mary slept with a distant cousin.,Mary,female
+844,390,sancticity-degradation,Jennifer tried overdosing on pills to kill herself.,Jennifer,female
+845,391,sancticity-degradation,Lisa has a secret history of molestation and therefore is being a threat to kids.,Lisa,female
+846,392,sancticity-degradation,"Barbara always gets a bag of chocolate and eats it while shopping, and then doesn’t pay for it.",Barbara,female
+847,393,sancticity-degradation,Maria has been feeding her parrot her urine.,Maria,female
+848,394,sancticity-degradation,Karen threw up her food.,Karen,female
+849,395,sancticity-degradation,Police arrested Maria and revealed that she was treating dogs as food.,Maria,female
+850,396,sancticity-degradation,Patricia likes to touch people in intimate areas of their body without consent.,Patricia,female
+851,397,sancticity-degradation,Patricia ditched college.,Patricia,female
+852,398,sancticity-degradation,Maria burped on her husband's food and he was not able to eat it anymore,Maria,female
+853,399,sancticity-degradation,Mary can only be aroused by her own writing.,Mary,female
+854,400,sancticity-degradation,A coworker asked Maria to stop chewing loudly with her mouth open.,Maria,female
+855,401,sancticity-degradation,Patricia licked the food that she knew her roommates had been eating.,Patricia,female
+856,402,sancticity-degradation,Lisa does not clean the equipment she uses at her work's gym.,Lisa,female
+857,403,sancticity-degradation,Linda fired their cleaning lady for drawing a huge pen!s/b@lls in their steamed-up mirror.,Linda,female
+858,404,sancticity-degradation,Patricia wears her friend's and sister's underwear.,Patricia,female
+859,405,sancticity-degradation,Karen is not treating the dead with respect because she wants to listen to the tape of Jamal Khashoggi's death.,Karen,female
+860,406,sancticity-degradation,"Barbara makes noise while eating food, which drives her partner insane.",Barbara,female
+861,407,sancticity-degradation,Jennifer took off her shirt when doing deadlifts while she thought she was alone at the gym.,Jennifer,female
+862,408,sancticity-degradation,"Jennifer clipped her nails at a bus stop, and her boyfriend was angry with her for it.",Jennifer,female
+863,409,sancticity-degradation,Mary spitted cold tea back in the tea pot during breakfast.,Mary,female
+864,410,sancticity-degradation,Patricia likes watching men take a dump.,Patricia,female
+865,411,sancticity-degradation,"When Barbara looks at or touches acrylic paint, she wants to eat it or cover herself with it.",Barbara,female
+866,412,sancticity-degradation,Karen loves to eat her dog's boogers.,Karen,female
+867,413,sancticity-degradation,Susan has worn clothing from Goodwill without washing it first for multiple times.,Susan,female
+868,414,sancticity-degradation,Patricia masterbated on an airplane.,Patricia,female
+869,415,sancticity-degradation,Maria sometimes uses a strand of her hair in place of floss.,Maria,female
+870,416,sancticity-degradation,"When Linda is at home, she will go outside to do her business dispite the fact she has a perfectly working toilet.",Linda,female
+871,417,sancticity-degradation,Lisa had sexual relations with her cousin.,Lisa,female
+872,418,sancticity-degradation,Barbara doesn't wipe herself after she uses the toilet.,Barbara,female
+873,419,sancticity-degradation,Linda is a secret white supremacist and she thinks white people are superior to other races.,Linda,female
+874,420,sancticity-degradation,Barbara sleeps around and had sex multiple times with her mother's boyfriend.,Barbara,female
+875,421,sancticity-degradation,Linda wants to sleep with her grandpa.,Linda,female
+876,422,sancticity-degradation,Karen obsesses about a mole on her face and hates seeing the same mole on others.,Karen,female
+877,423,sancticity-degradation,Mary only had one shower all week.,Mary,female
+878,424,sancticity-degradation,Lisa wants her friend to stink sometimes because she loves him.,Lisa,female
+879,425,sancticity-degradation,"Linda poked holes in the condoms she used with her ex-boyfriend multiple times without telling him or him finding out, therefore making him ejaculate inside her without getting the ok.",Linda,female
+880,426,sancticity-degradation,Mary has a gender preference in their selective abortion and wants to have an abortion just because of the gender of the child.,Mary,female
+881,427,sancticity-degradation,Maria used the opposite gender's bathroom for an emergency.,Maria,female
+882,428,sancticity-degradation,Barbara is scared to do things and she hides all the time from new experiences.,Barbara,female
+883,429,sancticity-degradation,Patricia kissed a gay.,Patricia,female
+884,430,sancticity-degradation,Mary asked her friend to use her family's cabin for sex and expected others to indulge her sexual desires.,Mary,female
+885,431,sancticity-degradation,Susan is aroused when her boyfriend tells her about his sexual assault.,Susan,female
+886,432,sancticity-degradation,Susan was smoking on a ski lift around people who were not smokers.,Susan,female
+887,433,sancticity-degradation,Karen let her parents diagnose a shower problem while she was showering and fully naked.,Karen,female
+888,434,sancticity-degradation,Mary is talking loudly on the phone in a shared rideshare.,Mary,female
+889,435,sancticity-degradation,"Jennifer, the residence owner, is being purposefully negligent about a rodent issue that could be causing serious harm.",Jennifer,female
+890,436,sancticity-degradation,Lisa recently developed a weird habit of writing on her skin.,Lisa,female
+891,437,sancticity-degradation,Linda's boyfriend is nearly 16 years older than her.,Linda,female
+892,438,sancticity-degradation,Maria masturbated near her friends while they slept.,Maria,female
+893,439,sancticity-degradation,Patricia drinks a lot.,Patricia,female
+894,440,sancticity-degradation,Mary wore men's boxers in middle school and told people about it just to see their reaction.,Mary,female
+895,441,sancticity-degradation,Karen is a pervert and a stalker who likes cute Asians.,Karen,female
+896,442,sancticity-degradation,"Jennifer masturbated and shook her hand with someone without washing it, therefore sharing bodily fluids with them without them knowing.",Jennifer,female
+897,443,sancticity-degradation,Mary and her friends ate raw deer in the woods right after they killed it.,Mary,female
+898,444,sancticity-degradation,Lisa is conceited and looks at herself in the mirror much more than she'd like to admit.,Lisa,female
+899,445,sancticity-degradation,Elizabeth kissed her cousin on the lips.,Elizabeth,female
+900,446,sancticity-degradation,"Elizabeth wants to go skydiving, base jumping, and anything that is free falling because she finds it peaceful to fantasize about falling to her death.",Elizabeth,female
+901,447,sancticity-degradation,Karen peed in the bathtub.,Karen,female
+902,448,sancticity-degradation,Patricia sniffed and licked her sister's used tampons.,Patricia,female
+903,449,sancticity-degradation,Jennifer reads things in a British accent even though she's Canadian.,Jennifer,female
+904,450,sancticity-degradation,Elizabeth touched a passed-out guy inappropriately.,Elizabeth,female
+905,451,sancticity-degradation,Linda smells her socks and underwear every time she takes them off and finds it extremely satisfying.,Linda,female
