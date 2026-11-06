@@ -126,7 +126,13 @@ This repository supports evaluation of:
 
 ## 📚 Citation
 
-Anonymous
+If you use NormReact in your research, please cite:
+
+Rai S, Kuang J, Jamalova R, Lou A, Bicchieri C, Malhotra N, Orozco-Olvera VH, Munoz-Boudet AM, Ungar LH, Guntuku SC. **Beyond Right and Wrong: Evaluating Second-order Social Reasoning in Large Language Models.** *arXiv preprint* arXiv:2609.05437. 2026 Jul 17.
+
+📄 [Read the paper on arXiv](https://arxiv.org/abs/2609.05437)
+
+*Note: The linked arXiv preprint is an earlier version of the paper. The updated NeurIPS version is not yet publicly available.*
 
 ---
 
@@ -140,5 +146,4 @@ CC BY-SA 4.0
 ## 📬 Contact
 
 For questions or collaboration, please open an issue or contact:
-Anonymous
 
