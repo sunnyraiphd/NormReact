@@ -41,7 +41,7 @@ This dataset enables systematic study of social enforcement dynamics beyond simp
 
 **Access the dataset:**
 - **Hugging Face**: [NormReact/NormReact](https://huggingface.co/datasets/NormReact/NormReact)
-- **This repository**: `data/` folder
+- **This repository**: `data/processed` folder
 
 ---
 
@@ -83,10 +83,26 @@ Coming soon.
 
 ```id="3ry1q1"
 NormReact/
-├── data/              # NormReact dataset
-├── human/             # Human Analysis R code
-├── notebooks/         # Analysis/Experiment notebooks
-└── README.md
+├── data/                       # LLM experiment and analysis datasets
+│   ├── raw/
+│   │   ├── main/               # Main LLM experiment responses
+│   │   └── sensitivity/        # Sensitivity experiment responses
+│   └── processed/              # Cleaned and preprocessed analysis datasets
+├── human/                      # Human experiment data and R analysis
+│   ├── data/                   # Human experiment datasets
+│   ├── output/                 # Human analysis outputs
+│   ├── 1-human-analysis.qmd
+│   ├── 2-human-moral-dimention.qmd
+│   └── 3-human-llm.qmd
+├── notebooks/                  # Python experiment and analysis notebooks
+│   ├── analysis.ipynb
+│   └── llm_experiments.ipynb
+├── outputs/
+│   ├── tables/                 # Generated analysis tables
+│   └── figures/                # Generated figures and plots
+├── README.md                   
+├── requirements.txt            
+└── .gitignore                  
 ```
 
 ---
@@ -119,7 +135,7 @@ Anonymous
 
 ## 📄 License
 
-CC BY 4.0
+CC BY-SA 4.0
 
 ---
 
