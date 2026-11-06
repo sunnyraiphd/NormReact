@@ -95,8 +95,9 @@ NormReact/
 │   ├── analysis.ipynb
 │   └── llm_experiments.ipynb
 ├── outputs/
-│   ├── tables/                 # Generated analysis tables
+│   ├── tables/                 # Supplementary analysis tables
 │   └── figures/                # Generated figures and plots
+├── scripts/                    # Standalone scripts for model experiments
 ├── README.md                   
 ├── requirements.txt            
 └── .gitignore                  
