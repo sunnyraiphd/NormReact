@@ -1,0 +1,903 @@
+ID,actor,actor_gender,acquaintances_reaction_should,friends_reaction_should,strangers_reaction_should
+1,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+1,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+2,John,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+2,Mary,female,Do nothing,Support the actor,Support the actor
+3,Barbara,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+3,Robert,male,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+4,David,male,Support the actor,Support the actor,Do nothing
+4,Jennifer,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+5,Mary,female,Do nothing,Support the actor,Do nothing
+5,Thomas,male,Do nothing,Support the actor,Do nothing
+6,Jennifer,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+6,Mark,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+7,Linda,female,"Inform the authorities, such as the police",Support the actor,"Inform the authorities, such as the police"
+7,Mark,male,Support the actor,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+8,Jennifer,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+8,William,male,Support the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+9,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+9,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+10,Mark,male,"Inform the authorities, such as the police","Inform the authorities, such as the police",Stay away or keep a distance from the actor
+10,Patricia,female,"Inform the authorities, such as the police",Support the actor,Stay away or keep a distance from the actor
+11,Karen,female,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation
+11,William,male,Do nothing,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+12,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+12,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+13,David,male,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+13,Jennifer,female,Support the actor,Support the actor,Support the actor
+14,Barbara's parents,female,Support the actor,Support the actor,Support the actor
+14,David's parents,male,Support the actor,Support the actor,Support the actor
+15,Linda,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+15,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+16,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+16,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+17,Linda,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+17,Mark,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+18,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+18,Thomas,male,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+19,David,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+19,Maria,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+20,James,male,Support the actor,Support the actor,Support the actor
+20,Susan,female,Support the actor,Support the actor,Support the actor
+21,Mark,male,Support the actor,Support the actor,Support the actor
+21,Mary,female,Support the actor,Support the actor,Support the actor
+22,Mark,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+22,Susan,female,Support the actor,Support the actor,Support the actor
+23,Jennifer,female,Verbal reprimand / verbal confrontation,Do nothing,Do nothing
+23,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+24,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+24,Mary,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+25,Mary,female,Do nothing,Do nothing,Do nothing
+25,William,male,Do nothing,Do nothing,Do nothing
+26,Karen,female,Do nothing,Support the actor,Do nothing
+26,Michael,male,Do nothing,Support the actor,Do nothing
+27,Elizabeth,female,Support the actor,Support the actor,Support the actor
+27,William,male,Support the actor,Support the actor,Support the actor
+28,Mary,female,Support the actor,Support the actor,Support the actor
+28,William,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+29,Michael,male,Verbal reprimand / verbal confrontation,Do nothing,Do nothing
+29,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+30,John,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+30,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+31,James,male,Support the actor,Support the actor,Support the actor
+31,Patricia,female,Support the actor,Support the actor,Support the actor
+32,David,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+32,Linda,female,Do nothing,Stay away or keep a distance from the actor,Do nothing
+33,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+33,James,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+34,James,male,Support the actor,Support the actor,Support the actor
+34,Karen,female,Support the actor,Support the actor,Support the actor
+35,Linda's in-laws,female,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+35,Mark's in-laws,male,Support the actor,Support the actor,Support the actor
+36,Lisa,female,"Inform the authorities, such as the police",Support the actor,"Inform the authorities, such as the police"
+36,Robert,male,Support the actor,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+37,Linda,female,"Inform the authorities, such as the police",Support the actor,Do nothing
+37,Richard,male,Do nothing,Support the actor,"Inform the authorities, such as the police"
+38,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+38,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+39,Linda,female,Support the actor,Support the actor,Support the actor
+39,Richard,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+40,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+40,Elizabeth,female,Do nothing,Do nothing,Do nothing
+41,Mark,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+41,Patricia,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+42,James,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+42,Susan,female,Support the actor,Support the actor,Do nothing
+43,Mary,female,Do nothing,Support the actor,Do nothing
+43,Robert,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+44,Charles,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+44,Patricia,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+45,Barbara,female,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+45,Thomas,male,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+46,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+46,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+47,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+47,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+48,Linda,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+48,William,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+49,Lisa,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+49,Thomas,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+50,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+50,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+51,Mary,female,Support the actor,Support the actor,Do nothing
+51,Robert,male,Support the actor,Support the actor,Do nothing
+52,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+52,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+53,Linda,female,Do nothing,Support the actor,Stay away or keep a distance from the actor
+53,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+54,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+54,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+55,Linda,female,Do nothing,Support the actor,Do nothing
+55,Richard,male,Support the actor,Support the actor,Do nothing
+56,Mark,male,Support the actor,Support the actor,Do nothing
+56,Patricia,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+57,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+57,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+58,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+58,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+59,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+59,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+60,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+60,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+61,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+61,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+62,Susan,female,"Inform the authorities, such as the police","Inform the authorities, such as the police",Support the actor
+62,Thomas,male,"Inform the authorities, such as the police","Inform the authorities, such as the police",Support the actor
+63,James,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+63,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+64,Elizabeth,female,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+64,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+65,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+65,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+66,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+66,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+67,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+67,Mary,female,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+68,Maria,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+68,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+69,Charles,male,Support the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+69,Patricia,female,Support the actor,Support the actor,Do nothing
+70,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+70,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+71,Jennifer,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+71,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+72,Barbara,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+72,Richard,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+73,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+73,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+74,Robert,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+74,Susan,female,Support the actor,Support the actor,Do nothing
+75,Elizabeth,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+75,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+76,Karen,female,Support the actor,Support the actor,Support the actor
+76,Thomas,male,Support the actor,Support the actor,Support the actor
+77,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+77,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+78,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+78,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+79,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+79,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+80,Richard,male,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+80,Susan,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+81,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+81,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+82,John,male,Support the actor,Verbal reprimand / verbal confrontation,Do nothing
+82,Maria,female,Support the actor,Support the actor,Do nothing
+83,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+83,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+84,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+84,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+85,Barbara,female,Support the actor,Gossip about / discuss with / complain to others informally,Do nothing
+85,Thomas,male,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+86,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+86,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+87,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+87,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+88,Elizabeth,female,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+88,Mark,male,Verbal reprimand / verbal confrontation,Support the actor,Verbal reprimand / verbal confrontation
+89,John,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+89,Linda,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+90,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+90,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+91,Lisa,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+91,Robert,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+92,Elizabeth,female,Support the actor,Support the actor,Support the actor
+92,Richard,male,Support the actor,Support the actor,Support the actor
+93,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+93,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+94,David,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+94,Patricia,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+95,James,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+95,Mary,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+96,Linda,female,Stay away or keep a distance from the actor,Support the actor,Do nothing
+96,Thomas,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+97,Linda,female,Support the actor,Support the actor,Support the actor
+97,Thomas,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+98,Mary,female,Do nothing,Support the actor,Do nothing
+98,William,male,Do nothing,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation
+99,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+99,Mark,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+100,Jennifer,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+100,Richard,male,Stay away or keep a distance from the actor,Support the actor,"Inform the authorities, such as the police"
+101,Charles,male,Do nothing,Support the actor,Do nothing
+101,Jennifer,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+102,Jennifer,female,Do nothing,Do nothing,Do nothing
+102,Michael,male,Do nothing,Support the actor,Do nothing
+103,Maria,female,Do nothing,Support the actor,Do nothing
+103,Michael,male,Support the actor,Support the actor,Do nothing
+104,Richard,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+104,Susan,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+105,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+105,Mary,female,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+106,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+106,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+107,Patricia,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+107,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+108,Charles,male,Support the actor,Support the actor,Support the actor
+108,Elizabeth,female,Support the actor,Support the actor,Support the actor
+109,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+109,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+110,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+110,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+111,James,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+111,Mary,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+112,Barbara,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+112,James,male,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+113,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+113,Robert,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+114,Jennifer,female,Support the actor,Support the actor,Support the actor
+114,Michael,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+115,Lisa,female,Do nothing,Do nothing,Do nothing
+115,William,male,Do nothing,Do nothing,Stay away or keep a distance from the actor
+116,Jennifer,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+116,Richard,male,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+117,Maria,female,Support the actor,Support the actor,Do nothing
+117,Richard,male,Do nothing,Do nothing,Do nothing
+118,Mark,male,Support the actor,Support the actor,Support the actor
+118,Patricia,female,Support the actor,Support the actor,Support the actor
+119,Barbara,female,Support the actor,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+119,John,male,Support the actor,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+120,James,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+120,Jennifer,female,Support the actor,Support the actor,Do nothing
+121,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+121,Susan,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+122,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+122,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+123,Charles,male,Do nothing,Support the actor,Do nothing
+123,Susan,female,Support the actor,Support the actor,Support the actor
+124,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+124,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+125,Lisa,female,Stay away or keep a distance from the actor,Support the actor,Verbal reprimand / verbal confrontation
+125,Thomas,male,Do nothing,Support the actor,Do nothing
+126,Barbara,female,Support the actor,Support the actor,Do nothing
+126,John,male,Support the actor,Do nothing,Support the actor
+127,Linda,female,Do nothing,Support the actor,Do nothing
+127,William,male,Support the actor,Support the actor,Do nothing
+128,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+128,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+129,Mary,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+129,Michael,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+130,David,male,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+130,Elizabeth,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+131,Linda,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+131,Mark,male,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+132,Charles,male,Support the actor,Support the actor,Do nothing
+132,Elizabeth,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+133,Jennifer,female,Support the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+133,Thomas,male,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+134,John,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+134,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+135,James,male,Support the actor,Support the actor,Support the actor
+135,Linda,female,Do nothing,Support the actor,Support the actor
+136,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+136,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+137,David,male,Do nothing,Support the actor,Do nothing
+137,Maria,female,Do nothing,Support the actor,Do nothing
+138,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+138,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+139,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+139,William,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+140,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+140,Lisa,female,Do nothing,Support the actor,Do nothing
+141,David,male,Support the actor,Support the actor,Support the actor
+141,Maria,female,Support the actor,Support the actor,Support the actor
+142,Karen,female,Do nothing,Support the actor,Do nothing
+142,Richard,male,Do nothing,Support the actor,Do nothing
+143,Linda,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+143,Robert,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+144,Barbara,female,Support the actor,Support the actor,Do nothing
+144,James,male,Support the actor,Support the actor,Support the actor
+145,Elizabeth,female,Verbal reprimand / verbal confrontation,Do nothing,Verbal reprimand / verbal confrontation
+145,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+146,Barbara,female,Support the actor,Support the actor,Support the actor
+146,Richard,male,Do nothing,Support the actor,Do nothing
+147,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+147,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+148,Karen,female,Support the actor,Support the actor,Do nothing
+148,Mark,male,Support the actor,Support the actor,Do nothing
+149,Lisa,female,Support the actor,Support the actor,Do nothing
+149,Thomas,male,Support the actor,Support the actor,Support the actor
+150,Elizabeth,female,Support the actor,Support the actor,Support the actor
+150,John,male,Do nothing,Support the actor,Support the actor
+151,Susan,female,Support the actor,Support the actor,Support the actor
+151,Thomas,male,Support the actor,Support the actor,Support the actor
+152,David,male,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+152,Patricia,female,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+153,James,male,Support the actor,Support the actor,Do nothing
+153,Jennifer,female,Do nothing,Support the actor,Do nothing
+154,Linda,female,Support the actor,Support the actor,Do nothing
+154,Mark,male,Support the actor,Support the actor,Do nothing
+155,Barbara,female,Do nothing,Support the actor,Do nothing
+155,Richard,male,Do nothing,Support the actor,Do nothing
+156,Charles,male,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+156,Karen,female,Support the actor,Support the actor,Support the actor
+157,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+157,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+158,John,male,Support the actor,Verbal reprimand / verbal confrontation,Do nothing
+158,Linda,female,Support the actor,Support the actor,Do nothing
+159,Mary,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+159,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+160,James,male,Do nothing,Support the actor,Support the actor
+160,Susan,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+161,Maria,female,Support the actor,Support the actor,Do nothing
+161,Michael,male,Support the actor,Support the actor,Support the actor
+162,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+162,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+163,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+163,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+164,James,male,Verbal reprimand / verbal confrontation,Support the actor,Do nothing
+164,Karen,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Do nothing
+165,John,male,Support the actor,Support the actor,Support the actor
+165,Linda,female,Support the actor,Support the actor,Support the actor
+166,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+166,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+167,Barbara,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+167,William,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+168,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+168,Susan,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+169,Elizabeth,female,Do nothing,Support the actor,Do nothing
+169,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+170,John,male,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+170,Karen,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+171,Lisa,female,Do nothing,Support the actor,Do nothing
+171,Richard,male,Do nothing,Do nothing,Do nothing
+172,Jennifer,female,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+172,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+173,Mary,female,Do nothing,Support the actor,Do nothing
+173,William,male,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+174,Michael,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+174,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+175,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+175,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+176,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+176,Linda,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+177,Barbara,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+177,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+178,David,male,Do nothing,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+178,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+179,Jennifer,female,Support the actor,Support the actor,Do nothing
+179,Michael,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+180,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+180,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+181,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+181,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+182,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+182,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+183,Jennifer,female,Verbal reprimand / verbal confrontation,Support the actor,"Inform the authorities, such as the police"
+183,Mark,male,Verbal reprimand / verbal confrontation,Support the actor,Verbal reprimand / verbal confrontation
+184,Barbara,female,Do nothing,Support the actor,Do nothing
+184,John,male,Support the actor,Support the actor,"Inform the authorities, such as the police"
+185,Susan,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+185,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+186,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+186,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+187,Elizabeth,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+187,Richard,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+188,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+188,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+189,Elizabeth,female,Support the actor,Support the actor,"Inform the authorities, such as the police"
+189,John,male,Support the actor,Support the actor,"Inform the authorities, such as the police"
+190,Linda,female,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+190,William,male,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+191,Karen,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+191,Robert,male,Support the actor,Support the actor,Support the actor
+192,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+192,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+193,Maria's mom,female,Gossip about / discuss with / complain to others informally,Support the actor,Verbal reprimand / verbal confrontation
+193,William's dad,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+194,Karen,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+194,Richard,male,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+195,Charles,male,Do nothing,Gossip about / discuss with / complain to others informally,Do nothing
+195,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+196,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+196,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+197,James,male,Do nothing,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation
+197,Maria,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+198,James,male,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+198,Susan,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+199,Maria,female,Support the actor,Support the actor,Do nothing
+199,William,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+200,Karen,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+200,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+201,Charles,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+201,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+202,Jennifer,female,Support the actor,Support the actor,Support the actor
+202,Robert,male,Support the actor,Support the actor,Support the actor
+203,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+203,Susan,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+204,Mark,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+204,Patricia,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+205,Lisa,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+205,Robert,male,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+206,Jennifer,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+206,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+207,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+207,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+208,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+208,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+209,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+209,Karen,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+210,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+210,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+211,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+211,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+212,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+212,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+213,Jennifer,female,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+213,William,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+214,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+214,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+215,Linda,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+215,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+216,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+216,Patricia,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+217,Richard,male,Support the actor,Support the actor,Support the actor
+217,Susan,female,Support the actor,Support the actor,Support the actor
+218,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+218,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+219,Charles,male,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+219,Patricia,female,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+220,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+220,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+221,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+221,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+222,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+222,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+223,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+223,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+224,Linda,female,Do nothing,Support the actor,Do nothing
+224,Robert,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+225,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+225,William,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+226,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+226,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+227,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+227,Linda,female,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+228,Barbara,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+228,Richard,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+229,Lisa,female,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+229,Mark,male,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+230,James,male,Verbal reprimand / verbal confrontation,Do nothing,Do nothing
+230,Mary,female,"Inform the authorities, such as the police",Do nothing,Do nothing
+231,Elizabeth,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+231,John,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+232,Karen,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Do nothing
+232,Richard,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+233,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+233,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+234,Barbara,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+234,Mark,male,Stay away or keep a distance from the actor,Do nothing,Stay away or keep a distance from the actor
+235,David,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+235,Lisa,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+236,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+236,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+237,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+237,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+238,Jennifer,female,Do nothing,Do nothing,Do nothing
+238,Richard,male,Do nothing,Do nothing,Do nothing
+239,John,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+239,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+240,Charles,male,Do nothing,Do nothing,Do nothing
+240,Lisa,female,Do nothing,Do nothing,Do nothing
+241,Michael,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+241,Patricia,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+242,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+242,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+243,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+243,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+244,Barbara,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+244,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+245,John,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+245,Linda,female,Do nothing,Do nothing,Do nothing
+246,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+246,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+247,Barbara,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+247,Robert,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+248,Jennifer,female,Do nothing,Do nothing,Do nothing
+248,Michael,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+249,James,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+249,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+250,Barbara,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+250,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+251,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+251,Susan,female,Support the actor,Do nothing,Verbal reprimand / verbal confrontation
+252,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+252,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+253,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+253,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+254,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+254,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+255,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+255,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+256,Mary,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+256,William,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+257,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+257,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+258,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+258,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+259,James,male,Support the actor,Support the actor,Do nothing
+259,Lisa,female,Support the actor,Support the actor,Do nothing
+260,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+260,Patricia,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+261,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+261,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+262,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+262,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+263,Elizabeth,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+263,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+264,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+264,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+265,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+265,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+266,Jennifer,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+266,William,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+267,Lisa,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+267,Mark,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+268,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+268,David,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+269,Patricia,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+269,Thomas,male,Support the actor,Support the actor,Support the actor
+270,Richard,male,Support the actor,Support the actor,Support the actor
+270,Susan,female,Support the actor,Support the actor,Support the actor
+271,Charles,male,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+271,Linda,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+272,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+272,Mary,female,Support the actor,Support the actor,Do nothing
+273,Karen,female,Do nothing,Do nothing,Do nothing
+273,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+274,James,male,Do nothing,Support the actor,Do nothing
+274,Jennifer,female,Do nothing,Support the actor,Do nothing
+275,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+275,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+276,Jennifer,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+276,Michael,male,"Inform the authorities, such as the police",Support the actor,Stay away or keep a distance from the actor
+277,Patricia,female,Do nothing,Support the actor,Stay away or keep a distance from the actor
+277,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+278,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+278,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+279,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+279,Lisa,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+280,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+280,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+281,Charles,male,Support the actor,Support the actor,Support the actor
+281,Elizabeth,female,Support the actor,Support the actor,Support the actor
+282,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+282,Susan,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+283,Lisa,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+283,Thomas,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+284,Barbara,female,Support the actor,Support the actor,Support the actor
+284,Richard,male,Support the actor,Support the actor,Support the actor
+285,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+285,William,male,Support the actor,Support the actor,Do nothing
+286,Jennifer,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+286,Robert,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+287,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+287,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+288,John,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+288,Patricia,female,"Inform the authorities, such as the police",Support the actor,"Inform the authorities, such as the police"
+289,James,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+289,Linda,female,Support the actor,Support the actor,Support the actor
+290,Maria,female,Support the actor,Support the actor,Do nothing
+290,Mark,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+291,Linda,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+291,Richard,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+292,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+292,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+293,John,male,Support the actor,Support the actor,Support the actor
+293,Maria,female,Support the actor,Support the actor,Support the actor
+294,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+294,Linda,female,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+295,Karen,female,Support the actor,Support the actor,Do nothing
+295,Robert,male,Support the actor,Support the actor,Do nothing
+296,Barbara,female,Support the actor,Support the actor,Support the actor
+296,Michael,male,Support the actor,Support the actor,Support the actor
+297,Barbara,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+297,Thomas,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+298,Linda,female,Support the actor,Support the actor,Do nothing
+298,Thomas,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+299,Maria,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+299,William,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+300,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+300,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+301,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+301,Linda,female,Support the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+302,Patricia,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+302,Richard,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+303,Barbara,female,Support the actor,Support the actor,Support the actor
+303,James,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+304,Karen,female,Verbal reprimand / verbal confrontation,Support the actor,Do nothing
+304,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+305,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+305,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+306,Jennifer,female,Support the actor,Support the actor,Do nothing
+306,Thomas,male,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+307,James,male,Do nothing,Support the actor,Do nothing
+307,Karen,female,Do nothing,Support the actor,Do nothing
+308,Elizabeth,female,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+308,Richard,male,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+309,Karen,female,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+309,Mark,male,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+310,Mark,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+310,Mary,female,Support the actor,Support the actor,Support the actor
+311,Karen's family,female,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+311,Robert's family,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+312,Linda,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+312,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+313,John,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+313,Patricia,female,Gossip about / discuss with / complain to others informally,Do nothing,Do nothing
+314,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+314,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+315,Barbara,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+315,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+316,Robert,male,Do nothing,Do nothing,Verbal reprimand / verbal confrontation
+316,Susan,female,Do nothing,Do nothing,Do nothing
+317,James,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+317,Karen,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+318,Charles,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+318,Mary,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+319,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+319,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+320,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+320,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+321,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+321,Karen,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+322,Elizabeth,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+322,William,male,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+323,Karen,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+323,Richard,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+324,Robert,male,Support the actor,Support the actor,Do nothing
+324,Susan,female,Do nothing,Support the actor,Do nothing
+325,Maria,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+325,Michael,male,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+326,John,male,Do nothing,Support the actor,Do nothing
+326,Lisa,female,Do nothing,Do nothing,Do nothing
+327,Linda,female,"Inform the authorities, such as the police",Do nothing,"Inform the authorities, such as the police"
+327,Mark,male,Do nothing,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+328,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+328,Patricia,female,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+329,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+329,William,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+330,Charles,male,Support the actor,Support the actor,Do nothing
+330,Lisa,female,Support the actor,Verbal reprimand / verbal confrontation,Do nothing
+331,James,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+331,Mary,female,Stay away or keep a distance from the actor,Support the actor,Support the actor
+332,Jennifer,female,Support the actor,Support the actor,Do nothing
+332,Robert,male,Support the actor,Support the actor,Do nothing
+333,Elizabeth,female,Verbal reprimand / verbal confrontation,Do nothing,Do nothing
+333,John,male,Verbal reprimand / verbal confrontation,Support the actor,Do nothing
+334,Elizabeth,female,Support the actor,Verbal reprimand / verbal confrontation,Support the actor
+334,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+335,Barbara,female,Support the actor,Gossip about / discuss with / complain to others informally,Verbal reprimand / verbal confrontation
+335,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+336,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+336,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+337,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+337,Thomas,male,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation
+338,Mary,female,Support the actor,Support the actor,Support the actor
+338,William,male,Do nothing,Verbal reprimand / verbal confrontation,Support the actor
+339,David,male,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+339,Jennifer,female,Do nothing,Do nothing,Verbal reprimand / verbal confrontation
+340,David,male,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+340,Maria,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+341,Mark,male,Do nothing,Stay away or keep a distance from the actor,Do nothing
+341,Susan,female,Do nothing,Support the actor,Support the actor
+342,Barbara,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+342,John,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+343,James,male,Support the actor,Verbal reprimand / verbal confrontation,Do nothing
+343,Jennifer,female,Support the actor,Support the actor,Support the actor
+344,Linda,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+344,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+345,Charles,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+345,Lisa,female,Support the actor,Support the actor,Do nothing
+346,John,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+346,Maria,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+347,Elizabeth,female,Do nothing,Support the actor,Do nothing
+347,Richard,male,Do nothing,Support the actor,Do nothing
+348,Susan,female,Gossip about / discuss with / complain to others informally,Support the actor,Stay away or keep a distance from the actor
+348,William,male,Support the actor,Support the actor,Do nothing
+349,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+349,Mark,male,Verbal reprimand / verbal confrontation,Do nothing,Stay away or keep a distance from the actor
+350,Jennifer,female,Do nothing,Do nothing,Stay away or keep a distance from the actor
+350,Richard,male,Do nothing,Do nothing,Do nothing
+351,Elizabeth,female,Do nothing,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+351,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+352,David,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+352,Mary,female,Do nothing,Support the actor,Do nothing
+353,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+353,Lisa,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+354,Linda,female,Support the actor,Support the actor,Support the actor
+354,Thomas,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+355,David,male,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+355,Maria,female,Do nothing,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+356,Charles,male,Support the actor,Stay away or keep a distance from the actor,"Inform the authorities, such as the police"
+356,Patricia,female,Stay away or keep a distance from the actor,Support the actor,Stay away or keep a distance from the actor
+357,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+357,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+358,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+358,Robert,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+359,Susan,female,Do nothing,Support the actor,Support the actor
+359,William,male,Support the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+360,Michael,male,Support the actor,Support the actor,Support the actor
+360,Susan,female,Support the actor,Support the actor,Support the actor
+361,Charles,male,Do nothing,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+361,Patricia,female,Do nothing,Support the actor,Support the actor
+362,Charles,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Do nothing
+362,Karen,female,"Inform the authorities, such as the police",Do nothing,Do nothing
+363,Jennifer,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+363,Robert,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+364,Lisa,female,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+364,Mark,male,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+365,Elizabeth,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+365,William,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+366,Charles,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+366,Karen,female,"Inform the authorities, such as the police",Do nothing,"Inform the authorities, such as the police"
+367,James,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+367,Linda,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+368,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+368,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+369,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+369,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+370,Barbara,female,Do nothing,Support the actor,Do nothing
+370,William,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+371,Lisa,female,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+371,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+372,John,male,"Inform the authorities, such as the police",Support the actor,"Inform the authorities, such as the police"
+372,Mary,female,"Inform the authorities, such as the police",Support the actor,"Inform the authorities, such as the police"
+373,Karen,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+373,Richard,male,Do nothing,Support the actor,Do nothing
+374,David,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+374,Elizabeth,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+375,Barbara,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+375,Robert,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+376,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+376,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+377,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+377,Karen,female,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+378,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+378,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+379,Linda,female,Verbal reprimand / verbal confrontation,Support the actor,Verbal reprimand / verbal confrontation
+379,Michael,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+380,Mary,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+380,Robert,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+381,Mary,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+381,Michael,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+382,Charles,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+382,Lisa,female,Support the actor,Support the actor,Support the actor
+383,Linda,female,"Inform the authorities, such as the police",Support the actor,Do nothing
+383,Michael,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+384,Lisa,female,Do nothing,Support the actor,Do nothing
+384,Richard,male,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+385,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+385,William,male,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police",Stay away or keep a distance from the actor
+386,James,male,Verbal reprimand / verbal confrontation,Support the actor,Stay away or keep a distance from the actor
+386,Maria,female,Support the actor,Support the actor,Stay away or keep a distance from the actor
+387,Charles,male,Support the actor,Support the actor,Do nothing
+387,Mary,female,Support the actor,Support the actor,Do nothing
+388,Karen,female,Do nothing,Support the actor,"Inform the authorities, such as the police"
+388,Robert,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+389,James,male,Do nothing,Do nothing,Support the actor
+389,Mary,female,Do nothing,Do nothing,Do nothing
+390,Jennifer,female,Support the actor,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+390,Michael,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+391,Lisa,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+391,Michael,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+392,Barbara,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+392,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+393,Maria,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+393,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+394,James,male,Support the actor,Support the actor,Support the actor
+394,Karen,female,Support the actor,Support the actor,Support the actor
+395,Maria,female,Do nothing,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+395,Michael,male,"Inform the authorities, such as the police","Inform the authorities, such as the police",Stay away or keep a distance from the actor
+396,Mark,male,"Inform the authorities, such as the police",Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+396,Patricia,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+397,Charles,male,Support the actor,Support the actor,Do nothing
+397,Patricia,female,Support the actor,Support the actor,Do nothing
+398,Charles,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+398,Maria,female,Do nothing,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally
+399,Mary,female,Do nothing,Support the actor,Stay away or keep a distance from the actor
+399,Thomas,male,Verbal reprimand / verbal confrontation,Do nothing,Verbal reprimand / verbal confrontation
+400,Maria,female,Do nothing,Support the actor,Stay away or keep a distance from the actor
+400,Thomas,male,Support the actor,Do nothing,Do nothing
+401,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+401,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+402,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+402,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+403,Charles,male,Verbal reprimand / verbal confrontation,Gossip about / discuss with / complain to others informally,Do nothing
+403,Linda,female,Do nothing,Gossip about / discuss with / complain to others informally,Do nothing
+404,James,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+404,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+405,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+405,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+406,Barbara,female,Do nothing,Do nothing,Stay away or keep a distance from the actor
+406,Richard,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+407,Jennifer,female,Do nothing,Do nothing,Stay away or keep a distance from the actor
+407,Robert,male,Do nothing,Do nothing,Do nothing
+408,Charles,male,Do nothing,Do nothing,Do nothing
+408,Jennifer,female,Do nothing,Support the actor,Stay away or keep a distance from the actor
+409,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+409,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+410,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+410,Patricia,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+411,Barbara,female,Support the actor,Support the actor,Support the actor
+411,John,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+412,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+412,Thomas,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+413,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+413,Susan,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+414,James,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+414,Patricia,female,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+415,Maria,female,Do nothing,Support the actor,Do nothing
+415,Mark,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+416,Linda,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+416,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+417,Lisa,female,Do nothing,Support the actor,Do nothing
+417,Robert,male,Do nothing,"Inform the authorities, such as the police",Stay away or keep a distance from the actor
+418,Barbara,female,Do nothing,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+418,Charles,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+419,James,male,Stay away or keep a distance from the actor,"Inform the authorities, such as the police",Stay away or keep a distance from the actor
+419,Linda,female,"Inform the authorities, such as the police",Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+420,Barbara,female,Do nothing,Support the actor,Do nothing
+420,Charles,male,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+421,Linda,female,Support the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+421,Richard,male,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+422,Karen,female,Verbal reprimand / verbal confrontation,Support the actor,Verbal reprimand / verbal confrontation
+422,Michael,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+423,John,male,Do nothing,Support the actor,Do nothing
+423,Mary,female,Do nothing,Support the actor,Do nothing
+424,Lisa,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+424,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+425,Charles,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+425,Linda,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+426,Mary,female,Support the actor,Support the actor,Do nothing
+426,Thomas,male,Do nothing,Support the actor,Support the actor
+427,James,male,Do nothing,Do nothing,"Inform the authorities, such as the police"
+427,Maria,female,Do nothing,Do nothing,Do nothing
+428,Barbara,female,Support the actor,Support the actor,Support the actor
+428,John,male,Support the actor,Support the actor,Support the actor
+429,Charles,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+429,Patricia,female,Do nothing,Support the actor,Gossip about / discuss with / complain to others informally
+430,John,male,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation
+430,Mary,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+431,John,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+431,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Support the actor
+432,Richard,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+432,Susan,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+433,Karen,female,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+433,Robert,male,Do nothing,Support the actor,Verbal reprimand / verbal confrontation
+434,James,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation
+434,Mary,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+435,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+435,John,male,"Inform the authorities, such as the police",Stay away or keep a distance from the actor,"Inform the authorities, such as the police"
+436,Lisa,female,Support the actor,Support the actor,Support the actor
+436,William,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+437,Linda,female,Support the actor,Support the actor,"Inform the authorities, such as the police"
+437,Richard,male,Support the actor,Support the actor,Stay away or keep a distance from the actor
+438,Maria,female,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+438,William,male,"Inform the authorities, such as the police",Stay away or keep a distance from the actor,Stay away or keep a distance from the actor
+439,James,male,Support the actor,Support the actor,"Inform the authorities, such as the police"
+439,Patricia,female,"Inform the authorities, such as the police",Support the actor,Stay away or keep a distance from the actor
+440,John,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+440,Mary,female,Verbal reprimand / verbal confrontation,Do nothing,Do nothing
+441,Karen,female,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police","Inform the authorities, such as the police"
+441,Thomas,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+442,Jennifer,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+442,Mark,male,"Inform the authorities, such as the police",Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+443,David,male,Do nothing,Support the actor,Stay away or keep a distance from the actor
+443,Mary,female,Support the actor,Support the actor,Verbal reprimand / verbal confrontation
+444,Lisa,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+444,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+445,David,male,Do nothing,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+445,Elizabeth,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+446,Elizabeth,female,Support the actor,Support the actor,Support the actor
+446,John,male,Support the actor,Support the actor,Support the actor
+447,Karen,female,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+447,William,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+448,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Stay away or keep a distance from the actor
+448,Patricia,female,Stay away or keep a distance from the actor,Verbal reprimand / verbal confrontation,"Inform the authorities, such as the police"
+449,Jennifer,female,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+449,Richard,male,Do nothing,Verbal reprimand / verbal confrontation,Do nothing
+450,Charles,male,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+450,Elizabeth,female,"Inform the authorities, such as the police","Inform the authorities, such as the police","Inform the authorities, such as the police"
+451,David,male,Verbal reprimand / verbal confrontation,Verbal reprimand / verbal confrontation,Do nothing
+451,Linda,female,Verbal reprimand / verbal confrontation,Do nothing,Verbal reprimand / verbal confrontation
